@@ -1,0 +1,313 @@
+<!DOCTYPE html><html lang="en" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>ESP脱壳定律（以UPX壳为例） | Hexo</title><meta name="author" content="John Doe"><meta name="copyright" content="John Doe"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="referrer" content="no-referrer"><meta name="description" content="参考资料：https:&#x2F;&#x2F;bbs.ichunqiu.com&#x2F;forum.php?mod&#x3D;viewthread&amp;tid&#x3D;15978&amp;extra&#x3D;&amp;highlight&#x3D;esp&amp;page&#x3D;1（由于在输液时写文章，故部分语言借助如上链接，望理解）为了方便，我们找到在吾爱破解工具包中找到单文件工具并使用加壳工具对其加壳。使用的单文件工具如下：首先在加壳之前查一下壳：没有壳，接">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ESP脱壳定律（以UPX壳为例）">
+<meta property="og:url" content="http://example.com/2020/03/31/ESP%E8%84%B1%E5%A3%B3%E5%AE%9A%E5%BE%8B%EF%BC%88%E4%BB%A5UPX%E5%A3%B3%E4%B8%BA%E4%BE%8B%EF%BC%89/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="参考资料：https:&#x2F;&#x2F;bbs.ichunqiu.com&#x2F;forum.php?mod&#x3D;viewthread&amp;tid&#x3D;15978&amp;extra&#x3D;&amp;highlight&#x3D;esp&amp;page&#x3D;1（由于在输液时写文章，故部分语言借助如上链接，望理解）为了方便，我们找到在吾爱破解工具包中找到单文件工具并使用加壳工具对其加壳。使用的单文件工具如下：首先在加壳之前查一下壳：没有壳，接">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg">
+<meta property="article:published_time" content="2020-03-31T00:31:12.000Z">
+<meta property="article:modified_time" content="2021-07-04T09:57:21.147Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://example.com/2020/03/31/ESP%E8%84%B1%E5%A3%B3%E5%AE%9A%E5%BE%8B%EF%BC%88%E4%BB%A5UPX%E5%A3%B3%E4%B8%BA%E4%BE%8B%EF%BC%89/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: 'Copy successfully',
+    error: 'Copy error',
+    noSupport: 'The browser does not support'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: 'Just',
+    min: 'minutes ago',
+    hour: 'hours ago',
+    day: 'days ago',
+    month: 'months ago'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    jQuery: 'https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js',
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+    },
+    fancybox: {
+      js: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isanchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'ESP脱壳定律（以UPX壳为例）',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: false,
+  postUpdate: '2021-07-04 17:57:21'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if (GLOBAL_CONFIG_SITE.isHome && /iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><meta name="generator" content="Hexo 5.4.0"><link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+</head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://i.loli.net/2021/02/24/5O1day2nriDzjSu.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data"><div class="data-item is-center"><div class="data-item-link"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">317</div></a></div></div></div><hr/></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">Hexo</a></span><div id="menus"><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">ESP脱壳定律（以UPX壳为例）</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">Created</span><time class="post-meta-date-created" datetime="2020-03-31T00:31:12.000Z" title="Created 2020-03-31 08:31:12">2020-03-31</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">Updated</span><time class="post-meta-date-updated" datetime="2021-07-04T09:57:21.147Z" title="Updated 2021-07-04 17:57:21">2021-07-04</time></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="ESP脱壳定律（以UPX壳为例）"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">Post View:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><p>参考资料：<br><a target="_blank" rel="noopener" href="https://bbs.ichunqiu.com/forum.php?mod=viewthread&tid=15978&extra=&highlight=esp&page=1">https://bbs.ichunqiu.com/forum.php?mod=viewthread&amp;tid=15978&amp;extra=&amp;highlight=esp&amp;page=1</a><br>（由于在输液时写文章，故部分语言借助如上链接，望理解）<br>为了方便，我们找到在吾爱破解工具包中找到单文件工具并使用加壳工具对其加壳。<br>使用的单文件工具如下：<br><img src="https://cdn.nlark.com/yuque/0/2020/png/574026/1585614864724-b92c8470-df65-4392-95c6-b4f295891d4d.png#align=left&display=inline&height=47&name=QQ%E6%88%AA%E5%9B%BE20200331083407.png&originHeight=47&originWidth=166&size=4560&status=done&style=none&width=166" alt="QQ截图20200331083407.png"><br>首先在加壳之前查一下壳：<br><img src="https://cdn.nlark.com/yuque/0/2020/png/574026/1585615278915-644783cc-9040-466e-afaa-bf247040642e.png#align=left&display=inline&height=353&name=QQ%E6%88%AA%E5%9B%BE20200331084055.png&originHeight=353&originWidth=582&size=30425&status=done&style=none&width=582" alt="QQ截图20200331084055.png"><br><img src="https://cdn.nlark.com/yuque/0/2020/png/574026/1585615379856-240c67cf-59ae-465b-803e-48a305e42602.png#align=left&display=inline&height=318&name=QQ%E6%88%AA%E5%9B%BE20200331084234.png&originHeight=318&originWidth=647&size=170769&status=done&style=none&width=647" alt="QQ截图20200331084234.png"><br>没有壳，接下来手动对其加一个 UPX 壳，同样使用吾爱破解工具包中的加壳工具<br><img src="https://cdn.nlark.com/yuque/0/2020/png/574026/1585615569572-bf7c7bff-f17c-4a2c-8a20-aa4b1a6849ee.png#align=left&display=inline&height=38&name=QQ%E6%88%AA%E5%9B%BE20200331084534.png&originHeight=38&originWidth=202&size=5980&status=done&style=none&width=202" alt="QQ截图20200331084534.png"><br><img src="https://cdn.nlark.com/yuque/0/2020/png/574026/1585615622875-46e247c5-34eb-4e9f-9977-a0ea2c6561f2.png#align=left&display=inline&height=401&name=QQ%E6%88%AA%E5%9B%BE20200331084652.png&originHeight=401&originWidth=512&size=23631&status=done&style=none&width=512" alt="QQ截图20200331084652.png"><br>再检测一下：<br><img src="https://cdn.nlark.com/yuque/0/2020/png/574026/1585615706763-4fc0ef10-c7aa-448d-ba23-7bb6f33170f4.png#align=left&display=inline&height=353&name=QQ%E6%88%AA%E5%9B%BE20200331084803.png&originHeight=353&originWidth=582&size=29907&status=done&style=none&width=582" alt="QQ截图20200331084803.png"><br>加壳成功，接下来使用 ESP 脱壳定律进行脱壳。</p>
+<hr>
+<p>ESP 脱壳定律原理：“堆栈平衡”原理<br>在开始讨论 ESP 定律之前，先给复习一下一些简单的汇编知识。<br><strong>1.call</strong><br>这个命令是访问子程序的一个汇编基本指令。也许你说，这个我早就知道了！别急请继续看完。call 真正的意义是什么呢？我们可以这样来理解： 1.向堆栈中压入下一行程序的地址；<br>2.JMP 到 call 的子程序地址处。<br>例如：<br>00401029.E8           call 004A3508<br>0040102E.5A           pop edx<br>在执行了 00401029 以后，程序会将 0040102E 压入堆栈，然后 JMP 到 004A3508 地址处！<br><strong>2.RETN</strong><br>与 call 对应的就是 RETN 了。对于 RETN 我们可以这样来理解： 1.将当前的 ESP 中指向的地址出栈；<br>2.JMP 到这个地址。<br>这个就完成了一次调用子程序的过程。在这里关键的地方是：如果我们要返回父程序，则当我们在堆栈中进行堆栈的操作的时候，一定要保证在 RETN 这条指令之前，ESP 指向的是我们压入栈中的地址。这也就是著名的“堆栈平衡”原理！（<a target="_blank" rel="noopener" href="https://blog.csdn.net/D_R_L_T/article/details/74625872?depth_1-utm_source=distribute.pc_relevant.none-task&utm_source=distribute.pc_relevant.none-task">https://blog.csdn.net/D_R_L_T/article/details/74625872?depth_1-utm_source=distribute.pc_relevant.none-task&amp;utm_source=distribute.pc_relevant.none-task</a>）</p>
+<p>ESP 定律的适用范围：几乎全部的压缩壳，部分加密壳。只要是在 JMP 到 OEP 后的壳，理论上我们都可以使用。但是在何时下断点避开校验，何时下断 OD 才能断下来，这还需要多多总结和多多积累。</p>
+<hr>
+<p>将加壳后的程序载入到 OD 中后，点击否<br><img src="https://cdn.nlark.com/yuque/0/2020/png/574026/1585616350171-e2180134-45c5-4a84-9b05-b20320554e7e.png#align=left&display=inline&height=208&name=QQ%E6%88%AA%E5%9B%BE20200331085856.png&originHeight=208&originWidth=602&size=43003&status=done&style=none&width=602" alt="QQ截图20200331085856.png"><br>OD 界面如下：<br><img src="https://cdn.nlark.com/yuque/0/2020/png/574026/1585616419334-6a908a0b-0e47-4848-9914-3be606ccff8f.png#align=left&display=inline&height=1030&name=QQ%E6%88%AA%E5%9B%BE20200331090006.png&originHeight=1030&originWidth=1920&size=267311&status=done&style=none&width=1920" alt="QQ截图20200331090006.png"><br>按下 F8 开始单步执行<br><img src="https://cdn.nlark.com/yuque/0/2020/png/574026/1585616519579-9feacf79-bf24-45e6-ae6e-bab14207384c.png#align=left&display=inline&height=264&name=QQ%E6%88%AA%E5%9B%BE20200331090141.png&originHeight=264&originWidth=1882&size=74895&status=done&style=none&width=1882" alt="QQ截图20200331090141.png"><br>当有且只有 ESP 和 EIP 为红色时，我们可以用 ESP 定律了（也可以直接在下面的 Command 窗口中输入 dd 0019FF54 后回车）<br><img src="https://cdn.nlark.com/yuque/0/2020/png/574026/1585616666855-96d19ea8-8b5b-40bf-be12-b7f6b47fdff2.png#align=left&display=inline&height=459&name=QQ%E6%88%AA%E5%9B%BE20200331090405.png&originHeight=459&originWidth=442&size=74823&status=done&style=none&width=442" alt="QQ截图20200331090405.png"><br>此时有：<br><img src="https://cdn.nlark.com/yuque/0/2020/png/574026/1585616722361-34c75e91-36ef-490d-8620-6d7abe464a8f.png#align=left&display=inline&height=221&name=QQ%E6%88%AA%E5%9B%BE20200331090506.png&originHeight=221&originWidth=743&size=28546&status=done&style=none&width=743" alt="QQ截图20200331090506.png"><br>下硬件断点：（这个操作也可以在 command 窗口输入  HR 0019FF54 回车后完成，然后我们按 F9 运行程序，此时程序会暂停在我们设置的断点位置）<br><img src="https://cdn.nlark.com/yuque/0/2020/png/574026/1585616791219-98b6f983-f87a-4511-b0c2-ccb9ce4211bd.png#align=left&display=inline&height=574&name=QQ%E6%88%AA%E5%9B%BE20200331090616.png&originHeight=574&originWidth=873&size=111432&status=done&style=none&width=873" alt="QQ截图20200331090616.png"><br>这两种方法最终的效果都会在数据窗口中跟随到 0012FFA4 这个地址，然后我们可以右键那一段地址任意 HEX 设置断点 → 硬件访问 →word 型，按下 F9 执行，EIP 停在：<br><img src="https://cdn.nlark.com/yuque/0/2020/png/574026/1585616909254-3ffc1942-5d44-4dd9-a34e-8201964ce27a.png#align=left&display=inline&height=158&name=QQ%E6%88%AA%E5%9B%BE20200331090813.png&originHeight=158&originWidth=664&size=25159&status=done&style=none&width=664" alt="QQ截图20200331090813.png"><br>然后我们 F8 单步走，到了 jnz 位置后不要再按 F8 了（这是向上跳转的），我们用鼠标点击她的下一行然后按 F4，让程序转到跳转下面继续运行（sub esp,-0x80），到达 jmp 后我们必须跳过去，因为接下来就有可能是程序的 OEP 领空。<br>OEP：程序的入口点，软件加壳就是隐藏了 OEP（或者用了假的 OEP）<br>这里就是易语言/VC 程序的 OEP：<br><img src="https://cdn.nlark.com/yuque/0/2020/png/574026/1585617388007-a4b578e7-d56c-4ad5-92e5-b8ac313a1d06.png#align=left&display=inline&height=588&name=QQ%E6%88%AA%E5%9B%BE20200331091534.png&originHeight=588&originWidth=1248&size=93787&status=done&style=none&width=1248" alt="QQ截图20200331091534.png"><br>然后我们就可以脱壳了，脱壳前我们先把断点清理掉，以免出错【调试 → 硬件断点 → 删除】<br>此时程序真正的 OEP 为：0040438E<br><img src="https://cdn.nlark.com/yuque/0/2020/png/574026/1585617443964-b8a50dc5-c042-4f16-8640-fdcd58f45c26.png#align=left&display=inline&height=231&name=QQ%E6%88%AA%E5%9B%BE20200331091713.png&originHeight=231&originWidth=429&size=18967&status=done&style=none&width=429" alt="QQ截图20200331091713.png"><br>打开吾爱破解工具包的<img src="https://cdn.nlark.com/yuque/0/2020/png/574026/1585617665211-72ec7adb-d5b1-485a-bce8-71bae0137e8b.png#align=left&display=inline&height=31&name=QQ%E6%88%AA%E5%9B%BE20200331092054.png&originHeight=31&originWidth=218&size=7576&status=done&style=none&width=218" alt="QQ截图20200331092054.png"><br>运行相同的进程：<br><img src="https://cdn.nlark.com/yuque/0/2020/png/574026/1585617827236-e1786b02-a945-4c90-8525-0175c80aefe8.png#align=left&display=inline&height=326&name=QQ%E6%88%AA%E5%9B%BE20200331092335.png&originHeight=326&originWidth=325&size=59078&status=done&style=none&width=325" alt="QQ截图20200331092335.png"><br>在“Scylla”中“附加活动进程”：<br><img src="https://cdn.nlark.com/yuque/0/2020/png/574026/1585617940997-5112c552-bb6f-4eaf-b0e1-5e882b1494aa.png#align=left&display=inline&height=797&name=QQ%E6%88%AA%E5%9B%BE20200331092526.png&originHeight=797&originWidth=875&size=168961&status=done&style=none&width=875" alt="QQ截图20200331092526.png"><br>在 IAT 信息框中的 OEP 更改为真正的 OEP：0040438E，然后自动查找 IAT 并获取输入表（出现下图点击否）<br><img src="https://cdn.nlark.com/yuque/0/2020/png/574026/1585618106572-06e56309-81dc-4397-8580-6af369795c41.png#align=left&display=inline&height=208&name=QQ%E6%88%AA%E5%9B%BE20200331092753.png&originHeight=208&originWidth=593&size=24508&status=done&style=none&width=593" alt="QQ截图20200331092753.png"><br>最终如下图所示：<br><img src="https://cdn.nlark.com/yuque/0/2020/png/574026/1585618159393-d5ca14a5-3cd3-4ec6-b4eb-e4698f699e87.png#align=left&display=inline&height=797&name=QQ%E6%88%AA%E5%9B%BE20200331092855.png&originHeight=797&originWidth=875&size=206350&status=done&style=none&width=875" alt="QQ截图20200331092855.png"><br>然后转储到文件，保存为：UPX Unpacker_dump.exe<br>最后修复转储后的文件，选择 UPX Unpacker_dump.exe，自动保存为 UPX Unpacker_dump_SCY.exe<br>打开 UPX Unpacker_dump_SCY.exe，正常运行<br><img src="https://cdn.nlark.com/yuque/0/2020/png/574026/1585617827236-e1786b02-a945-4c90-8525-0175c80aefe8.png#align=left&display=inline&height=326&name=QQ%E6%88%AA%E5%9B%BE20200331092335.png&originHeight=326&originWidth=325&size=59078&status=done&style=none&width=325" alt="QQ截图20200331092335.png"><br><img src="https://cdn.nlark.com/yuque/0/2020/png/574026/1585618661600-e88e4a6a-5d6e-4f38-aac6-df395d8cd9b8.png#align=left&display=inline&height=353&name=QQ%E6%88%AA%E5%9B%BE20200331093730.png&originHeight=353&originWidth=582&size=30688&status=done&style=none&width=582" alt="QQ截图20200331093730.png"><br><img src="https://cdn.nlark.com/yuque/0/2020/png/574026/1585619004238-4ea459f7-d6d9-40c2-8286-0e0e267660af.png#align=left&display=inline&height=298&name=QQ%E6%88%AA%E5%9B%BE20200331094305.png&originHeight=298&originWidth=522&size=41856&status=done&style=none&width=522" alt="QQ截图20200331094305.png"><br><strong>注：EP 段提示 UPX0 是因为没有优化区段</strong></p>
+<hr>
+<p><strong>附：</strong><br>程序校验值:<br>文件： 吾爱破解工具包\Tools\Unpackers\UPX Unpacker.exe（加 UPX 壳前）<br>大小： 155, 648 字节<br>修改时间：2015-07-19 14:43:53<br>MD5： E0BD593F0D6D53755123E09E78D13E59<br>SHA1： D9E75DAD01D31A2A875E05254012F56CDC61AFC5<br>CRC32：E3BE1942</p>
+<p>文件： C:\Users\Windows 10\Desktop\UPX Unpacker.exe（加 UPX 壳后）<br>大小： 52, 224 字节<br>修改时间：2015-07-19 14:43:53<br>MD5： 69B3722D1049AC1DA7B8322BD90851E6<br>SHA1： E81F81D953692E6231F49FB83FA50C89F36D28A9<br>CRC32：EACCC927</p>
+<p>文件： C:\Users\Windows 10\Desktop\UPX Unpacker_dump.exe<br>大小： 171, 008 字节<br>修改时间：2020-03-31 09:29:57<br>MD5： 3C7E50FAB84915D800CE6F2E5A68D3F4<br>SHA1： A1BF30DA1C45376E108CE63DC1F2A98F9851A1A9<br>CRC32：3BE1A9B1</p>
+<p>文件： C:\Users\Windows 10\Desktop\UPX Unpacker_dump_SCY.exe<br>大小： 172, 544 字节<br>修改时间：2020-03-31 09:31:10<br>MD5： ED22315E459B1AA806FB1C7C920DB74B<br>SHA1： 4DE20DB95EB6C17D6F464D5729C8F829218DAABC<br>CRC32：5FC14E9A</p>
+<p><strong>部分语言 OEP：</strong></p>
+<blockquote>
+<p><strong>delphi:</strong>&gt;  55            PUSH EBP<br> 8BEC          MOV EBP,ESP<br> 83C4 F0       ADD ESP,-10<br> B8 A86F4B00   MOV EAX,PE.004B6FA8<br><strong>vc++</strong><br>  55            PUSH EBP<br>  8BEC          MOV EBP,ESP<br>  83EC 44       SUB ESP,44<br>  56            PUSH ESI</p>
+</blockquote>
+<blockquote>
+<p><strong>vc6.0</strong></p>
+</blockquote>
+<blockquote>
+<p>55                 push ebp</p>
+</blockquote>
+<blockquote>
+<p>8BEC               mov ebp,esp</p>
+</blockquote>
+<blockquote>
+<p>6A FF              push -1</p>
+</blockquote>
+<blockquote>
+<p>vc7.0</p>
+</blockquote>
+<blockquote>
+<p>6A 70              push 70</p>
+</blockquote>
+<blockquote>
+<p>68 50110001        push hh.01001150</p>
+</blockquote>
+<blockquote>
+<p>E8 1D020000        call hh.010017B0</p>
+</blockquote>
+<blockquote>
+<p>33DB               xor ebx,ebx</p>
+</blockquote>
+<blockquote>
+<p><strong>vb:</strong></p>
+</blockquote>
+<blockquote>
+<p>00401166  - FF25 6C104000   JMP DWORD PTR DS:[&lt;&amp;MSVBVM60.#100&gt;]      ; MSVBVM60.ThunRTMain</p>
+</blockquote>
+<blockquote>
+<p>0040116C &gt;  68 147C4000     PUSH PACKME.00407C14</p>
+</blockquote>
+<blockquote>
+<p>00401171    E8 F0FFFFFF     CALL &lt;JMP.&amp;MSVBVM60.#100&gt;</p>
+</blockquote>
+<blockquote>
+<p>00401176    0000            ADD BYTE PTR DS:[EAX],AL</p>
+</blockquote>
+<blockquote>
+<p>00401178    0000            ADD BYTE PTR DS:[EAX],AL</p>
+</blockquote>
+<blockquote>
+<p>0040117A    0000            ADD BYTE PTR DS:[EAX],AL</p>
+</blockquote>
+<blockquote>
+<p>0040117C    3000            XOR BYTE PTR DS:[EAX],AL</p>
+</blockquote>
+<blockquote>
+<p><strong>bc++</strong></p>
+</blockquote>
+<blockquote>
+<p>0040163C &gt; $ /EB 10         JMP SHORT BCLOCK.0040164E</p>
+</blockquote>
+<blockquote>
+<p>0040163E     |66            DB 66                                    ;  CHAR ‘f’</p>
+</blockquote>
+<blockquote>
+<p>0040163F     |62            DB 62                                    ;  CHAR ‘b’</p>
+</blockquote>
+<blockquote>
+<p>00401640     |3A            DB 3A                                    ;  CHAR ‘:’</p>
+</blockquote>
+<blockquote>
+<p>00401641     |43            DB 43                                    ;  CHAR ‘C’</p>
+</blockquote>
+<blockquote>
+<p>00401642     |2B            DB 2B                                    ;  CHAR ‘+’</p>
+</blockquote>
+<blockquote>
+<p>00401643     |2B            DB 2B                                    ;  CHAR ‘+’</p>
+</blockquote>
+<blockquote>
+<p>00401644     |48            DB 48                                    ;  CHAR ‘H’</p>
+</blockquote>
+<blockquote>
+<p>00401645     |4F            DB 4F                                    ;  CHAR ‘O’</p>
+</blockquote>
+<blockquote>
+<p>00401646     |4F            DB 4F                                    ;  CHAR ‘O’</p>
+</blockquote>
+<blockquote>
+<p>00401647     |4B            DB 4B                                    ;  CHAR ‘K’</p>
+</blockquote>
+<blockquote>
+<p>00401648     |90            NOP</p>
+</blockquote>
+<blockquote>
+<p>00401649     |E9            DB E9</p>
+</blockquote>
+<blockquote>
+<p>0040164A   . |98E04E00      DD OFFSET BCLOCK.___CPPdebugHook</p>
+</blockquote>
+<blockquote>
+<p>0040164E   &gt; \A1 8BE04E00   MOV EAX,DWORD PTR DS:[4EE08B]</p>
+</blockquote>
+<blockquote>
+<p>00401653   .  C1E0 02       SHL EAX,2</p>
+</blockquote>
+<blockquote>
+<p>00401656   .  A3 8FE04E00   MOV DWORD PTR DS:[4EE08F],EAX</p>
+</blockquote>
+<blockquote>
+<p>0040165B   .  52            PUSH EDX</p>
+</blockquote>
+<blockquote>
+<p>0040165C   .  6A 00         PUSH 0                                   ; /pModule = NULL</p>
+</blockquote>
+<blockquote>
+<p>0040165E   .  E8 DFBC0E00   CALL &lt;JMP.&amp;KERNEL32.GetModuleHandleA&gt;    ; \GetModuleHandleA</p>
+</blockquote>
+<blockquote>
+<p>00401663   .  8BD0          MOV EDX,EAX</p>
+</blockquote>
+<blockquote>
+<p><strong>dasm:</strong></p>
+</blockquote>
+<blockquote>
+<p>00401000 &gt;/$  6A 00         PUSH 0                                   ; /pModule = NULL</p>
+</blockquote>
+<blockquote>
+<p>00401002  |.  E8 C50A0000   CALL &lt;JMP.&amp;KERNEL32.GetModuleHandleA&gt;    ; \GetModuleHandleA</p>
+</blockquote>
+<blockquote>
+<p>00401007  |.  A3 0C354000   MOV DWORD PTR DS:[40350C],EAX</p>
+</blockquote>
+<blockquote>
+<p>0040100C  |.  E8 B50A0000   CALL &lt;JMP.&amp;KERNEL32.GetCommandLineA&gt;     ; [GetCommandLineA</p>
+</blockquote>
+<blockquote>
+<p>00401011  |.  A3 10354000   MOV DWORD PTR DS:[403510],EAX</p>
+</blockquote>
+<blockquote>
+<p>00401016  |.  6A 0A         PUSH 0A                                  ; /Arg4 = 0000000A</p>
+</blockquote>
+<blockquote>
+<p>00401018  |.  FF35 10354000 PUSH DWORD PTR DS:[403510]               ; |Arg3 = 00000000</p>
+</blockquote>
+<blockquote>
+<p>0040101E  |.  6A 00         PUSH 0                                   ; |Arg2 = 00000000</p>
+</blockquote>
+<blockquote>
+<p>00401020  |.  FF35 0C354000 PUSH DWORD PTR DS:[40350C]               ; |Arg1 = 00000000</p>
+</blockquote>
+<p>本节出现的名词解释<br>EP 段：EntryPoint,入口点<br>OD：<br>HR 访问时进行硬件中断<br>DD 转存在堆栈格式<br>EIP：寄存器的一种，EIP 寄存器里存储的是 CPU 下次要执行的指令的地址<br>ESP：寄存器的一种，寄存器里存储的是是栈的栈底指针，通常叫栈基址</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">Author: </span><span class="post-copyright-info"><a href="mailto:undefined">John Doe</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">Link: </span><span class="post-copyright-info"><a href="http://example.com/2020/03/31/ESP%E8%84%B1%E5%A3%B3%E5%AE%9A%E5%BE%8B%EF%BC%88%E4%BB%A5UPX%E5%A3%B3%E4%B8%BA%E4%BE%8B%EF%BC%89/">http://example.com/2020/03/31/ESP%E8%84%B1%E5%A3%B3%E5%AE%9A%E5%BE%8B%EF%BC%88%E4%BB%A5UPX%E5%A3%B3%E4%B8%BA%E4%BE%8B%EF%BC%89/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">Copyright Notice: </span><span class="post-copyright-info">All articles in this blog are licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> unless stating additionally.</span></div></div><div class="tag_share"><div class="post-meta__tag-list"></div><div class="post_share"><div class="social-share" data-image="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2020/04/16/Z3%E7%BA%A6%E6%9D%9F%E5%99%A8%E8%AF%A6%E8%A7%A3/"><img class="prev-cover" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">Previous Post</div><div class="prev_info">Z3约束器详解</div></div></a></div><div class="next-post pull-right"><a href="/2020/03/24/%E8%B7%AF%E7%94%B1%E5%99%A8%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F%E4%B8%8E%E6%8F%90%E5%8F%96/"><img class="next-cover" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">Next Post</div><div class="next_info">路由器文件系统与提取</div></div></a></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://i.loli.net/2021/02/24/5O1day2nriDzjSu.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">John Doe</div><div class="author-info__description"></div></div><div class="card-info-data"><div class="card-info-data-item is-center"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">317</div></a></div></div><a class="button--animated" id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/xxxxxx"><i class="fab fa-github"></i><span>Follow Me</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn card-announcement-animation"></i><span>Announcement</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>Recent Post</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2021/06/10/%E5%88%A9%E7%94%A8mprotect%E4%BF%AE%E6%94%B9%E7%A8%8B%E5%BA%8F%E6%AE%B5%E6%9D%83%E9%99%90%E4%B8%BA%E5%8F%AF%E6%89%A7%E8%A1%8C/" title="利用mprotect修改程序段权限为可执行"><img src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="利用mprotect修改程序段权限为可执行"/></a><div class="content"><a class="title" href="/2021/06/10/%E5%88%A9%E7%94%A8mprotect%E4%BF%AE%E6%94%B9%E7%A8%8B%E5%BA%8F%E6%AE%B5%E6%9D%83%E9%99%90%E4%B8%BA%E5%8F%AF%E6%89%A7%E8%A1%8C/" title="利用mprotect修改程序段权限为可执行">利用mprotect修改程序段权限为可执行</a><time datetime="2021-06-10T07:59:46.000Z" title="Created 2021-06-10 15:59:46">2021-06-10</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/05/31/SROP%EF%BC%881%EF%BC%89--%E4%BB%8E%E4%B8%A4%E9%81%93%E9%A2%98%E9%87%8D%E6%96%B0%E8%AE%A4%E8%AF%86SROP%20attack/" title="SROP（1）--从两道题重新认识SROP attack"><img src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="SROP（1）--从两道题重新认识SROP attack"/></a><div class="content"><a class="title" href="/2021/05/31/SROP%EF%BC%881%EF%BC%89--%E4%BB%8E%E4%B8%A4%E9%81%93%E9%A2%98%E9%87%8D%E6%96%B0%E8%AE%A4%E8%AF%86SROP%20attack/" title="SROP（1）--从两道题重新认识SROP attack">SROP（1）--从两道题重新认识SROP attack</a><time datetime="2021-05-31T02:14:53.000Z" title="Created 2021-05-31 10:14:53">2021-05-31</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/05/18/how2heap(14)-unsortedbin%20attack/" title="how2heap(14)-unsortedbin attack"><img src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="how2heap(14)-unsortedbin attack"/></a><div class="content"><a class="title" href="/2021/05/18/how2heap(14)-unsortedbin%20attack/" title="how2heap(14)-unsortedbin attack">how2heap(14)-unsortedbin attack</a><time datetime="2021-05-18T07:48:53.000Z" title="Created 2021-05-18 15:48:53">2021-05-18</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/05/17/how2heap(13)-tcache_stashing_unlink_attack/" title="how2heap(13)-tcache_stashing_unlink_attack"><img src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="how2heap(13)-tcache_stashing_unlink_attack"/></a><div class="content"><a class="title" href="/2021/05/17/how2heap(13)-tcache_stashing_unlink_attack/" title="how2heap(13)-tcache_stashing_unlink_attack">how2heap(13)-tcache_stashing_unlink_attack</a><time datetime="2021-05-17T02:16:40.000Z" title="Created 2021-05-17 10:16:40">2021-05-17</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/05/14/how2heap(12)-house%20of%20lore/" title="how2heap(12)-house of lore"><img src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="how2heap(12)-house of lore"/></a><div class="content"><a class="title" href="/2021/05/14/how2heap(12)-house%20of%20lore/" title="how2heap(12)-house of lore">how2heap(12)-house of lore</a><time datetime="2021-05-14T08:02:54.000Z" title="Created 2021-05-14 16:02:54">2021-05-14</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2021 By John Doe</div><div class="framework-info"><span>Framework </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>Theme </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="Read Mode"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="Switch Between Light And Dark Mode"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="Toggle between single-column and double-column"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="Setting"><i class="fas fa-cog fa-spin"></i></button><button id="go-up" type="button" title="Back To Top"><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><div class="js-pjax"></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>

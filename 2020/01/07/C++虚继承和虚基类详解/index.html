@@ -1,0 +1,308 @@
+<!DOCTYPE html><html lang="en" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>C++虚继承和虚基类详解 | Hexo</title><meta name="author" content="John Doe"><meta name="copyright" content="John Doe"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="referrer" content="no-referrer"><meta name="description" content="多继承（Multiple Inheritance）是指从多个直接基类中产生派生类的能力，多继承的派生类继承了所有父类的成员。尽管概念上非常简单，但是多个基类的相互交织可能会带来错综复杂的设计问题，命名冲突就是不可回避的一个。 多继承时很容易产生命名冲突，即使我们很小心地将所有类中的成员变量和成员函数都命名为不同的名字，命名冲突依然有可能发生，比如典型的是菱形继承，如下图所示：图 1：菱形继承 类">
+<meta property="og:type" content="article">
+<meta property="og:title" content="C++虚继承和虚基类详解">
+<meta property="og:url" content="http://example.com/2020/01/07/C++%E8%99%9A%E7%BB%A7%E6%89%BF%E5%92%8C%E8%99%9A%E5%9F%BA%E7%B1%BB%E8%AF%A6%E8%A7%A3/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="多继承（Multiple Inheritance）是指从多个直接基类中产生派生类的能力，多继承的派生类继承了所有父类的成员。尽管概念上非常简单，但是多个基类的相互交织可能会带来错综复杂的设计问题，命名冲突就是不可回避的一个。 多继承时很容易产生命名冲突，即使我们很小心地将所有类中的成员变量和成员函数都命名为不同的名字，命名冲突依然有可能发生，比如典型的是菱形继承，如下图所示：图 1：菱形继承 类">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg">
+<meta property="article:published_time" content="2020-01-07T09:57:28.000Z">
+<meta property="article:modified_time" content="2021-07-04T09:57:28.095Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://example.com/2020/01/07/C++%E8%99%9A%E7%BB%A7%E6%89%BF%E5%92%8C%E8%99%9A%E5%9F%BA%E7%B1%BB%E8%AF%A6%E8%A7%A3/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: 'Copy successfully',
+    error: 'Copy error',
+    noSupport: 'The browser does not support'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: 'Just',
+    min: 'minutes ago',
+    hour: 'hours ago',
+    day: 'days ago',
+    month: 'months ago'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    jQuery: 'https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js',
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+    },
+    fancybox: {
+      js: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isanchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'C++虚继承和虚基类详解',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2021-07-04 17:57:28'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if (GLOBAL_CONFIG_SITE.isHome && /iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><meta name="generator" content="Hexo 5.4.0"><link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+</head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://i.loli.net/2021/02/24/5O1day2nriDzjSu.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data"><div class="data-item is-center"><div class="data-item-link"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">317</div></a></div></div></div><hr/></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">Hexo</a></span><div id="menus"><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">C++虚继承和虚基类详解</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">Created</span><time class="post-meta-date-created" datetime="2020-01-07T09:57:28.000Z" title="Created 2020-01-07 17:57:28">2020-01-07</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">Updated</span><time class="post-meta-date-updated" datetime="2021-07-04T09:57:28.095Z" title="Updated 2021-07-04 17:57:28">2021-07-04</time></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="C++虚继承和虚基类详解"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">Post View:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><p><strong>多继承（Multiple Inheri</strong><a target="_blank" rel="noopener" href="http://c.biancheng.net/ref/tan.html"><strong>tan</strong></a><strong>ce）是指从多个直接基类中产生派生类的能力</strong>，多继承的派生类继承了所有父类的成员。尽管概念上非常简单，但是多个基类的相互交织可能会带来错综复杂的设计问题，命名冲突就是不可回避的一个。</p>
+<p><strong>多继承时很容易产生命名冲突，即使我们很小心地将所有类中的成员变量和成员函数都命名为不同的名字，命名冲突依然有可能发生，比如典型的是菱形继承</strong>，如下图所示：<br><img src="https://cdn.nlark.com/yuque/0/2020/jpeg/574026/1578391094013-9db974ae-8e54-44f9-9704-8ca3619402fb.jpeg#align=left&display=inline&height=200&originHeight=200&originWidth=215&size=0&status=done&style=none&width=215"><br>图 1：菱形继承</p>
+<p>类 A <strong>派生</strong>出类 B 和类 C，类 D <strong>继承</strong>自类 B 和类 C，这个时候类 A 中的成员变量和成员函数继承到类 D 中变成了两份，一份来自 A–&gt;B–&gt;D 这条路径，另一份来自 A–&gt;C–&gt;D 这条路径。</p>
+<p>在一个派生类中保留间接基类的多份同名成员，虽然可以在不同的成员变量中分别存放不同的数据，但大多数情况下这是多余的：因为保留多份成员变量不仅占用较多的存储空间，还容易产生命名冲突。假如类 A 有一个成员变量 a，那么在类 D 中直接访问 a 就会产生<strong>歧义</strong>，编译器不知道它究竟来自 A –&gt;B–&gt;D 这条路径，还是来自 A–&gt;C–&gt;D 这条路径。下面是菱形继承的具体实现：</p>
+<ol>
+<li><p>//间接基类 A</p>
+</li>
+<li><p><strong>class</strong> A{</p>
+</li>
+<li><p><strong>protected</strong>:</p>
+</li>
+<li><p>int m_a;</p>
+</li>
+<li><p>};</p>
+</li>
+<li></li>
+<li><p>//直接基类 B</p>
+</li>
+<li><p><strong>class</strong> B: <strong>public</strong> A{</p>
+</li>
+<li><p><strong>protected</strong>:</p>
+</li>
+<li><p>int m_b;</p>
+</li>
+<li><p>};</p>
+</li>
+<li></li>
+<li><p>//直接基类 C</p>
+</li>
+<li><p><strong>class</strong> C: <strong>public</strong> A{</p>
+</li>
+<li><p><strong>protected</strong>:</p>
+</li>
+<li><p>int m_c;</p>
+</li>
+<li><p>};</p>
+</li>
+<li></li>
+<li><p>//派生类 D</p>
+</li>
+<li><p><strong>class</strong> D: <strong>public</strong> B, <strong>public</strong> C{</p>
+</li>
+<li><p><strong>public</strong>:</p>
+</li>
+<li><p><strong>void seta(int a){ m_a = a; } //命名冲突</strong></p>
+</li>
+<li><p>void setb(int b){ m_b = b; } //正确</p>
+</li>
+<li><p>void setc(int c){ m_c = c; } //正确</p>
+</li>
+<li><p>void setd(int d){ m_d = d; } //正确</p>
+</li>
+<li><p><strong>private</strong>:</p>
+</li>
+<li><p>int m_d;</p>
+</li>
+<li><p>};</p>
+</li>
+<li></li>
+<li><p>int main(){</p>
+</li>
+<li><p>D d;</p>
+</li>
+<li><p><strong>return</strong> 0;</p>
+</li>
+<li><p>}</p>
+</li>
+</ol>
+<p>这段代码实现了上图所示的菱形继承，第 25 行代码试图直接访问成员变量 m_a，结果发生了错误，因为类 B 和类 C 中都有成员变量 m_a（从 A 类继承而来），<strong>编译器不知道选用哪一个</strong>，所以产生了歧义。</p>
+<p>为了消除歧义，我们可以在 m_a 的前面指明它具体来自哪个类：</p>
+<ol>
+<li>void seta(int a){** B::**m_a = a; }</li>
+</ol>
+<p>这样表示使用 B 类的 m_a。当然也可以使用 C 类的：</p>
+<ol>
+<li>void seta(int a){ **C::**m_a = a; }</li>
+</ol>
+<h2 id="虚继承（Virtual-Inheritance）"><a href="#虚继承（Virtual-Inheritance）" class="headerlink" title="虚继承（Virtual Inheritance）"></a>虚继承（Virtual Inheritance）</h2><p><strong>为了解决多继承时的命名冲突和冗余数据问题，</strong><a target="_blank" rel="noopener" href="http://c.biancheng.net/cplus/"><strong>C++</strong></a>**  提出了虚继承，使得在派生类中只保留一份间接基类的成员。**</p>
+<p>在继承方式前面加上  virtual  关键字就是虚继承，请看下面的例子：</p>
+<ol>
+<li><p>//间接基类 A</p>
+</li>
+<li><p><strong>class</strong> A{</p>
+</li>
+<li><p><strong>protected</strong>:</p>
+</li>
+<li><p>int m_a;</p>
+</li>
+<li><p>};</p>
+</li>
+<li></li>
+<li><p>//直接基类 B</p>
+</li>
+<li><p><strong>class</strong> B: <strong>virtual</strong> <strong>public</strong> A{ //虚继承</p>
+</li>
+<li><p><strong>protected</strong>:</p>
+</li>
+<li><p>int m_b;</p>
+</li>
+<li><p>};</p>
+</li>
+<li></li>
+<li><p>//直接基类 C</p>
+</li>
+<li><p><strong>class</strong> C: <strong>virtual</strong> <strong>public</strong> A{ //虚继承</p>
+</li>
+<li><p><strong>protected</strong>:</p>
+</li>
+<li><p>int m_c;</p>
+</li>
+<li><p>};</p>
+</li>
+<li></li>
+<li><p>//派生类 D</p>
+</li>
+<li><p><strong>class</strong> D: <strong>public</strong> B, <strong>public</strong> C{</p>
+</li>
+<li><p><strong>public</strong>:</p>
+</li>
+<li><p>void seta(int a){ m_a = a; } //正确</p>
+</li>
+<li><p>void setb(int b){ m_b = b; } //正确</p>
+</li>
+<li><p>void setc(int c){ m_c = c; } //正确</p>
+</li>
+<li><p>void setd(int d){ m_d = d; } //正确</p>
+</li>
+<li><p><strong>private</strong>:</p>
+</li>
+<li><p>int m_d;</p>
+</li>
+<li><p>};</p>
+</li>
+<li></li>
+<li><p>int main(){</p>
+</li>
+<li><p>D d;</p>
+</li>
+<li><p><strong>return</strong> 0;</p>
+</li>
+<li><p>}</p>
+</li>
+</ol>
+<p><strong>这段代码使用虚继承重新实现了上图所示的菱形继承，这样在派生类 D 中就只保留了一份成员变量 m_a，直接访问就不会再有歧义了。</strong></p>
+<p>虚继承的目的是让某个类做出声明，承诺愿意共享它的基类。其中，这个被共享的基类就称为虚基类（Virtual Base Class），本例中的 A 就是一个虚基类。<strong>在这种机制下，不论虚基类在继承体系中出现了多少次，在派生类中都只包含一份虚基类的成员。</strong></p>
+<p>现在让我们重新梳理一下本例的继承关系，如下图所示：<br><img src="https://cdn.nlark.com/yuque/0/2020/jpeg/574026/1578391094049-b6273053-7803-4b4f-830d-4457a44e8359.jpeg#align=left&display=inline&height=196&originHeight=196&originWidth=214&size=0&status=done&style=none&width=214"><br>图 2：使用虚继承解决菱形继承中的命名冲突问题</p>
+<p>观察这个新的继承体系，我们会发现虚继承的一个不太直观的特征：必须在虚派生的真实需求出现前就已经完成虚派生的操作。<strong>在上图中，当定义 D 类时才出现了对虚派生的需求，但是如果 B 类和 C 类不是从 A 类虚派生得到的，那么 D 类还是会保留 A 类的两份成员</strong>。</p>
+<p><strong>换个角度讲，虚派生只影响从指定了虚基类的派生类中进一步派生出来的类，它不会影响派生类本身。</strong></p>
+<p>在实际开发中，位于中间层次的基类将其继承声明为虚继承一般不会带来什么问题。通常情况下，使用虚继承的类层次是由一个人或者一个项目组一次性设计完成的。对于一个独立开发的类来说，很少需要基类中的某一个类是虚基类，况且新类的开发者也无法改变已经存在的类体系。</p>
+<p>C++标准库中的 iostream 类就是一个虚继承的实际应用案例。iostream 从 istream 和 ostream 直接继承而来，而 istream 和 ostream 又都继承自一个共同的名为 base_ios 的类，是典型的菱形继承。<strong>此时 istream 和 ostream 必须采用虚继承，否则将导致 iostream 类中保留两份 base_ios 类的成员。</strong><br><img src="https://cdn.nlark.com/yuque/0/2020/jpeg/574026/1578391094037-83c52832-ac63-4396-8fc9-078425107997.jpeg#align=left&display=inline&height=200&originHeight=200&originWidth=305&size=0&status=done&style=none&width=305"><br>图 3：虚继承在 C++标准库中的实际应用</p>
+<h2 id="虚基类成员的可见性"><a href="#虚基类成员的可见性" class="headerlink" title="虚基类成员的可见性"></a>虚基类成员的可见性</h2><p>因为在虚继承的最终派生类中只保留了一份虚基类的成员，所以该成员可以被直接访问，不会产生二义性。此外，如果虚基类的成员只被一条派生路径覆盖，那么仍然可以直接访问这个被覆盖的成员。但是如果该成员被两条或多条路径覆盖了，那就不能直接访问了，此时必须指明该成员属于哪个类。</p>
+<p>以图 2 中的菱形继承为例，假设 B 定义了一个名为 x 的成员变量，当我们在 D 中直接访问 x 时，会有三种可能性：</p>
+<ul>
+<li>如果 B 和 C 中都没有 x 的定义，那么 x 将被解析为 B 的成员，此时不存在二义性。</li>
+<li>如果 B 或 C 其中的一个类定义了 x，也不会有二义性，<strong>派生类的 x 比虚基类的 x 优先级更高</strong>。</li>
+<li>如果 B 和 C 中都定义了 x，那么直接访问 x 将产生二义性问题。</li>
+</ul>
+<p>可以看到，使用多继承经常会出现二义性问题，必须十分小心。上面的例子是简单的，如果继承的层次再多一些，关系更复杂一些，程序员就很容易陷人迷魂阵，程序的编写、调试和维护工作都会变得更加困难，<strong>因此我不提倡在程序中使用多继承，只有在比较简单和不易出现二义性的情况或实在必要时才使用多继承，能用单一继承解决的问题就不要使用多继承</strong>。也正是由于这个原因，C++ 之后的很多面向对象的编程语言，例如  <a target="_blank" rel="noopener" href="http://c.biancheng.net/java/">Java</a>、<a target="_blank" rel="noopener" href="http://c.biancheng.net/csharp/">C#</a>、<a target="_blank" rel="noopener" href="http://c.biancheng.net/php/">PHP</a>  等，都不支持多继承。</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">Author: </span><span class="post-copyright-info"><a href="mailto:undefined">John Doe</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">Link: </span><span class="post-copyright-info"><a href="http://example.com/2020/01/07/C++%E8%99%9A%E7%BB%A7%E6%89%BF%E5%92%8C%E8%99%9A%E5%9F%BA%E7%B1%BB%E8%AF%A6%E8%A7%A3/">http://example.com/2020/01/07/C++%E8%99%9A%E7%BB%A7%E6%89%BF%E5%92%8C%E8%99%9A%E5%9F%BA%E7%B1%BB%E8%AF%A6%E8%A7%A3/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">Copyright Notice: </span><span class="post-copyright-info">All articles in this blog are licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> unless stating additionally.</span></div></div><div class="tag_share"><div class="post-meta__tag-list"></div><div class="post_share"><div class="social-share" data-image="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2020/01/07/C++%E8%99%9A%E7%BB%A7%E6%89%BF%E6%97%B6%E7%9A%84%E6%9E%84%E9%80%A0%E5%87%BD%E6%95%B0/"><img class="prev-cover" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">Previous Post</div><div class="prev_info">C++虚继承时的构造函数</div></div></a></div><div class="next-post pull-right"><a href="/2020/01/07/C++%E5%A4%9A%E7%BB%A7%E6%89%BF%EF%BC%88%E5%A4%9A%E9%87%8D%E7%BB%A7%E6%89%BF%EF%BC%89%E8%AF%A6%E8%A7%A3/"><img class="next-cover" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">Next Post</div><div class="next_info">C++多继承（多重继承）详解</div></div></a></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://i.loli.net/2021/02/24/5O1day2nriDzjSu.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">John Doe</div><div class="author-info__description"></div></div><div class="card-info-data"><div class="card-info-data-item is-center"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">317</div></a></div></div><a class="button--animated" id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/xxxxxx"><i class="fab fa-github"></i><span>Follow Me</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn card-announcement-animation"></i><span>Announcement</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>Catalog</span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%99%9A%E7%BB%A7%E6%89%BF%EF%BC%88Virtual-Inheritance%EF%BC%89"><span class="toc-number">1.</span> <span class="toc-text">虚继承（Virtual Inheritance）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%99%9A%E5%9F%BA%E7%B1%BB%E6%88%90%E5%91%98%E7%9A%84%E5%8F%AF%E8%A7%81%E6%80%A7"><span class="toc-number">2.</span> <span class="toc-text">虚基类成员的可见性</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>Recent Post</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2021/06/10/%E5%88%A9%E7%94%A8mprotect%E4%BF%AE%E6%94%B9%E7%A8%8B%E5%BA%8F%E6%AE%B5%E6%9D%83%E9%99%90%E4%B8%BA%E5%8F%AF%E6%89%A7%E8%A1%8C/" title="利用mprotect修改程序段权限为可执行"><img src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="利用mprotect修改程序段权限为可执行"/></a><div class="content"><a class="title" href="/2021/06/10/%E5%88%A9%E7%94%A8mprotect%E4%BF%AE%E6%94%B9%E7%A8%8B%E5%BA%8F%E6%AE%B5%E6%9D%83%E9%99%90%E4%B8%BA%E5%8F%AF%E6%89%A7%E8%A1%8C/" title="利用mprotect修改程序段权限为可执行">利用mprotect修改程序段权限为可执行</a><time datetime="2021-06-10T07:59:46.000Z" title="Created 2021-06-10 15:59:46">2021-06-10</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/05/31/SROP%EF%BC%881%EF%BC%89--%E4%BB%8E%E4%B8%A4%E9%81%93%E9%A2%98%E9%87%8D%E6%96%B0%E8%AE%A4%E8%AF%86SROP%20attack/" title="SROP（1）--从两道题重新认识SROP attack"><img src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="SROP（1）--从两道题重新认识SROP attack"/></a><div class="content"><a class="title" href="/2021/05/31/SROP%EF%BC%881%EF%BC%89--%E4%BB%8E%E4%B8%A4%E9%81%93%E9%A2%98%E9%87%8D%E6%96%B0%E8%AE%A4%E8%AF%86SROP%20attack/" title="SROP（1）--从两道题重新认识SROP attack">SROP（1）--从两道题重新认识SROP attack</a><time datetime="2021-05-31T02:14:53.000Z" title="Created 2021-05-31 10:14:53">2021-05-31</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/05/18/how2heap(14)-unsortedbin%20attack/" title="how2heap(14)-unsortedbin attack"><img src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="how2heap(14)-unsortedbin attack"/></a><div class="content"><a class="title" href="/2021/05/18/how2heap(14)-unsortedbin%20attack/" title="how2heap(14)-unsortedbin attack">how2heap(14)-unsortedbin attack</a><time datetime="2021-05-18T07:48:53.000Z" title="Created 2021-05-18 15:48:53">2021-05-18</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/05/17/how2heap(13)-tcache_stashing_unlink_attack/" title="how2heap(13)-tcache_stashing_unlink_attack"><img src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="how2heap(13)-tcache_stashing_unlink_attack"/></a><div class="content"><a class="title" href="/2021/05/17/how2heap(13)-tcache_stashing_unlink_attack/" title="how2heap(13)-tcache_stashing_unlink_attack">how2heap(13)-tcache_stashing_unlink_attack</a><time datetime="2021-05-17T02:16:40.000Z" title="Created 2021-05-17 10:16:40">2021-05-17</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/05/14/how2heap(12)-house%20of%20lore/" title="how2heap(12)-house of lore"><img src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="how2heap(12)-house of lore"/></a><div class="content"><a class="title" href="/2021/05/14/how2heap(12)-house%20of%20lore/" title="how2heap(12)-house of lore">how2heap(12)-house of lore</a><time datetime="2021-05-14T08:02:54.000Z" title="Created 2021-05-14 16:02:54">2021-05-14</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2021 By John Doe</div><div class="framework-info"><span>Framework </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>Theme </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="Read Mode"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="Switch Between Light And Dark Mode"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="Toggle between single-column and double-column"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="Setting"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="Table Of Contents"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="Back To Top"><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><div class="js-pjax"></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>

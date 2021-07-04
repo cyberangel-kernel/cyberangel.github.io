@@ -1,0 +1,370 @@
+<!DOCTYPE html><html lang="en" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>C++ typeid运算符：获取类型信息 | Hexo</title><meta name="author" content="John Doe"><meta name="copyright" content="John Doe"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="referrer" content="no-referrer"><meta name="description" content="typeid 运算符用来获取一个表达式的类型信息。类型信息对于编程语言非常重要，它描述了数据的各种属性：  对于基本类型（int、float 等C++内置类型）的数据，类型信息所包含的内容比较简单，主要是指数据的类型。 对于类类型的数据（也就是对象），类型信息是指对象所属的类、所包含的成员、所在的继承关系等。  类型信息是创建数据的模板，数据占用多大内存、能进行什么样的操作、该如何操作等，这些都由">
+<meta property="og:type" content="article">
+<meta property="og:title" content="C++ typeid运算符：获取类型信息">
+<meta property="og:url" content="http://example.com/2020/01/15/C++%20typeid%E8%BF%90%E7%AE%97%E7%AC%A6%EF%BC%9A%E8%8E%B7%E5%8F%96%E7%B1%BB%E5%9E%8B%E4%BF%A1%E6%81%AF/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="typeid 运算符用来获取一个表达式的类型信息。类型信息对于编程语言非常重要，它描述了数据的各种属性：  对于基本类型（int、float 等C++内置类型）的数据，类型信息所包含的内容比较简单，主要是指数据的类型。 对于类类型的数据（也就是对象），类型信息是指对象所属的类、所包含的成员、所在的继承关系等。  类型信息是创建数据的模板，数据占用多大内存、能进行什么样的操作、该如何操作等，这些都由">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg">
+<meta property="article:published_time" content="2020-01-15T07:35:05.000Z">
+<meta property="article:modified_time" content="2021-07-04T09:57:27.444Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://example.com/2020/01/15/C++%20typeid%E8%BF%90%E7%AE%97%E7%AC%A6%EF%BC%9A%E8%8E%B7%E5%8F%96%E7%B1%BB%E5%9E%8B%E4%BF%A1%E6%81%AF/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: 'Copy successfully',
+    error: 'Copy error',
+    noSupport: 'The browser does not support'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: 'Just',
+    min: 'minutes ago',
+    hour: 'hours ago',
+    day: 'days ago',
+    month: 'months ago'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    jQuery: 'https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js',
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+    },
+    fancybox: {
+      js: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isanchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'C++ typeid运算符：获取类型信息',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2021-07-04 17:57:27'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if (GLOBAL_CONFIG_SITE.isHome && /iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><meta name="generator" content="Hexo 5.4.0"><link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+</head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://i.loli.net/2021/02/24/5O1day2nriDzjSu.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data"><div class="data-item is-center"><div class="data-item-link"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">317</div></a></div></div></div><hr/></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">Hexo</a></span><div id="menus"><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">C++ typeid运算符：获取类型信息</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">Created</span><time class="post-meta-date-created" datetime="2020-01-15T07:35:05.000Z" title="Created 2020-01-15 15:35:05">2020-01-15</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">Updated</span><time class="post-meta-date-updated" datetime="2021-07-04T09:57:27.444Z" title="Updated 2021-07-04 17:57:27">2021-07-04</time></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="C++ typeid运算符：获取类型信息"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">Post View:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><p>typeid 运算符用来获取一个表达式的类型信息。类型信息对于编程语言非常重要，它描述了数据的各种属性：</p>
+<ul>
+<li>对于基本类型（int、float 等<a target="_blank" rel="noopener" href="http://c.biancheng.net/cplus/">C++</a>内置类型）的数据，类型信息所包含的内容比较简单，主要是指数据的类型。</li>
+<li>对于类类型的数据（也就是对象），类型信息是指对象所属的类、所包含的成员、所在的继承关系等。</li>
+</ul>
+<p>类型信息是创建数据的模板，数据占用多大内存、能进行什么样的操作、该如何操作等，这些都由它的类型信息决定。</p>
+<p>typeid 的操作对象既可以是表达式，也可以是数据类型，下面是它的两种使用方法：<br>typeid( dataType )<br>typeid( expression )<br>dataType 是数据类型，expression 是表达式，这和 sizeof 运算符非常类似，只不过 sizeof 有时候可以省略括号<code>( )</code>，<strong>而 typeid 必须带上括号</strong>。</p>
+<p>typeid 会把获取到的类型信息保存到一个 type_info 类型的对象里面，并返回该对象的常引用；当需要具体的类型信息时，可以通过成员函数来提取。typeid 的使用非常灵活，请看下面的例子（只能在 VC/VS 下运行）：</p>
+<ol>
+<li><p>#include <iostream></p>
+</li>
+<li><p>#include <typeinfo></p>
+</li>
+<li><p><strong>u</strong><a target="_blank" rel="noopener" href="http://c.biancheng.net/ref/sin.html"><strong>sin</strong></a><strong>g</strong> <strong>namespace</strong> std;</p>
+</li>
+<li></li>
+<li><p><strong>class</strong> Base{ };</p>
+</li>
+<li></li>
+<li><p><strong>struct</strong> STU{ };</p>
+</li>
+<li></li>
+<li><p>int main(){</p>
+</li>
+<li><p>//获取一个普通变量的类型信息</p>
+</li>
+<li><p>int n = 100;</p>
+</li>
+<li><p><strong>const</strong> type_info &amp;nInfo = <strong>typeid</strong>(n);</p>
+</li>
+<li><p>cout&lt;&lt;nInfo.name()&lt;&lt;” | “&lt;&lt;nInfo.raw_name()&lt;&lt;” | “&lt;&lt;nInfo.hash_code()&lt;&lt;endl;</p>
+</li>
+<li></li>
+<li><p>//获取一个字面量的类型信息</p>
+</li>
+<li><p><strong>const</strong> type_info &amp;dInfo = <strong>typeid</strong>(25.65);</p>
+</li>
+<li><p>cout&lt;&lt;dInfo.name()&lt;&lt;” | “&lt;&lt;dInfo.raw_name()&lt;&lt;” | “&lt;&lt;dInfo.hash_code()&lt;&lt;endl;</p>
+</li>
+<li></li>
+<li><p>//获取一个对象的类型信息</p>
+</li>
+<li><p>Base obj;</p>
+</li>
+<li><p><strong>const</strong> type_info &amp;objInfo = <strong>typeid</strong>(obj);</p>
+</li>
+<li><p>cout&lt;&lt;objInfo.name()&lt;&lt;” | “&lt;&lt;objInfo.raw_name()&lt;&lt;” | “&lt;&lt;objInfo.hash_code()&lt;&lt;endl;</p>
+</li>
+<li></li>
+<li><p>//获取一个类的类型信息</p>
+</li>
+<li><p><strong>const</strong> type_info &amp;baseInfo = <strong>typeid</strong>(Base);</p>
+</li>
+<li><p>cout&lt;&lt;baseInfo.name()&lt;&lt;” | “&lt;&lt;baseInfo.raw_name()&lt;&lt;” | “&lt;&lt;baseInfo.hash_code()&lt;&lt;endl;</p>
+</li>
+<li></li>
+<li><p>//获取一个结构体的类型信息</p>
+</li>
+<li><p><strong>const</strong> type_info &amp;stuInfo = <strong>typeid</strong>(<strong>struct</strong> STU);</p>
+</li>
+<li><p>cout&lt;&lt;stuInfo.name()&lt;&lt;” | “&lt;&lt;stuInfo.raw_name()&lt;&lt;” | “&lt;&lt;stuInfo.hash_code()&lt;&lt;endl;</p>
+</li>
+<li></li>
+<li><p>//获取一个普通类型的类型信息</p>
+</li>
+<li><p><strong>const</strong> type_info &amp;charInfo = <strong>typeid</strong>(char);</p>
+</li>
+<li><p>cout&lt;&lt;charInfo.name()&lt;&lt;” | “&lt;&lt;charInfo.raw_name()&lt;&lt;” | “&lt;&lt;charInfo.hash_code()&lt;&lt;endl;</p>
+</li>
+<li></li>
+<li><p>//获取一个表达式的类型信息</p>
+</li>
+<li><p><strong>const</strong> type_info &amp;expInfo = <strong>typeid</strong>(20 * 45 / 4.5);</p>
+</li>
+<li><p>cout&lt;&lt;expInfo.name()&lt;&lt;” | “&lt;&lt;expInfo.raw_name()&lt;&lt;” | “&lt;&lt;expInfo.hash_code()&lt;&lt;endl;</p>
+</li>
+<li></li>
+<li><p><strong>return</strong> 0;</p>
+</li>
+<li><p>}</p>
+</li>
+</ol>
+<p>运行结果：<br>int | .H | 529034928<br>double | .N | 667332678<br>class Base | .?AVBase@@ | 1035034353<br>class Base | .?AVBase@@ | 1035034353<br>struct STU | .?AUSTU@@ | 734635517<br>char | .D | 4140304029<br>double | .N | 667332678</p>
+<p>从本例可以看出，typeid 的使用非常灵活，它的操作数可以是普通变量、对象、内置类型（int、float 等）、自定义类型（结构体和类），还可以是一个表达式。</p>
+<p>本例中还用到了 type_info 类的几个成员函数，下面是对它们的介绍：</p>
+<ul>
+<li>name()  用来返回类型的名称。</li>
+<li>raw_name()  用来返回名字编码（Name Mangling）算法产生的新名称。关于名字编码的概念，我们已在《<a target="_blank" rel="noopener" href="http://c.biancheng.net/view/vip_2220.html">C++函数编译原理和成员函数的实现</a>》中讲到。</li>
+<li>hash_code()  用来返回当前类型对应的 hash 值。hash 值是一个可以用来标志当前类型的整数，有点类似学生的学号、公民的身份证号、银行卡号等。不过 hash 值有赖于编译器的实现，在不同的编译器下可能会有不同的整数，但它们都能唯一地标识某个类型。</li>
+</ul>
+<p>遗憾的是，C++ 标准只对 type_info 类做了很有限的规定，不仅成员函数少，功能弱，而且各个平台的实现不一致。例如上面代码中的 name() 函数，<code>nInfo.name()</code>、<code>objInfo.name()</code>在  VC/VS 下的输出结果分别是<code>int</code>和<code>class Base</code>，而在  <a target="_blank" rel="noopener" href="http://c.biancheng.net/gcc/">GCC</a>  下的输出结果分别是<code>i</code>和<code>4Base</code>。</p>
+<p>C++ 标准规定，type_info 类至少要有如下所示的 4 个 public 属性的成员函数，其他的扩展函数编译器开发者可以自由发挥，不做限制。</p>
+<h4 id="1-原型：const-char-name-const"><a href="#1-原型：const-char-name-const" class="headerlink" title="1) 原型：const char* name() const;"></a>1) 原型：const char* name() const;</h4><p>返回一个能表示类型名称的字符串。但是 C++标准并没有规定这个字符串是什么形式的，例如对于上面的<code>objInfo.name()</code>语句，VC/VS 下返回“class Base”，但 GCC 下返回“4Base”。</p>
+<h4 id="2-原型：bool-before-const-type-info-amp-rhs-const"><a href="#2-原型：bool-before-const-type-info-amp-rhs-const" class="headerlink" title="2) 原型：bool before (const type_info&amp; rhs) const;"></a>2) 原型：bool before (const type_info&amp; rhs) const;</h4><p>判断一个类型是否位于另一个类型的前面，rhs 参数是一个 type_info 对象的引用。但是 C++标准并没有规定类型的排列顺序，不同的编译器有不同的排列规则，程序员也可以自定义。要特别注意的是，这个排列顺序和继承顺序没有关系，基类并不一定位于派生类的前面。</p>
+<h4 id="3-原型：bool-operator-const-type-info-amp-rhs-const"><a href="#3-原型：bool-operator-const-type-info-amp-rhs-const" class="headerlink" title="3) 原型：bool operator== (const type_info&amp; rhs) const;"></a>3) 原型：bool operator== (const type_info&amp; rhs) const;</h4><p>重载运算符“==”，判断两个类型是否相同，rhs 参数是一个 type_info 对象的引用。</p>
+<h4 id="4-原型：bool-operator-const-type-info-amp-rhs-const"><a href="#4-原型：bool-operator-const-type-info-amp-rhs-const" class="headerlink" title="4) 原型：bool operator!= (const type_info&amp; rhs) const;"></a>4) 原型：bool operator!= (const type_info&amp; rhs) const;</h4><p>重载运算符“!=”，判断两个类型是否不同，rhs 参数是一个 type_info 对象的引用。<br>关于运算符重载，我们将在《&gt; <a target="_blank" rel="noopener" href="http://c.biancheng.net/cpp/biancheng/cpp/rumen_10/">C++运算符重载</a>》一章中详细讲解。<br>raw_name() 是 VC/VS 独有的一个成员函数，hash_code() 在 VC/VS 和较新的 GCC 下有效。</p>
+<p>可以发现，不像 <a target="_blank" rel="noopener" href="http://c.biancheng.net/java/">Java</a>、<a target="_blank" rel="noopener" href="http://c.biancheng.net/csharp/">C#</a> 等动态性较强的语言，C++ 能获取到的类型信息非常有限，也没有统一的标准，如同“鸡肋”一般，大部分情况下我们只是使用重载过的“==”运算符来判断两个类型是否相同。</p>
+<h2 id="判断类型是否相等"><a href="#判断类型是否相等" class="headerlink" title="判断类型是否相等"></a>判断类型是否相等</h2><p>typeid 运算符经常被用来判断两个类型是否相等。</p>
+<h4 id="1-内置类型的比较"><a href="#1-内置类型的比较" class="headerlink" title="1) 内置类型的比较"></a>1) 内置类型的比较</h4><p>例如有下面的定义：</p>
+<ol>
+<li>char *str;</li>
+<li>int a = 2;</li>
+<li>int b = 10;</li>
+<li>float f;</li>
+</ol>
+<p>类型判断结果为：</p>
+<table>
+<thead>
+<tr>
+<th>类型比较</th>
+<th>结果</th>
+<th>类型比较</th>
+<th>结果</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>typeid(int) == typeid(int)</td>
+<td>true</td>
+<td>typeid(int) == typeid(char)</td>
+<td>false</td>
+</tr>
+<tr>
+<td>typeid(char*) == typeid(char)</td>
+<td>false</td>
+<td>typeid(str) == typeid(char*)</td>
+<td>true</td>
+</tr>
+<tr>
+<td>typeid(a) == typeid(int)</td>
+<td>true</td>
+<td>typeid(b) == typeid(int)</td>
+<td>true</td>
+</tr>
+<tr>
+<td>typeid(a) == typeid(a)</td>
+<td>true</td>
+<td>typeid(a) == typeid(b)</td>
+<td>true</td>
+</tr>
+<tr>
+<td>typeid(a) == typeid(f)</td>
+<td>false</td>
+<td>typeid(a/b) == typeid(int)</td>
+<td>true</td>
+</tr>
+</tbody></table>
+<p>typeid 返回 type_info 对象的引用，而表达式<code>typeid(a) == typeid(b)</code>的结果为 true，可以说明，一个类型不管使用了多少次，编译器都只为它创建一个对象，所有 typeid 都返回这个对象的引用。</p>
+<p>需要提醒的是，为了减小编译后文件的体积，编译器不会为所有的类型创建 type_info 对象，只会为使用了 typeid 运算符的类型创建。不过有一种特殊情况，就是带虚函数的类（包括继承来的），不管有没有使用 typeid 运算符，编译器都会为带虚函数的类创建 type_info 对象，我们将在《<a target="_blank" rel="noopener" href="http://c.biancheng.net/view/vip_2302.html">C++ RTTI 机制精讲（C++运行时类型识别机制）</a>》中展开讲解。</p>
+<h4 id="2-类的比较"><a href="#2-类的比较" class="headerlink" title="2) 类的比较"></a>2) 类的比较</h4><p>例如有下面的定义：</p>
+<ol>
+<li><p><strong>class</strong> Base{};</p>
+</li>
+<li><p><strong>class</strong> Derived: <strong>public</strong> Base{};</p>
+</li>
+<li></li>
+<li><p>Base obj1;</p>
+</li>
+<li><p>Base *p1;</p>
+</li>
+<li><p>Derived obj2;</p>
+</li>
+<li><p>Derived *p2 = <strong>new</strong> Derived;</p>
+</li>
+<li><p>p1 = p2;</p>
+</li>
+</ol>
+<p>类型判断结果为：</p>
+<table>
+<thead>
+<tr>
+<th>类型比较</th>
+<th>结果</th>
+<th>类型比较</th>
+<th>结果</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>typeid(obj1) == typeid(p1)</td>
+<td>false</td>
+<td>typeid(obj1) == typeid(*p1)</td>
+<td>true</td>
+</tr>
+<tr>
+<td>typeid(&amp;obj1) == typeid(p1)</td>
+<td>true</td>
+<td>typeid(obj1) == typeid(obj2)</td>
+<td>false</td>
+</tr>
+<tr>
+<td>typeid(obj1) == typeid(Base)</td>
+<td>true</td>
+<td>typeid(*p1) == typeid(Base)</td>
+<td>true</td>
+</tr>
+<tr>
+<td>typeid(p1) == typeid(Base*)</td>
+<td>true</td>
+<td>typeid(p1) == typeid(Derived*)</td>
+<td>false</td>
+</tr>
+</tbody></table>
+<p>表达式<code>typeid(*p1) == typeid(Base)</code>和<code>typeid(p1) == typeid(Base*)</code>的结果为 true 可以说明：即使将派生类<a target="_blank" rel="noopener" href="http://c.biancheng.net/c/80/">指针</a> p2 赋值给基类指针 p1，p1 的类型仍然为 Base*。</p>
+<h2 id="type-info-类的声明"><a href="#type-info-类的声明" class="headerlink" title="type_info 类的声明"></a>type_info 类的声明</h2><p>最后我们再来看一下 type_info 类的声明，以进一步了解它所包含的成员函数以及这些函数的访问权限。type_info 类位于<code>typeinfo</code>头文件，声明形式类似于：</p>
+<ol>
+<li><strong>class</strong> type_info {</li>
+<li><strong>public</strong>:</li>
+<li><strong>virtual</strong> ~type_info();</li>
+<li>int <strong>operator</strong>==(<strong>const</strong> type_info&amp; rhs) <strong>const</strong>;</li>
+<li>int <strong>operator</strong>!=(<strong>const</strong> type_info&amp; rhs) <strong>const</strong>;</li>
+<li>int before(<strong>const</strong> type_info&amp; rhs) <strong>const</strong>;</li>
+<li><strong>const</strong> char* name() <strong>const</strong>;</li>
+<li><strong>const</strong> char* raw_name() <strong>const</strong>;</li>
+<li><strong>private</strong>:</li>
+<li>void *_m_data;</li>
+<li>char _m_d_name[1];</li>
+<li>type_info(<strong>const</strong> type_info&amp; rhs);</li>
+<li>type_info&amp; <strong>operator</strong>=(<strong>const</strong> type_info&amp; rhs);</li>
+<li>};</li>
+</ol>
+<p>它的构造函数是 private 属性的，所以不能在代码中直接实例化，只能由编译器在内部实例化（借助友元）。而且还重载了“=”运算符，也是 private 属性的，所以也不能赋值。</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">Author: </span><span class="post-copyright-info"><a href="mailto:undefined">John Doe</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">Link: </span><span class="post-copyright-info"><a href="http://example.com/2020/01/15/C++%20typeid%E8%BF%90%E7%AE%97%E7%AC%A6%EF%BC%9A%E8%8E%B7%E5%8F%96%E7%B1%BB%E5%9E%8B%E4%BF%A1%E6%81%AF/">http://example.com/2020/01/15/C++%20typeid%E8%BF%90%E7%AE%97%E7%AC%A6%EF%BC%9A%E8%8E%B7%E5%8F%96%E7%B1%BB%E5%9E%8B%E4%BF%A1%E6%81%AF/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">Copyright Notice: </span><span class="post-copyright-info">All articles in this blog are licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> unless stating additionally.</span></div></div><div class="tag_share"><div class="post-meta__tag-list"></div><div class="post_share"><div class="social-share" data-image="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2020/01/15/C++%E8%BF%90%E7%AE%97%E7%AC%A6%E9%87%8D%E8%BD%BD%E5%9F%BA%E7%A1%80%E6%95%99%E7%A8%8B/"><img class="prev-cover" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">Previous Post</div><div class="prev_info">C++运算符重载基础教程</div></div></a></div><div class="next-post pull-right"><a href="/2020/01/15/C++%E7%BA%AF%E8%99%9A%E5%87%BD%E6%95%B0%E5%92%8C%E6%8A%BD%E8%B1%A1%E7%B1%BB%E8%AF%A6%E8%A7%A3/"><img class="next-cover" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">Next Post</div><div class="next_info">C++纯虚函数和抽象类详解</div></div></a></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://i.loli.net/2021/02/24/5O1day2nriDzjSu.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">John Doe</div><div class="author-info__description"></div></div><div class="card-info-data"><div class="card-info-data-item is-center"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">317</div></a></div></div><a class="button--animated" id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/xxxxxx"><i class="fab fa-github"></i><span>Follow Me</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn card-announcement-animation"></i><span>Announcement</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>Catalog</span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-%E5%8E%9F%E5%9E%8B%EF%BC%9Aconst-char-name-const"><span class="toc-number">1.</span> <span class="toc-text">1) 原型：const char* name() const;</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-%E5%8E%9F%E5%9E%8B%EF%BC%9Abool-before-const-type-info-amp-rhs-const"><span class="toc-number">2.</span> <span class="toc-text">2) 原型：bool before (const type_info&amp; rhs) const;</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-%E5%8E%9F%E5%9E%8B%EF%BC%9Abool-operator-const-type-info-amp-rhs-const"><span class="toc-number">3.</span> <span class="toc-text">3) 原型：bool operator&#x3D;&#x3D; (const type_info&amp; rhs) const;</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-%E5%8E%9F%E5%9E%8B%EF%BC%9Abool-operator-const-type-info-amp-rhs-const"><span class="toc-number">4.</span> <span class="toc-text">4) 原型：bool operator!&#x3D; (const type_info&amp; rhs) const;</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%A4%E6%96%AD%E7%B1%BB%E5%9E%8B%E6%98%AF%E5%90%A6%E7%9B%B8%E7%AD%89"><span class="toc-number"></span> <span class="toc-text">判断类型是否相等</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-%E5%86%85%E7%BD%AE%E7%B1%BB%E5%9E%8B%E7%9A%84%E6%AF%94%E8%BE%83"><span class="toc-number">1.</span> <span class="toc-text">1) 内置类型的比较</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-%E7%B1%BB%E7%9A%84%E6%AF%94%E8%BE%83"><span class="toc-number">2.</span> <span class="toc-text">2) 类的比较</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#type-info-%E7%B1%BB%E7%9A%84%E5%A3%B0%E6%98%8E"><span class="toc-number"></span> <span class="toc-text">type_info 类的声明</span></a></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>Recent Post</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2021/06/10/%E5%88%A9%E7%94%A8mprotect%E4%BF%AE%E6%94%B9%E7%A8%8B%E5%BA%8F%E6%AE%B5%E6%9D%83%E9%99%90%E4%B8%BA%E5%8F%AF%E6%89%A7%E8%A1%8C/" title="利用mprotect修改程序段权限为可执行"><img src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="利用mprotect修改程序段权限为可执行"/></a><div class="content"><a class="title" href="/2021/06/10/%E5%88%A9%E7%94%A8mprotect%E4%BF%AE%E6%94%B9%E7%A8%8B%E5%BA%8F%E6%AE%B5%E6%9D%83%E9%99%90%E4%B8%BA%E5%8F%AF%E6%89%A7%E8%A1%8C/" title="利用mprotect修改程序段权限为可执行">利用mprotect修改程序段权限为可执行</a><time datetime="2021-06-10T07:59:46.000Z" title="Created 2021-06-10 15:59:46">2021-06-10</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/05/31/SROP%EF%BC%881%EF%BC%89--%E4%BB%8E%E4%B8%A4%E9%81%93%E9%A2%98%E9%87%8D%E6%96%B0%E8%AE%A4%E8%AF%86SROP%20attack/" title="SROP（1）--从两道题重新认识SROP attack"><img src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="SROP（1）--从两道题重新认识SROP attack"/></a><div class="content"><a class="title" href="/2021/05/31/SROP%EF%BC%881%EF%BC%89--%E4%BB%8E%E4%B8%A4%E9%81%93%E9%A2%98%E9%87%8D%E6%96%B0%E8%AE%A4%E8%AF%86SROP%20attack/" title="SROP（1）--从两道题重新认识SROP attack">SROP（1）--从两道题重新认识SROP attack</a><time datetime="2021-05-31T02:14:53.000Z" title="Created 2021-05-31 10:14:53">2021-05-31</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/05/18/how2heap(14)-unsortedbin%20attack/" title="how2heap(14)-unsortedbin attack"><img src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="how2heap(14)-unsortedbin attack"/></a><div class="content"><a class="title" href="/2021/05/18/how2heap(14)-unsortedbin%20attack/" title="how2heap(14)-unsortedbin attack">how2heap(14)-unsortedbin attack</a><time datetime="2021-05-18T07:48:53.000Z" title="Created 2021-05-18 15:48:53">2021-05-18</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/05/17/how2heap(13)-tcache_stashing_unlink_attack/" title="how2heap(13)-tcache_stashing_unlink_attack"><img src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="how2heap(13)-tcache_stashing_unlink_attack"/></a><div class="content"><a class="title" href="/2021/05/17/how2heap(13)-tcache_stashing_unlink_attack/" title="how2heap(13)-tcache_stashing_unlink_attack">how2heap(13)-tcache_stashing_unlink_attack</a><time datetime="2021-05-17T02:16:40.000Z" title="Created 2021-05-17 10:16:40">2021-05-17</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/05/14/how2heap(12)-house%20of%20lore/" title="how2heap(12)-house of lore"><img src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="how2heap(12)-house of lore"/></a><div class="content"><a class="title" href="/2021/05/14/how2heap(12)-house%20of%20lore/" title="how2heap(12)-house of lore">how2heap(12)-house of lore</a><time datetime="2021-05-14T08:02:54.000Z" title="Created 2021-05-14 16:02:54">2021-05-14</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2021 By John Doe</div><div class="framework-info"><span>Framework </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>Theme </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="Read Mode"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="Switch Between Light And Dark Mode"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="Toggle between single-column and double-column"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="Setting"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="Table Of Contents"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="Back To Top"><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><div class="js-pjax"></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>

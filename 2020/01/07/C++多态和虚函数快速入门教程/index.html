@@ -1,0 +1,494 @@
+<!DOCTYPE html><html lang="en" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>C++多态和虚函数快速入门教程 | Hexo</title><meta name="author" content="John Doe"><meta name="copyright" content="John Doe"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="referrer" content="no-referrer"><meta name="description" content="在《C++将派生类赋值给基类（向上转型）》一节中讲到，基类的指针也可以指向派生类对象，请看下面的例子：  #include   using namespace std;   &#x2F;&#x2F;基类 People  class People{  public:  People(char *name, int age);  void display();  protected:  char *m_name;  in">
+<meta property="og:type" content="article">
+<meta property="og:title" content="C++多态和虚函数快速入门教程">
+<meta property="og:url" content="http://example.com/2020/01/07/C++%E5%A4%9A%E6%80%81%E5%92%8C%E8%99%9A%E5%87%BD%E6%95%B0%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="在《C++将派生类赋值给基类（向上转型）》一节中讲到，基类的指针也可以指向派生类对象，请看下面的例子：  #include   using namespace std;   &#x2F;&#x2F;基类 People  class People{  public:  People(char *name, int age);  void display();  protected:  char *m_name;  in">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg">
+<meta property="article:published_time" content="2020-01-07T11:20:55.000Z">
+<meta property="article:modified_time" content="2021-07-04T09:57:27.915Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://example.com/2020/01/07/C++%E5%A4%9A%E6%80%81%E5%92%8C%E8%99%9A%E5%87%BD%E6%95%B0%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: 'Copy successfully',
+    error: 'Copy error',
+    noSupport: 'The browser does not support'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: 'Just',
+    min: 'minutes ago',
+    hour: 'hours ago',
+    day: 'days ago',
+    month: 'months ago'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    jQuery: 'https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js',
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+    },
+    fancybox: {
+      js: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isanchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'C++多态和虚函数快速入门教程',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2021-07-04 17:57:27'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if (GLOBAL_CONFIG_SITE.isHome && /iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><meta name="generator" content="Hexo 5.4.0"><link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+</head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://i.loli.net/2021/02/24/5O1day2nriDzjSu.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data"><div class="data-item is-center"><div class="data-item-link"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">317</div></a></div></div></div><hr/></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">Hexo</a></span><div id="menus"><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">C++多态和虚函数快速入门教程</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">Created</span><time class="post-meta-date-created" datetime="2020-01-07T11:20:55.000Z" title="Created 2020-01-07 19:20:55">2020-01-07</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">Updated</span><time class="post-meta-date-updated" datetime="2021-07-04T09:57:27.915Z" title="Updated 2021-07-04 17:57:27">2021-07-04</time></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="C++多态和虚函数快速入门教程"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">Post View:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><p>在《<a target="_blank" rel="noopener" href="http://c.biancheng.net/view/2284.html">C++将派生类赋值给基类（向上转型）</a>》一节中讲到，基类的<a target="_blank" rel="noopener" href="http://c.biancheng.net/c/80/">指针</a>也可以指向派生类对象，请看下面的例子：</p>
+<ol>
+<li><p>#include <iostream></p>
+</li>
+<li><p><strong>u</strong><a target="_blank" rel="noopener" href="http://c.biancheng.net/ref/sin.html"><strong>sin</strong></a><strong>g</strong> <strong>namespace</strong> std;</p>
+</li>
+<li></li>
+<li><p>//基类 People</p>
+</li>
+<li><p><strong>class</strong> People{</p>
+</li>
+<li><p><strong>public</strong>:</p>
+</li>
+<li><p>People(char *name, int age);</p>
+</li>
+<li><p>void display();</p>
+</li>
+<li><p><strong>protected</strong>:</p>
+</li>
+<li><p>char *m_name;</p>
+</li>
+<li><p>int m_age;</p>
+</li>
+<li><p>};</p>
+</li>
+<li><p>People::People(char *name, int age): m_name(name), m_age(age){}</p>
+</li>
+<li><p>void People::display(){</p>
+</li>
+<li><p>cout&lt;&lt;m_name&lt;&lt;”今年”&lt;&lt;m_age&lt;&lt;”岁了，是个无业游民。”&lt;&lt;endl;</p>
+</li>
+<li><p>}</p>
+</li>
+<li></li>
+<li><p>//派生类 Teacher</p>
+</li>
+<li><p><strong>class</strong> Teacher: <strong>public</strong> People{</p>
+</li>
+<li><p><strong>public</strong>:</p>
+</li>
+<li><p>Teacher(char *name, int age, int salary);</p>
+</li>
+<li><p>void display();</p>
+</li>
+<li><p><strong>private</strong>:</p>
+</li>
+<li><p>int m_salary;</p>
+</li>
+<li><p>};</p>
+</li>
+<li><p>Teacher::Teacher(char *name, int age, int salary): People(name, age), m_salary(salary){}</p>
+</li>
+<li><p>void Teacher::display(){</p>
+</li>
+<li><p>cout&lt;&lt;m_name&lt;&lt;”今年”&lt;&lt;m_age&lt;&lt;”岁了，是一名教师，每月有”&lt;&lt;m_salary&lt;&lt;”元的收入。”&lt;&lt;endl;</p>
+</li>
+<li><p>}</p>
+</li>
+<li></li>
+<li><p>int main(){</p>
+</li>
+<li><p>People *p = <strong>new</strong> People(“王志刚”, 23);</p>
+</li>
+<li><p>p -&gt; display();</p>
+</li>
+<li></li>
+<li><p>p = <strong>new</strong> Teacher(“赵宏佳”, 45, 8200);</p>
+</li>
+<li><p>p -&gt; display();</p>
+</li>
+<li></li>
+<li><p><strong>return</strong> 0;</p>
+</li>
+<li><p>}</p>
+</li>
+</ol>
+<p>运行结果：<br>王志刚今年 23 岁了，是个无业游民。<br>赵宏佳今年 45 岁了，是个无业游民。</p>
+<p>我们直观上认为，如果指针指向了派生类对象，那么就应该使用派生类的成员变量和成员函数，这符合人们的思维习惯。但是本例的运行结果却告诉我们，当基类指针 p 指向派生类 Teacher 的对象时，虽然使用了 Teacher 的成员变量，但是却没有使用它的成员函数，导致输出结果不伦不类（赵宏佳本来是一名老师，输出结果却显示人家是个无业游民），不符合我们的预期。</p>
+<p>换句话说，<strong>通过基类指针只能访问派生类的成员变量，但是不能访问派生类的成员函数。</strong></p>
+<p>为了消除这种尴尬，让基类指针能够访问派生类的成员函数，<a target="_blank" rel="noopener" href="http://c.biancheng.net/cplus/">C++</a>  增加了<strong>虚函数（Virtual Function）</strong>。使用虚函数非常简单，只需要在函数声明前面增加  virtual  关键字。</p>
+<p>更改上面的代码，将 display() 声明为虚函数：</p>
+<ol>
+<li><p>#include <iostream></p>
+</li>
+<li><p><strong>using</strong> <strong>namespace</strong> std;</p>
+</li>
+<li></li>
+<li><p>//基类 People</p>
+</li>
+<li><p><strong>class</strong> People{</p>
+</li>
+<li><p><strong>public</strong>:</p>
+</li>
+<li><p>People(char *name, int age);</p>
+</li>
+<li><p><strong>virtual</strong> void display(); //声明为虚函数</p>
+</li>
+<li><p><strong>protected</strong>:</p>
+</li>
+<li><p>char *m_name;</p>
+</li>
+<li><p>int m_age;</p>
+</li>
+<li><p>};</p>
+</li>
+<li><p>People::People(char *name, int age): m_name(name), m_age(age){}</p>
+</li>
+<li><p>void People::display(){</p>
+</li>
+<li><p>cout&lt;&lt;m_name&lt;&lt;”今年”&lt;&lt;m_age&lt;&lt;”岁了，是个无业游民。”&lt;&lt;endl;</p>
+</li>
+<li><p>}</p>
+</li>
+<li></li>
+<li><p>//派生类 Teacher</p>
+</li>
+<li><p><strong>class</strong> Teacher: <strong>public</strong> People{</p>
+</li>
+<li><p><strong>public</strong>:</p>
+</li>
+<li><p>Teacher(char *name, int age, int salary);</p>
+</li>
+<li><p><strong>virtual</strong> void display(); //声明为虚函数</p>
+</li>
+<li><p><strong>private</strong>:</p>
+</li>
+<li><p>int m_salary;</p>
+</li>
+<li><p>};</p>
+</li>
+<li><p>Teacher::Teacher(char *name, int age, int salary): People(name, age), m_salary(salary){}</p>
+</li>
+<li><p>void Teacher::display(){</p>
+</li>
+<li><p>cout&lt;&lt;m_name&lt;&lt;”今年”&lt;&lt;m_age&lt;&lt;”岁了，是一名教师，每月有”&lt;&lt;m_salary&lt;&lt;”元的收入。”&lt;&lt;endl;</p>
+</li>
+<li><p>}</p>
+</li>
+<li></li>
+<li><p>int main(){</p>
+</li>
+<li><p>People *p = <strong>new</strong> People(“王志刚”, 23);</p>
+</li>
+<li><p>p -&gt; display();</p>
+</li>
+<li></li>
+<li><p>p = <strong>new</strong> Teacher(“赵宏佳”, 45, 8200);</p>
+</li>
+<li><p>p -&gt; display();</p>
+</li>
+<li></li>
+<li><p><strong>return</strong> 0;</p>
+</li>
+<li><p>}</p>
+</li>
+</ol>
+<p>运行结果：<br>王志刚今年 23 岁了，是个无业游民。<br>赵宏佳今年 45 岁了，是一名教师，每月有 8200 元的收入。</p>
+<p>和前面的例子相比，本例仅仅是在 display() 函数声明前加了一个<code>virtual</code>关键字，将成员函数声明为了虚函数（Virtual Function），这样就可以通过 p 指针调用 Teacher 类的成员函数了，运行结果也证明了这一点（赵宏佳已经是一名老师了，不再是无业游民了）。</p>
+<p><strong>有了虚函数，基类指针指向基类对象时就使用基类的成员（包括成员函数和成员变量），指向派生类对象时就使用派生类的成员。换句话说，基类指针可以按照基类的方式来做事，也可以按照派生类的方式来做事，它有多种形态，或者说有多种表现方式，我们将这种现象称为多态（Polymorphism）。</strong></p>
+<p>上面的代码中，同样是<code>p-&gt;display();</code>这条语句，当 p 指向不同的对象时，它执行的操作是不一样的。同一条语句可以执行不同的操作，看起来有不同表现方式，这就是多态。</p>
+<p>多态是面向对象编程的主要特征之一，<strong>C++中**<strong>虚函数*</strong>*的唯一用处就是构成多态。</strong></p>
+<p><strong>C++提供多态的目的是：可以通过基类指针对所有派生类（包括直接派生和间接派生）的成员变量和成员函数进行“全方位”的访问，尤其是成员函数。如果没有多态，我们只能访问成员变量。</strong></p>
+<p>前面我们说过，通过指针调用普通的成员函数时会根据指针的类型（通过哪个类定义的指针）来判断调用哪个类的成员函数，但是通过本节的分析可以发现，<strong>这种说法并不适用于虚函数，虚函数是根据指针的指向来调用的，指针指向哪个类的对象就调用哪个类的虚函数。</strong></p>
+<p>但是话又说回来，对象的内存模型是非常干净的，没有包含任何成员函数的信息，编译器究竟是根据什么找到了成员函数呢？我们将在《<a target="_blank" rel="noopener" href="http://c.biancheng.net/view/vip_2300.html">C++虚函数表精讲教程，直戳多态的实现机制</a>》一节中给出答案。</p>
+<h2 id="借助引用也可以实现多态"><a href="#借助引用也可以实现多态" class="headerlink" title="借助引用也可以实现多态"></a>借助引用也可以实现多态</h2><p>引用在本质上是通过指针的方式实现的，这一点已在《<a target="_blank" rel="noopener" href="http://c.biancheng.net/view/vip_2252.html">C++引用在本质上是什么，它和指针到底有什么区别？</a>》中进行了讲解，既然借助指针可以实现多态，那么我们就有理由推断：<strong>借助引用也可以实现多态</strong>。</p>
+<p>修改上例中 main() 函数内部的代码，用引用取代指针：</p>
+<ol>
+<li><p>int main(){</p>
+</li>
+<li><p>People p(“王志刚”, 23);</p>
+</li>
+<li><p>Teacher t(“赵宏佳”, 45, 8200);</p>
+</li>
+<li></li>
+<li><p>People &amp;rp = p;</p>
+</li>
+<li><p>People &amp;rt = t;</p>
+</li>
+<li></li>
+<li><p>rp.display();</p>
+</li>
+<li><p>rt.display();</p>
+</li>
+<li></li>
+<li><p><strong>return</strong> 0;</p>
+</li>
+<li><p>}</p>
+</li>
+</ol>
+<p>运行结果：<br>王志刚今年 23 岁了，是个无业游民。<br>赵宏佳今年 45 岁了，是一名教师，每月有 8200 元的收入。</p>
+<p>由于<strong>引用类似于常量，只能在定义的同时初始化，并且以后也要从一而终，不能再引用其他数据</strong>，所以本例中必须要定义两个引用变量，一个用来引用基类对象，一个用来引用派生类对象。从运行结果可以看出，当基类的引用指代基类对象时，调用的是基类的成员，而指代派生类对象时，调用的是派生类的成员。</p>
+<p>不过引用不像指针灵活，指针可以随时改变指向，而引用只能指代固定的对象，在多态性方面缺乏表现力，所以以后我们再谈及多态时一般是说指针。本例的主要目的是让读者知道，除了指针，引用也可以实现多态。</p>
+<h2 id="多态的用途"><a href="#多态的用途" class="headerlink" title="多态的用途"></a>多态的用途</h2><p>通过上面的例子读者可能还未发现多态的用途，不过确实也是，多态在小项目中鲜有有用武之地。</p>
+<p>接下来的例子中，我们假设你正在玩一款军事游戏，敌人突然发动了地面战争，于是你命令陆军、空军及其所有现役装备进入作战状态。具体的代码如下所示：</p>
+<ol>
+<li><p>#include <iostream></p>
+</li>
+<li><p><strong>using</strong> <strong>namespace</strong> std;</p>
+</li>
+<li></li>
+<li><p>//军队</p>
+</li>
+<li><p><strong>class</strong> Troops{</p>
+</li>
+<li><p><strong>public</strong>:</p>
+</li>
+<li><p><strong>virtual</strong> void fight(){ cout&lt;&lt;”Strike back!”&lt;&lt;endl; }</p>
+</li>
+<li><p>};</p>
+</li>
+<li></li>
+<li><p>//陆军</p>
+</li>
+<li><p><strong>class</strong> Army: <strong>public</strong> Troops{</p>
+</li>
+<li><p><strong>public</strong>:</p>
+</li>
+<li><p>void fight(){ cout&lt;&lt;”–Army is fighting!”&lt;&lt;endl; }</p>
+</li>
+<li><p>};</p>
+</li>
+<li><p>//99A 主战坦克</p>
+</li>
+<li><p><strong>class</strong> _99A: <strong>public</strong> Army{</p>
+</li>
+<li><p><strong>public</strong>:</p>
+</li>
+<li><p>void fight(){ cout&lt;&lt;”—-99A(Tank) is fighting!”&lt;&lt;endl; }</p>
+</li>
+<li><p>};</p>
+</li>
+<li><p>//武直 10 武装直升机</p>
+</li>
+<li><p><strong>class</strong> WZ_10: <strong>public</strong> Army{</p>
+</li>
+<li><p><strong>public</strong>:</p>
+</li>
+<li><p>void fight(){ cout&lt;&lt;”—-WZ-10(Helicopter) is fighting!”&lt;&lt;endl; }</p>
+</li>
+<li><p>};</p>
+</li>
+<li><p>//长剑 10 巡航导弹</p>
+</li>
+<li><p><strong>class</strong> CJ_10: <strong>public</strong> Army{</p>
+</li>
+<li><p><strong>public</strong>:</p>
+</li>
+<li><p>void fight(){ cout&lt;&lt;”—-CJ-10(Missile) is fighting!”&lt;&lt;endl; }</p>
+</li>
+<li><p>};</p>
+</li>
+<li></li>
+<li><p>//空军</p>
+</li>
+<li><p><strong>class</strong> AirForce: <strong>public</strong> Troops{</p>
+</li>
+<li><p><strong>public</strong>:</p>
+</li>
+<li><p>void fight(){ cout&lt;&lt;”–AirForce is fighting!”&lt;&lt;endl; }</p>
+</li>
+<li><p>};</p>
+</li>
+<li><p>//J-20 隐形歼击机</p>
+</li>
+<li><p><strong>class</strong> J_20: <strong>public</strong> AirForce{</p>
+</li>
+<li><p><strong>public</strong>:</p>
+</li>
+<li><p>void fight(){ cout&lt;&lt;”—-J-20(Fighter Plane) is fighting!”&lt;&lt;endl; }</p>
+</li>
+<li><p>};</p>
+</li>
+<li><p>//CH5 无人机</p>
+</li>
+<li><p><strong>class</strong> CH_5: <strong>public</strong> AirForce{</p>
+</li>
+<li><p><strong>public</strong>:</p>
+</li>
+<li><p>void fight(){ cout&lt;&lt;”—-CH-5(UAV) is fighting!”&lt;&lt;endl; }</p>
+</li>
+<li><p>};</p>
+</li>
+<li><p>//轰 6K 轰炸机</p>
+</li>
+<li><p><strong>class</strong> H_6K: <strong>public</strong> AirForce{</p>
+</li>
+<li><p><strong>public</strong>:</p>
+</li>
+<li><p>void fight(){ cout&lt;&lt;”—-H-6K(Bomber) is fighting!”&lt;&lt;endl; }</p>
+</li>
+<li><p>};</p>
+</li>
+<li></li>
+<li><p>int main(){</p>
+</li>
+<li><p>Troops *p = <strong>new</strong> Troops;</p>
+</li>
+<li><p>p -&gt;fight();</p>
+</li>
+<li><p>//陆军</p>
+</li>
+<li><p>p = <strong>new</strong> Army;</p>
+</li>
+<li><p>p -&gt;fight();</p>
+</li>
+<li><p>p = <strong>new</strong> _99A;</p>
+</li>
+<li><p>p -&gt; fight();</p>
+</li>
+<li><p>p = <strong>new</strong> WZ_10;</p>
+</li>
+<li><p>p -&gt; fight();</p>
+</li>
+<li><p>p = <strong>new</strong> CJ_10;</p>
+</li>
+<li><p>p -&gt; fight();</p>
+</li>
+<li><p>//空军</p>
+</li>
+<li><p>p = <strong>new</strong> AirForce;</p>
+</li>
+<li><p>p -&gt; fight();</p>
+</li>
+<li><p>p = <strong>new</strong> J_20;</p>
+</li>
+<li><p>p -&gt; fight();</p>
+</li>
+<li><p>p = <strong>new</strong> CH_5;</p>
+</li>
+<li><p>p -&gt; fight();</p>
+</li>
+<li><p>p = <strong>new</strong> H_6K;</p>
+</li>
+<li><p>p -&gt; fight();</p>
+</li>
+<li></li>
+<li><p><strong>return</strong> 0;</p>
+</li>
+<li><p>}</p>
+</li>
+</ol>
+<p>运行结果：<br>Strike back!<br>–Army is fighting!<br>—-99A(Tank) is fighting!<br>—-WZ-10(Helicopter) is fighting!<br>—-CJ-10(Missile) is fighting!<br>–AirForce is fighting!<br>—-J-20(Fighter Plane) is fighting!<br>—-CH-5(UAV) is fighting!<br>—-H-6K(Bomber) is fighting!</p>
+<p>这个例子中的派生类比较多，如果不使用多态，那么就需要定义多个指针变量，很容易造成混乱；而有了多态，只需要一个指针变量 p 就可以调用所有派生类的虚函数。</p>
+<p>从这个例子中也可以发现，对于具有复杂继承关系的大中型程序，多态可以增加其灵活性，让代码更具有表现力。</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">Author: </span><span class="post-copyright-info"><a href="mailto:undefined">John Doe</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">Link: </span><span class="post-copyright-info"><a href="http://example.com/2020/01/07/C++%E5%A4%9A%E6%80%81%E5%92%8C%E8%99%9A%E5%87%BD%E6%95%B0%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B/">http://example.com/2020/01/07/C++%E5%A4%9A%E6%80%81%E5%92%8C%E8%99%9A%E5%87%BD%E6%95%B0%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">Copyright Notice: </span><span class="post-copyright-info">All articles in this blog are licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> unless stating additionally.</span></div></div><div class="tag_share"><div class="post-meta__tag-list"></div><div class="post_share"><div class="social-share" data-image="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2020/01/07/C++%E8%99%9A%E5%87%BD%E6%95%B0%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9%E4%BB%A5%E5%8F%8A%E6%9E%84%E6%88%90%E5%A4%9A%E6%80%81%E7%9A%84%E6%9D%A1%E4%BB%B6/"><img class="prev-cover" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">Previous Post</div><div class="prev_info">C++虚函数注意事项以及构成多态的条件</div></div></a></div><div class="next-post pull-right"><a href="/2020/01/07/C++%E5%B0%86%E6%B4%BE%E7%94%9F%E7%B1%BB%E8%B5%8B%E5%80%BC%E7%BB%99%E5%9F%BA%E7%B1%BB%EF%BC%88%E5%90%91%E4%B8%8A%E8%BD%AC%E5%9E%8B%EF%BC%89/"><img class="next-cover" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">Next Post</div><div class="next_info">C++将派生类赋值给基类（向上转型）</div></div></a></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://i.loli.net/2021/02/24/5O1day2nriDzjSu.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">John Doe</div><div class="author-info__description"></div></div><div class="card-info-data"><div class="card-info-data-item is-center"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">317</div></a></div></div><a class="button--animated" id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/xxxxxx"><i class="fab fa-github"></i><span>Follow Me</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn card-announcement-animation"></i><span>Announcement</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>Catalog</span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%80%9F%E5%8A%A9%E5%BC%95%E7%94%A8%E4%B9%9F%E5%8F%AF%E4%BB%A5%E5%AE%9E%E7%8E%B0%E5%A4%9A%E6%80%81"><span class="toc-number">1.</span> <span class="toc-text">借助引用也可以实现多态</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A4%9A%E6%80%81%E7%9A%84%E7%94%A8%E9%80%94"><span class="toc-number">2.</span> <span class="toc-text">多态的用途</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>Recent Post</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2021/06/10/%E5%88%A9%E7%94%A8mprotect%E4%BF%AE%E6%94%B9%E7%A8%8B%E5%BA%8F%E6%AE%B5%E6%9D%83%E9%99%90%E4%B8%BA%E5%8F%AF%E6%89%A7%E8%A1%8C/" title="利用mprotect修改程序段权限为可执行"><img src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="利用mprotect修改程序段权限为可执行"/></a><div class="content"><a class="title" href="/2021/06/10/%E5%88%A9%E7%94%A8mprotect%E4%BF%AE%E6%94%B9%E7%A8%8B%E5%BA%8F%E6%AE%B5%E6%9D%83%E9%99%90%E4%B8%BA%E5%8F%AF%E6%89%A7%E8%A1%8C/" title="利用mprotect修改程序段权限为可执行">利用mprotect修改程序段权限为可执行</a><time datetime="2021-06-10T07:59:46.000Z" title="Created 2021-06-10 15:59:46">2021-06-10</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/05/31/SROP%EF%BC%881%EF%BC%89--%E4%BB%8E%E4%B8%A4%E9%81%93%E9%A2%98%E9%87%8D%E6%96%B0%E8%AE%A4%E8%AF%86SROP%20attack/" title="SROP（1）--从两道题重新认识SROP attack"><img src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="SROP（1）--从两道题重新认识SROP attack"/></a><div class="content"><a class="title" href="/2021/05/31/SROP%EF%BC%881%EF%BC%89--%E4%BB%8E%E4%B8%A4%E9%81%93%E9%A2%98%E9%87%8D%E6%96%B0%E8%AE%A4%E8%AF%86SROP%20attack/" title="SROP（1）--从两道题重新认识SROP attack">SROP（1）--从两道题重新认识SROP attack</a><time datetime="2021-05-31T02:14:53.000Z" title="Created 2021-05-31 10:14:53">2021-05-31</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/05/18/how2heap(14)-unsortedbin%20attack/" title="how2heap(14)-unsortedbin attack"><img src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="how2heap(14)-unsortedbin attack"/></a><div class="content"><a class="title" href="/2021/05/18/how2heap(14)-unsortedbin%20attack/" title="how2heap(14)-unsortedbin attack">how2heap(14)-unsortedbin attack</a><time datetime="2021-05-18T07:48:53.000Z" title="Created 2021-05-18 15:48:53">2021-05-18</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/05/17/how2heap(13)-tcache_stashing_unlink_attack/" title="how2heap(13)-tcache_stashing_unlink_attack"><img src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="how2heap(13)-tcache_stashing_unlink_attack"/></a><div class="content"><a class="title" href="/2021/05/17/how2heap(13)-tcache_stashing_unlink_attack/" title="how2heap(13)-tcache_stashing_unlink_attack">how2heap(13)-tcache_stashing_unlink_attack</a><time datetime="2021-05-17T02:16:40.000Z" title="Created 2021-05-17 10:16:40">2021-05-17</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/05/14/how2heap(12)-house%20of%20lore/" title="how2heap(12)-house of lore"><img src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="how2heap(12)-house of lore"/></a><div class="content"><a class="title" href="/2021/05/14/how2heap(12)-house%20of%20lore/" title="how2heap(12)-house of lore">how2heap(12)-house of lore</a><time datetime="2021-05-14T08:02:54.000Z" title="Created 2021-05-14 16:02:54">2021-05-14</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2021 By John Doe</div><div class="framework-info"><span>Framework </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>Theme </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="Read Mode"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="Switch Between Light And Dark Mode"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="Toggle between single-column and double-column"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="Setting"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="Table Of Contents"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="Back To Top"><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><div class="js-pjax"></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>

@@ -1,0 +1,496 @@
+<!DOCTYPE html><html lang="en" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Hexo</title><meta name="author" content="John Doe"><meta name="copyright" content="John Doe"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="referrer" content="no-referrer"><meta property="og:type" content="website">
+<meta property="og:title" content="Hexo">
+<meta property="og:url" content="http://example.com/page/8/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://i.loli.net/2021/02/24/5O1day2nriDzjSu.png">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://i.loli.net/2021/02/24/5O1day2nriDzjSu.png"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://example.com/page/8/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: 'Copy successfully',
+    error: 'Copy error',
+    noSupport: 'The browser does not support'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: 'Just',
+    min: 'minutes ago',
+    hour: 'hours ago',
+    day: 'days ago',
+    month: 'months ago'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    jQuery: 'https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js',
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+    },
+    fancybox: {
+      js: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isanchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'Hexo',
+  isPost: false,
+  isHome: true,
+  isHighlightShrink: false,
+  isToc: false,
+  postUpdate: '2021-07-04 18:03:09'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if (GLOBAL_CONFIG_SITE.isHome && /iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><meta name="generator" content="Hexo 5.4.0"><link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+</head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://i.loli.net/2021/02/24/5O1day2nriDzjSu.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data"><div class="data-item is-center"><div class="data-item-link"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">317</div></a></div></div></div><hr/></div></div><div class="page" id="body-wrap"><header class="full_page" id="page-header"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">Hexo</a></span><div id="menus"><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="site-info"><h1 id="site-title">Hexo</h1></div><div id="scroll-down"><i class="fas fa-angle-down scroll-down-effects"></i></div></header><main class="layout" id="content-inner"><div class="recent-posts" id="recent-posts"><div class="recent-post-item"><div class="post_cover left_radius"><a href="/2020/09/03/PWN%E5%85%A5%E9%97%A8%EF%BC%883-1-2%EF%BC%89-%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E5%A0%86%EF%BC%881%EF%BC%89/" title="PWN入门（3-1-2）-深入理解堆（1）">     <img class="post_bg" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="PWN入门（3-1-2）-深入理解堆（1）"></a></div><div class="recent-post-info"><a class="article-title" href="/2020/09/03/PWN%E5%85%A5%E9%97%A8%EF%BC%883-1-2%EF%BC%89-%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E5%A0%86%EF%BC%881%EF%BC%89/" title="PWN入门（3-1-2）-深入理解堆（1）">PWN入门（3-1-2）-深入理解堆（1）</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">Created</span><time datetime="2020-09-03T10:03:49.000Z" title="Created 2020-09-03 18:03:49">2020-09-03</time></span></div><div class="content">
+参考资料：https://wiki.x10sec.org/pwn/heap/heap_overview/
+
+前言
+上一篇文章我们简单的介绍了堆，接下来开始深入理解堆
+
+深入理解堆的概念在程序运行过程中，堆可以提供动态分配的内存，允许程序申请大小未知的内存。堆其实就是程序虚拟地址空间的一块连续的线性区域，它由低地址向高地址方向增长。我们一般称管理堆的那部分程序为堆管理器。堆管理器处于用户程序与内核中间，主要做以下工作：
+
+响应用户的申请内存请求，向操作系统申请内存，然后将其返回给用户程序。同时，为了保持内存管理的高效性，内核一般都会预先分配很大的一块连续的内存，然后让堆管理器通过某种算法管理这块内存。只有当出现了堆空间不足的情况，堆管理器才会再次与操作系统进行交互。
+管理用户所释放的内存。一般来说，用户释放的内存并不是直接返还给操作系统的，而是由堆管理器进行管理。这些释放的内存可以来响应用户新申请的内存的请求。
+
+Linux 中早期的堆分配与回收由 Doug Lea 实现，但它在并行处理多个线程时，会共享进程的堆内存空间。因此，为了安全性，一个线程使用堆时，会进行加锁。然而，与此同时， ...</div></div></div><div class="recent-post-item"><div class="post_cover right_radius"><a href="/2020/09/02/PWN%E5%85%A5%E9%97%A8%EF%BC%883-1-1%EF%BC%89-%E5%A0%86%E5%85%A5%E9%97%A8%E6%A6%82%E8%BF%B0/" title="PWN入门（3-1-1）-堆入门概述">     <img class="post_bg" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="PWN入门（3-1-1）-堆入门概述"></a></div><div class="recent-post-info"><a class="article-title" href="/2020/09/02/PWN%E5%85%A5%E9%97%A8%EF%BC%883-1-1%EF%BC%89-%E5%A0%86%E5%85%A5%E9%97%A8%E6%A6%82%E8%BF%B0/" title="PWN入门（3-1-1）-堆入门概述">PWN入门（3-1-1）-堆入门概述</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">Created</span><time datetime="2020-09-02T10:21:24.000Z" title="Created 2020-09-02 18:21:24">2020-09-02</time></span></div><div class="content">
+参考资料：https://www.anquanke.com/post/id/163971 &gt; https://blog.csdn.net/qq_41988448/article/details/103685794 &gt; https://www.jianshu.com/p/484926468136 &gt; https://www.freebuf.com/vuls/98404.html &gt; https://wiki.x10sec.org/pwn/heap/heap_structure/
+
+什么是堆？首先先明确一下堆的概念，堆不同于栈，堆是（由操作系统内核或者堆管理器）动态分配的，只有在程序中需要时才会分配。在 CTF 的 pwn 程序中，栈是程序加载进内存后就会出现，而堆是由 malloc、alloc、realloc 函数分配内存后才会出现。windows 和 linux 下的堆分配、管理方式都不同，这里主要讲到的是 CTF 中常出现的 linux 下的堆分配知识先看看堆在虚拟内存中的位置堆的生长方向是从低地址向高地址生长的，而栈是从高地址向低地址生长的。实际上堆可以申 ...</div></div></div><div class="recent-post-item"><div class="post_cover left_radius"><a href="/2020/09/02/IDA%20Pro7.0%E4%BD%BF%E7%94%A8%E6%8A%80%E5%B7%A7%E6%80%BB%E7%BB%93/" title="IDA Pro7.0使用技巧总结">     <img class="post_bg" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="IDA Pro7.0使用技巧总结"></a></div><div class="recent-post-info"><a class="article-title" href="/2020/09/02/IDA%20Pro7.0%E4%BD%BF%E7%94%A8%E6%8A%80%E5%B7%A7%E6%80%BB%E7%BB%93/" title="IDA Pro7.0使用技巧总结">IDA Pro7.0使用技巧总结</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">Created</span><time datetime="2020-09-02T01:13:16.000Z" title="Created 2020-09-02 09:13:16">2020-09-02</time></span></div><div class="content">
+转载自：https://xz.aliyun.com/t/4205
+
+俗话说，工欲善其事，必先利其器，在二进制安全的学习中，使用工具尤为重要，而 IDA 又是玩二进制的神器，以前在使用 IDA 的时候，只是用几个比较常用的功能，对于 IDA 的其他功能没有去研究，于是本着学习的精神，参考着《IDA pro 权威指南》(第二版)，写下这篇文章，记录自己的学习心得，下面的记录都是在 Windows 平台下的 IDA pro7.0 进行的
+一些二进制工具在《IDA pro 权威指南》的开篇一两章中，先是介绍了几款常用于二进制研究的工具，我这里简单的记了几个，介绍一波：
+
+C++filt：可以用于显示出 c++中复杂的重载后的函数名称
+PE tools：是一组用于分析 Windows 系统中正在运行的进程和可执行文件的工具
+string：可以用于直接搜索出 elf 文件中的所有字符串
+
+参数-a 表示搜索整个文件，参数-t 可以显示出每一个字符串的偏移，参数-e 可以用于搜索更多的字符编码的字符串，如 Unicode 编码
+
+strip：可用于 elf 去符号，去符号后仍然保持正常功能但增加了 ...</div></div></div><div class="recent-post-item"><div class="post_cover right_radius"><a href="/2020/09/01/PWN%E5%85%A5%E9%97%A8%EF%BC%882-4-3%EF%BC%89-%E8%8A%B1%E5%BC%8F%E6%A0%88%E6%BA%A2%E5%87%BA%E6%8A%80%E5%B7%A7-%E6%A0%88%E4%B8%8A%E7%9A%84%20partial%20overwrite%EF%BC%88%E7%BB%95%E8%BF%87PIE%E4%BF%9D%E6%8A%A4%EF%BC%89/" title="PWN入门（2-4-3）-花式栈溢出技巧-栈上的 partial overwrite（绕过PIE保护）">     <img class="post_bg" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="PWN入门（2-4-3）-花式栈溢出技巧-栈上的 partial overwrite（绕过PIE保护）"></a></div><div class="recent-post-info"><a class="article-title" href="/2020/09/01/PWN%E5%85%A5%E9%97%A8%EF%BC%882-4-3%EF%BC%89-%E8%8A%B1%E5%BC%8F%E6%A0%88%E6%BA%A2%E5%87%BA%E6%8A%80%E5%B7%A7-%E6%A0%88%E4%B8%8A%E7%9A%84%20partial%20overwrite%EF%BC%88%E7%BB%95%E8%BF%87PIE%E4%BF%9D%E6%8A%A4%EF%BC%89/" title="PWN入门（2-4-3）-花式栈溢出技巧-栈上的 partial overwrite（绕过PIE保护）">PWN入门（2-4-3）-花式栈溢出技巧-栈上的 partial overwrite（绕过PIE保护）</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">Created</span><time datetime="2020-09-01T02:14:54.000Z" title="Created 2020-09-01 10:14:54">2020-09-01</time></span></div><div class="content">
+参考资料：https://eqqie.cn/index.php/laji_note/1017/CTF-wiki
+
+PIE 特征我们知道， 在程序开启了 PIE 保护时 (PIE enabled) 高位的地址会发生随机化， 但低位的偏移是始终固定的， 也就是说如果我们能更改低位的偏移， 就可以在一定程度上控制程序的执行流，绕过 PIE 保护。
+
+partial overwrite 不仅仅可以用在栈上，同样可以用在其它随机化的场景。比如堆的随机化，由于堆起始地址低字节一定是 0x00，也可以通过覆盖低位来控制堆上的偏移。
+
+示例我们以 CTF-wiki 上的例题（安恒杯 2018 年 7 月月赛的 babypie ）为例进行讲解：
+
+https://github.com/ctf-wiki/ctf-challenges/blob/master/pwn/stackoverflow/partial_overwrite/babypie
+
+首先检查一下文件的保护情况：可以看到保护全开，并且开启了 PIE 保护，是 64 位程序先来运行一下程序：可以看到，程序给了我们两次输入的机会。拖入 IDA 中 ...</div></div></div><div class="recent-post-item"><div class="post_cover left_radius"><a href="/2020/08/31/PWN%E5%85%A5%E9%97%A8%EF%BC%882-4-2%EF%BC%89-%E8%8A%B1%E5%BC%8F%E6%A0%88%E6%BA%A2%E5%87%BA%E6%8A%80%E5%B7%A7-Stack%20pivoting%EF%BC%88%E5%A0%86%E6%A0%88%E7%BF%BB%E8%BD%AC%EF%BC%89--%E6%A0%88%E7%BF%BB%E8%BD%AC/" title="PWN入门（2-4-2）-花式栈溢出技巧-Stack pivoting（堆栈翻转）--栈翻转">     <img class="post_bg" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="PWN入门（2-4-2）-花式栈溢出技巧-Stack pivoting（堆栈翻转）--栈翻转"></a></div><div class="recent-post-info"><a class="article-title" href="/2020/08/31/PWN%E5%85%A5%E9%97%A8%EF%BC%882-4-2%EF%BC%89-%E8%8A%B1%E5%BC%8F%E6%A0%88%E6%BA%A2%E5%87%BA%E6%8A%80%E5%B7%A7-Stack%20pivoting%EF%BC%88%E5%A0%86%E6%A0%88%E7%BF%BB%E8%BD%AC%EF%BC%89--%E6%A0%88%E7%BF%BB%E8%BD%AC/" title="PWN入门（2-4-2）-花式栈溢出技巧-Stack pivoting（堆栈翻转）--栈翻转">PWN入门（2-4-2）-花式栈溢出技巧-Stack pivoting（堆栈翻转）--栈翻转</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">Created</span><time datetime="2020-08-31T02:03:25.000Z" title="Created 2020-08-31 10:03:25">2020-08-31</time></span></div><div class="content">
+参考资料：https://wiki.x10sec.org/pwn/stackoverflow/others/#stack-pivoting &gt; https://www.cnblogs.com/17bdw/p/7898905.html
+
+1、介绍我们首先介绍一下 Stack pivoting 的含义：正如它的中文意思一样，该技巧就是劫持栈指针指向攻击者所能控制的内存处，然后再在相应的位置进行 ROP。一般来说，我们可能在以下情况需要使用 stack pivoting：
+
+可以控制的栈溢出的字节数较少，难以构造较长的 ROP 链
+开启了 PIE 保护，栈地址未知，我们可以将栈劫持到已知的区域。
+其它漏洞难以利用，我们需要进行转换，比如说将栈劫持到堆空间，从而在堆上写 rop 及进行堆漏洞利用
+
+此外，利用 stack pivoting 有以下几个要求
+
+可以控制程序执行流。
+
+可以控制 sp 指针。一般来说，控制栈指针会使用 ROP，常见的控制栈指针的 gadgets 一般是
+
+
+
+pop rsp/esp
+
+当然，还会有一些其它的姿势。比如说 libc_csu_init 中的 ga ...</div></div></div><div class="recent-post-item"><div class="post_cover right_radius"><a href="/2020/08/24/Linux64%E4%BD%8D%E7%B3%BB%E7%BB%9F%E8%B0%83%E7%94%A8%E5%8F%B7/" title="Linux64位系统调用号">     <img class="post_bg" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Linux64位系统调用号"></a></div><div class="recent-post-info"><a class="article-title" href="/2020/08/24/Linux64%E4%BD%8D%E7%B3%BB%E7%BB%9F%E8%B0%83%E7%94%A8%E5%8F%B7/" title="Linux64位系统调用号">Linux64位系统调用号</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">Created</span><time datetime="2020-08-24T06:03:50.000Z" title="Created 2020-08-24 14:03:50">2020-08-24</time></span></div><div class="content">
+来自:https://blog.csdn.net/qq_41202237/article/details/107250349
+
+
+
+
+系统调用
+调用号
+系统调用
+调用号
+
+
+
+read
+0
+write
+1
+
+
+open
+2
+close
+3
+
+
+stat
+4
+fstat
+5
+
+
+lstat
+6
+poll
+7
+
+
+lseek
+8
+mmap
+9
+
+
+mprotect
+10
+munmap
+11
+
+
+brk
+12
+rt_sigaction
+13
+
+
+rt_sigprocmask
+14
+rt_sigreturn
+15
+
+
+ioctl
+16
+pread64
+17
+
+
+pwrite64
+18
+readv
+19
+
+
+writev
+20
+access
+21
+
+
+pipe
+22
+select
+23
+
+
+sched_yield
+24
+mremap
+25
+
+
+msync
+26
+mincore
+27
+
+
+madvise
+28
+shmget
+29
+
+
+shmat
+30
+shmctl
+31
+
+
+dup
+32
+dup2
+33
+
+
+pause
+34
+nanosleep
+35
+
+
+getitimer
+36
+alarm
+3 ...</div></div></div><div class="recent-post-item"><div class="post_cover left_radius"><a href="/2020/08/24/Linux32%E4%BD%8D%E7%B3%BB%E7%BB%9F%E8%B0%83%E7%94%A8%E5%8F%B7/" title="Linux32位系统调用号">     <img class="post_bg" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Linux32位系统调用号"></a></div><div class="recent-post-info"><a class="article-title" href="/2020/08/24/Linux32%E4%BD%8D%E7%B3%BB%E7%BB%9F%E8%B0%83%E7%94%A8%E5%8F%B7/" title="Linux32位系统调用号">Linux32位系统调用号</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">Created</span><time datetime="2020-08-24T06:01:39.000Z" title="Created 2020-08-24 14:01:39">2020-08-24</time></span></div><div class="content">
+来自:https://blog.csdn.net/qq_41202237/article/details/107249667
+
+
+
+
+系统调用
+调用号
+系统调用
+调用号
+
+
+
+exit
+1
+fork
+2
+
+
+read
+3
+write
+4
+
+
+open
+5
+close
+6
+
+
+waitpid
+7
+creat
+8
+
+
+link
+9
+unlink
+10
+
+
+execve
+11
+chdir
+12
+
+
+time
+13
+mknod
+14
+
+
+chmod
+15
+lchown
+16
+
+
+break
+17
+oldstat
+18
+
+
+lseek
+19
+getpid
+20
+
+
+mount
+21
+umount
+22
+
+
+setuid
+23
+getuid
+24
+
+
+stime
+25
+ptrace
+26
+
+
+alarm
+27
+oldfstat
+28
+
+
+pause
+29
+utime
+30
+
+
+stty
+31
+gtty
+32
+
+
+access
+33
+nice
+34
+
+
+ftime
+35
+sync
+36
+
+
+kill
+37
+rename
+38
+
+
+mkdir
+39
+rmdir
+40
+
+
+dup
+41
+pipe
+42 ...</div></div></div><div class="recent-post-item"><div class="post_cover right_radius"><a href="/2020/08/24/PWN%E5%85%A5%E9%97%A8%EF%BC%881-3-10%EF%BC%89-%E9%AB%98%E7%BA%A7ROP-SROP/" title="PWN入门（1-3-10）-高级ROP-SROP">     <img class="post_bg" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="PWN入门（1-3-10）-高级ROP-SROP"></a></div><div class="recent-post-info"><a class="article-title" href="/2020/08/24/PWN%E5%85%A5%E9%97%A8%EF%BC%881-3-10%EF%BC%89-%E9%AB%98%E7%BA%A7ROP-SROP/" title="PWN入门（1-3-10）-高级ROP-SROP">PWN入门（1-3-10）-高级ROP-SROP</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">Created</span><time datetime="2020-08-24T03:31:00.000Z" title="Created 2020-08-24 11:31:00">2020-08-24</time></span></div><div class="content">
+参考资料：https://blog.csdn.net/qq_41202237/article/details/107512670
+
+signal 机制signal 机制是类 unix 系统中进程之间**相互传递信息**的一种方法。一般，我们也称其为软中断信号，或者软中断。比如说，进程之间可以通过系统调用 kill 来发送软中断信号。一般分为三大步：、
+
+kill 可不是字面意思–杀死进程KILL 功能描述：用于向任何进程组或进程发送信号。
+
+① 内核向某个进程发送 signal 机制，该进程会被暂时挂起，进入内核态② 内核会为该进程保存相应的上下文，跳转到之前注册好的 signal handler 中处理 signal③ signal 返回④ 内核为进程恢复之前保留的上下文，恢复进程的执行
+
+内核向某个进程发送 signal 机制，该进程会被暂时挂起，进入内核态。
+
+内核会为该进程保存相应的上下文，主要是将所有寄存器压入栈中，以及压入 signal 信息，以及指向 sigreturn 的系统调用地址。此时栈的结构如下图所示，我们称 ucontext 以及 siginfo 这一段为Si ...</div></div></div><div class="recent-post-item"><div class="post_cover left_radius"><a href="/2020/08/23/C++%E8%BF%90%E7%AE%97%E7%AC%A6%E4%BC%98%E5%85%88%E7%BA%A7/" title="C++运算符优先级">     <img class="post_bg" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="C++运算符优先级"></a></div><div class="recent-post-info"><a class="article-title" href="/2020/08/23/C++%E8%BF%90%E7%AE%97%E7%AC%A6%E4%BC%98%E5%85%88%E7%BA%A7/" title="C++运算符优先级">C++运算符优先级</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">Created</span><time datetime="2020-08-23T08:55:33.000Z" title="Created 2020-08-23 16:55:33">2020-08-23</time></span></div><div class="content">
+表格来源于：https://baike.baidu.com/item/%E8%BF%90%E7%AE%97%E7%AC%A6%E4%BC%98%E5%85%88%E7%BA%A7/4752611?fr=aladdin#4
+
+
+</div></div></div><div class="recent-post-item"><div class="post_cover right_radius"><a href="/2020/08/21/PWN%E5%85%A5%E9%97%A8%EF%BC%882-1-6%EF%BC%89-%E6%A0%BC%E5%BC%8F%E5%8C%96%E5%AD%97%E7%AC%A6%E4%B8%B2%E6%BC%8F%E6%B4%9E-hijack%20GOT/" title="PWN入门（2-1-6）-格式化字符串漏洞-hijack GOT">     <img class="post_bg" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="PWN入门（2-1-6）-格式化字符串漏洞-hijack GOT"></a></div><div class="recent-post-info"><a class="article-title" href="/2020/08/21/PWN%E5%85%A5%E9%97%A8%EF%BC%882-1-6%EF%BC%89-%E6%A0%BC%E5%BC%8F%E5%8C%96%E5%AD%97%E7%AC%A6%E4%B8%B2%E6%BC%8F%E6%B4%9E-hijack%20GOT/" title="PWN入门（2-1-6）-格式化字符串漏洞-hijack GOT">PWN入门（2-1-6）-格式化字符串漏洞-hijack GOT</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">Created</span><time datetime="2020-08-21T05:20:11.000Z" title="Created 2020-08-21 13:20:11">2020-08-21</time></span></div><div class="content">
+附件：链接：https://pan.baidu.com/s/1H9AVH4wXct8gxkf9GV0YWA提取码：140h例题：2016-CCTF-pwn3
+
+原理现在的 C 程序中，libc 的函数是通过 GOT 表来实现跳转的。在没有开启 RELRO（或开启 Partial RELRO）保护的前提下，每个 libc 的函数对应的 GOT 表项是可以被修改的。因此修改某个 libc 函数的 GOT 表内容为另一个 libc 函数的地址来实现对程序的控制。假设我们将函数 A 的地址覆盖为函数 B 的地址，那么这一攻击技巧可以分为以下步骤
+
+确定函数 A 的 GOT 表地址
+主要利用函数 A 一般在程序中已有，所以可以采用简单的寻找地址的方法来找
+
+
+确定函数 B 的内存地址
+需要想办法泄露对应函数 B 的地址
+
+
+将函数 B 的内存写入到函数 A 的 GOT 表地址处
+需要利用函数的漏洞来触发
+写入函数：write 函数
+ROP
+pop eax; ret; # printf@got -&gt; eax
+pop ebx; ret; # (addr_offset = system_add ...</div></div></div><nav id="pagination"><div class="pagination"><a class="extend prev" rel="prev" href="/page/7/#content-inner"><i class="fas fa-chevron-left fa-fw"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/7/#content-inner">7</a><span class="page-number current">8</span><a class="page-number" href="/page/9/#content-inner">9</a><span class="space">&hellip;</span><a class="page-number" href="/page/32/#content-inner">32</a><a class="extend next" rel="next" href="/page/9/#content-inner"><i class="fas fa-chevron-right fa-fw"></i></a></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://i.loli.net/2021/02/24/5O1day2nriDzjSu.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">John Doe</div><div class="author-info__description"></div></div><div class="card-info-data"><div class="card-info-data-item is-center"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">317</div></a></div></div><a class="button--animated" id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/xxxxxx"><i class="fab fa-github"></i><span>Follow Me</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn card-announcement-animation"></i><span>Announcement</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>Recent Post</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2021/06/10/%E5%88%A9%E7%94%A8mprotect%E4%BF%AE%E6%94%B9%E7%A8%8B%E5%BA%8F%E6%AE%B5%E6%9D%83%E9%99%90%E4%B8%BA%E5%8F%AF%E6%89%A7%E8%A1%8C/" title="利用mprotect修改程序段权限为可执行"><img src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="利用mprotect修改程序段权限为可执行"/></a><div class="content"><a class="title" href="/2021/06/10/%E5%88%A9%E7%94%A8mprotect%E4%BF%AE%E6%94%B9%E7%A8%8B%E5%BA%8F%E6%AE%B5%E6%9D%83%E9%99%90%E4%B8%BA%E5%8F%AF%E6%89%A7%E8%A1%8C/" title="利用mprotect修改程序段权限为可执行">利用mprotect修改程序段权限为可执行</a><time datetime="2021-06-10T07:59:46.000Z" title="Created 2021-06-10 15:59:46">2021-06-10</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/05/31/SROP%EF%BC%881%EF%BC%89--%E4%BB%8E%E4%B8%A4%E9%81%93%E9%A2%98%E9%87%8D%E6%96%B0%E8%AE%A4%E8%AF%86SROP%20attack/" title="SROP（1）--从两道题重新认识SROP attack"><img src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="SROP（1）--从两道题重新认识SROP attack"/></a><div class="content"><a class="title" href="/2021/05/31/SROP%EF%BC%881%EF%BC%89--%E4%BB%8E%E4%B8%A4%E9%81%93%E9%A2%98%E9%87%8D%E6%96%B0%E8%AE%A4%E8%AF%86SROP%20attack/" title="SROP（1）--从两道题重新认识SROP attack">SROP（1）--从两道题重新认识SROP attack</a><time datetime="2021-05-31T02:14:53.000Z" title="Created 2021-05-31 10:14:53">2021-05-31</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/05/18/how2heap(14)-unsortedbin%20attack/" title="how2heap(14)-unsortedbin attack"><img src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="how2heap(14)-unsortedbin attack"/></a><div class="content"><a class="title" href="/2021/05/18/how2heap(14)-unsortedbin%20attack/" title="how2heap(14)-unsortedbin attack">how2heap(14)-unsortedbin attack</a><time datetime="2021-05-18T07:48:53.000Z" title="Created 2021-05-18 15:48:53">2021-05-18</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/05/17/how2heap(13)-tcache_stashing_unlink_attack/" title="how2heap(13)-tcache_stashing_unlink_attack"><img src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="how2heap(13)-tcache_stashing_unlink_attack"/></a><div class="content"><a class="title" href="/2021/05/17/how2heap(13)-tcache_stashing_unlink_attack/" title="how2heap(13)-tcache_stashing_unlink_attack">how2heap(13)-tcache_stashing_unlink_attack</a><time datetime="2021-05-17T02:16:40.000Z" title="Created 2021-05-17 10:16:40">2021-05-17</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/05/14/how2heap(12)-house%20of%20lore/" title="how2heap(12)-house of lore"><img src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="how2heap(12)-house of lore"/></a><div class="content"><a class="title" href="/2021/05/14/how2heap(12)-house%20of%20lore/" title="how2heap(12)-house of lore">how2heap(12)-house of lore</a><time datetime="2021-05-14T08:02:54.000Z" title="Created 2021-05-14 16:02:54">2021-05-14</time></div></div></div></div><div class="card-widget card-archives"><div class="item-headline"><i class="fas fa-archive"></i><span>Archives</span><a class="card-more-btn" href="/archives/" title="More">
+    <i class="fas fa-angle-right"></i></a></div><ul class="card-archive-list"><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2021/06/"><span class="card-archive-list-date">June 2021</span><span class="card-archive-list-count">1</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2021/05/"><span class="card-archive-list-date">May 2021</span><span class="card-archive-list-count">9</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2021/04/"><span class="card-archive-list-date">April 2021</span><span class="card-archive-list-count">7</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2021/02/"><span class="card-archive-list-date">February 2021</span><span class="card-archive-list-count">5</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2021/01/"><span class="card-archive-list-date">January 2021</span><span class="card-archive-list-count">12</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2020/12/"><span class="card-archive-list-date">December 2020</span><span class="card-archive-list-count">7</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2020/11/"><span class="card-archive-list-date">November 2020</span><span class="card-archive-list-count">14</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2020/10/"><span class="card-archive-list-date">October 2020</span><span class="card-archive-list-count">8</span></a></li></ul></div><div class="card-widget card-webinfo"><div class="item-headline"><i class="fas fa-chart-line"></i><span>Info</span></div><div class="webinfo"><div class="webinfo-item"><div class="item-name">Article :</div><div class="item-count">317</div></div><div class="webinfo-item"><div class="item-name">UV :</div><div class="item-count" id="busuanzi_value_site_uv"></div></div><div class="webinfo-item"><div class="item-name">PV :</div><div class="item-count" id="busuanzi_value_site_pv"></div></div><div class="webinfo-item"><div class="item-name">Last Push :</div><div class="item-count" id="last-push-date" data-lastPushDate="2021-07-04T10:03:09.010Z"></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2021 By John Doe</div><div class="framework-info"><span>Framework </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>Theme </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="darkmode" type="button" title="Switch Between Light And Dark Mode"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="Toggle between single-column and double-column"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="Setting"><i class="fas fa-cog fa-spin"></i></button><button id="go-up" type="button" title="Back To Top"><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><div class="js-pjax"></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>

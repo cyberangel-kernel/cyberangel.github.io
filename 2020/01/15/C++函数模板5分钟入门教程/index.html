@@ -1,0 +1,422 @@
+<!DOCTYPE html><html lang="en" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>C++函数模板5分钟入门教程 | Hexo</title><meta name="author" content="John Doe"><meta name="copyright" content="John Doe"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="referrer" content="no-referrer"><meta name="description" content="在《C++函数重载》一节中，为了交换不同类型的变量的值，我们通过函数重载定义了四个名字相同、参数列表不同的函数，如下所示：  &#x2F;&#x2F;交换 int 变量的值  void Swap(int *a, int *b){  int temp &#x3D; *a;  *a &#x3D; *b;  *b &#x3D; temp;  }   &#x2F;&#x2F;交换 float 变量的值  void Swap(float *a, float *b){  flo">
+<meta property="og:type" content="article">
+<meta property="og:title" content="C++函数模板5分钟入门教程">
+<meta property="og:url" content="http://example.com/2020/01/15/C++%E5%87%BD%E6%95%B0%E6%A8%A1%E6%9D%BF5%E5%88%86%E9%92%9F%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="在《C++函数重载》一节中，为了交换不同类型的变量的值，我们通过函数重载定义了四个名字相同、参数列表不同的函数，如下所示：  &#x2F;&#x2F;交换 int 变量的值  void Swap(int *a, int *b){  int temp &#x3D; *a;  *a &#x3D; *b;  *b &#x3D; temp;  }   &#x2F;&#x2F;交换 float 变量的值  void Swap(float *a, float *b){  flo">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg">
+<meta property="article:published_time" content="2020-01-15T08:31:07.000Z">
+<meta property="article:modified_time" content="2021-07-04T09:57:27.055Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://example.com/2020/01/15/C++%E5%87%BD%E6%95%B0%E6%A8%A1%E6%9D%BF5%E5%88%86%E9%92%9F%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: 'Copy successfully',
+    error: 'Copy error',
+    noSupport: 'The browser does not support'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: 'Just',
+    min: 'minutes ago',
+    hour: 'hours ago',
+    day: 'days ago',
+    month: 'months ago'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    jQuery: 'https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js',
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+    },
+    fancybox: {
+      js: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isanchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'C++函数模板5分钟入门教程',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: false,
+  postUpdate: '2021-07-04 17:57:27'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if (GLOBAL_CONFIG_SITE.isHome && /iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><meta name="generator" content="Hexo 5.4.0"><link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+</head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://i.loli.net/2021/02/24/5O1day2nriDzjSu.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data"><div class="data-item is-center"><div class="data-item-link"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">317</div></a></div></div></div><hr/></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">Hexo</a></span><div id="menus"><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">C++函数模板5分钟入门教程</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">Created</span><time class="post-meta-date-created" datetime="2020-01-15T08:31:07.000Z" title="Created 2020-01-15 16:31:07">2020-01-15</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">Updated</span><time class="post-meta-date-updated" datetime="2021-07-04T09:57:27.055Z" title="Updated 2021-07-04 17:57:27">2021-07-04</time></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="C++函数模板5分钟入门教程"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">Post View:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><p>在《<a target="_blank" rel="noopener" href="http://c.biancheng.net/view/2206.html">C++函数重载</a>》一节中，为了交换不同类型的变量的值，我们通过函数重载定义了四个名字相同、参数列表不同的函数，如下所示：</p>
+<ol>
+<li><p>//交换 int 变量的值</p>
+</li>
+<li><p>void Swap(int *a, int *b){</p>
+</li>
+<li><p>int temp = *a;</p>
+</li>
+<li><p>*a = *b;</p>
+</li>
+<li><p>*b = temp;</p>
+</li>
+<li><p>}</p>
+</li>
+<li></li>
+<li><p>//交换 float 变量的值</p>
+</li>
+<li><p>void Swap(float *a, float *b){</p>
+</li>
+<li><p>float temp = *a;</p>
+</li>
+<li><p>*a = *b;</p>
+</li>
+<li><p>*b = temp;</p>
+</li>
+<li><p>}</p>
+</li>
+<li></li>
+<li><p>//交换 char 变量的值</p>
+</li>
+<li><p>void Swap(char *a, char *b){</p>
+</li>
+<li><p>char temp = *a;</p>
+</li>
+<li><p>*a = *b;</p>
+</li>
+<li><p>*b = temp;</p>
+</li>
+<li><p>}</p>
+</li>
+<li></li>
+<li><p>//交换 bool 变量的值</p>
+</li>
+<li><p>void Swap(bool *a, bool *b){</p>
+</li>
+<li><p>char temp = *a;</p>
+</li>
+<li><p>*a = *b;</p>
+</li>
+<li><p>*b = temp;</p>
+</li>
+<li><p>}</p>
+</li>
+</ol>
+<p>这些函数虽然在调用时方便了一些，但从本质上说还是定义了三个功能相同、函数体相同的函数，只是数据的类型不同而已，这看起来有点浪费代码，能不能把它们压缩成一个函数呢？</p>
+<p>能！可以借助本节讲的函数模板。</p>
+<p>我们知道，数据的值可以通过函数参数传递，在函数定义时数据的值是未知的，只有等到函数调用时接收了实参才能确定其值。这就是值的参数化。</p>
+<p>在<a target="_blank" rel="noopener" href="http://c.biancheng.net/cplus/">C++</a>中，数据的类型也可以通过参数来传递，在函数定义时可以不指明具体的数据类型，当发生函数调用时，编译器可以根据传入的实参自动推断数据类型。这就是类型的参数化。</p>
+<p>值（Value）和类型（Type）是数据的两个主要特征，它们在 C++中都可以被参数化。</p>
+<p>所谓函数模板，实际上是建立一个通用函数，它所用到的数据的类型（包括返回值类型、形参类型、局部变量类型）可以不具体指定，而是用一个虚拟的类型来代替（实际上是用一个标识符来占位），等发生函数调用时再根据传入的实参来逆推出真正的类型。这个通用函数就称为<strong>函数模板（Function Template）</strong>。</p>
+<p>在函数模板中，数据的值和类型都被参数化了，发生函数调用时编译器会根据传入的实参来推演形参的值和类型。换个角度说，函数模板除了支持值的参数化，还支持类型的参数化。</p>
+<p>一但定义了函数模板，就可以将类型参数用于函数定义和函数声明了。说得直白一点，原来使用 int、float、char 等内置类型的地方，都可以用类型参数来代替。</p>
+<p>下面我们就来实践一下，将上面的四个 Swap() 函数压缩为一个函数模板：</p>
+<ol>
+<li><p>#include <iostream></p>
+</li>
+<li><p><strong>u</strong><a target="_blank" rel="noopener" href="http://c.biancheng.net/ref/sin.html"><strong>sin</strong></a><strong>g</strong> <strong>namespace</strong> std;</p>
+</li>
+<li></li>
+<li><p><strong>template</strong>&lt;**typename** T&gt; void Swap(T *a, T *b){</p>
+</li>
+<li><p>T temp = *a;</p>
+</li>
+<li><p>*a = *b;</p>
+</li>
+<li><p>*b = temp;</p>
+</li>
+<li><p>}</p>
+</li>
+<li></li>
+<li><p>int main(){</p>
+</li>
+<li><p>//交换 int 变量的值</p>
+</li>
+<li><p>int n1 = 100, n2 = 200;</p>
+</li>
+<li><p>Swap(&amp;n1, &amp;n2);</p>
+</li>
+<li><p>cout&lt;&lt;n1&lt;&lt;”, “&lt;&lt;n2&lt;&lt;endl;</p>
+</li>
+<li></li>
+<li><p>//交换 float 变量的值</p>
+</li>
+<li><p>float f1 = 12.5, f2 = 56.93;</p>
+</li>
+<li><p>Swap(&amp;f1, &amp;f2);</p>
+</li>
+<li><p>cout&lt;&lt;f1&lt;&lt;”, “&lt;&lt;f2&lt;&lt;endl;</p>
+</li>
+<li></li>
+<li><p>//交换 char 变量的值</p>
+</li>
+<li><p>char c1 = ‘A’, c2 = ‘B’;</p>
+</li>
+<li><p>Swap(&amp;c1, &amp;c2);</p>
+</li>
+<li><p>cout&lt;&lt;c1&lt;&lt;”, “&lt;&lt;c2&lt;&lt;endl;</p>
+</li>
+<li></li>
+<li><p>//交换 bool 变量的值</p>
+</li>
+<li><p>bool b1 = <strong>false</strong>, b2 = <strong>true</strong>;</p>
+</li>
+<li><p>Swap(&amp;b1, &amp;b2);</p>
+</li>
+<li><p>cout&lt;&lt;b1&lt;&lt;”, “&lt;&lt;b2&lt;&lt;endl;</p>
+</li>
+<li></li>
+<li><p><strong>return</strong> 0;</p>
+</li>
+<li><p>}</p>
+</li>
+</ol>
+<p>运行结果：<br>200, 100<br>56.93, 12.5<br>B, A<br>1, 0</p>
+<p>请读者重点关注第 4 行代码。<code>template</code>是定义函数模板的关键字，它后面紧跟尖括号<code>&lt;&gt;</code>，尖括号包围的是类型参数（也可以说是虚拟的类型，或者说是类型占位符）。<code>typename</code>是另外一个关键字，用来声明具体的类型参数，这里的类型参数就是<code>T</code>。从整体上看，<code>template&lt;typename T&gt;</code>被称为模板头。</p>
+<p>模板头中包含的类型参数可以用在函数定义的各个位置，包括返回值、形参列表和函数体；本例我们在形参列表和函数体中使用了类型参数<code>T</code>。</p>
+<p>类型参数的命名规则跟其他标识符的命名规则一样，不过使用 T、T1、T2、Type 等已经成为了一种惯例。</p>
+<p>定义了函数模板后，就可以像调用普通函数一样来调用它们了。</p>
+<p>在讲解<a target="_blank" rel="noopener" href="http://c.biancheng.net/view/2206.html">C++函数重载</a>时我们还没有学到引用（Reference），为了达到交换两个变量的值的目的只能使用<a target="_blank" rel="noopener" href="http://c.biancheng.net/c/80/">指针</a>，而现在我们已经对引用进行了深入讲解，不妨趁此机会来实践一把，使用引用重新实现 Swap() 这个函数模板：</p>
+<ol>
+<li><p>#include <iostream></p>
+</li>
+<li><p><strong>using</strong> <strong>namespace</strong> std;</p>
+</li>
+<li></li>
+<li><p><strong>template</strong>&lt;**typename** T&gt; void Swap(T &amp;a, T &amp;b){</p>
+</li>
+<li><p>T temp = a;</p>
+</li>
+<li><p>a = b;</p>
+</li>
+<li><p>b = temp;</p>
+</li>
+<li><p>}</p>
+</li>
+<li></li>
+<li><p>int main(){</p>
+</li>
+<li><p>//交换 int 变量的值</p>
+</li>
+<li><p>int n1 = 100, n2 = 200;</p>
+</li>
+<li><p>Swap(n1, n2);</p>
+</li>
+<li><p>cout&lt;&lt;n1&lt;&lt;”, “&lt;&lt;n2&lt;&lt;endl;</p>
+</li>
+<li></li>
+<li><p>//交换 float 变量的值</p>
+</li>
+<li><p>float f1 = 12.5, f2 = 56.93;</p>
+</li>
+<li><p>Swap(f1, f2);</p>
+</li>
+<li><p>cout&lt;&lt;f1&lt;&lt;”, “&lt;&lt;f2&lt;&lt;endl;</p>
+</li>
+<li></li>
+<li><p>//交换 char 变量的值</p>
+</li>
+<li><p>char c1 = ‘A’, c2 = ‘B’;</p>
+</li>
+<li><p>Swap(c1, c2);</p>
+</li>
+<li><p>cout&lt;&lt;c1&lt;&lt;”, “&lt;&lt;c2&lt;&lt;endl;</p>
+</li>
+<li></li>
+<li><p>//交换 bool 变量的值</p>
+</li>
+<li><p>bool b1 = <strong>false</strong>, b2 = <strong>true</strong>;</p>
+</li>
+<li><p>Swap(b1, b2);</p>
+</li>
+<li><p>cout&lt;&lt;b1&lt;&lt;”, “&lt;&lt;b2&lt;&lt;endl;</p>
+</li>
+<li></li>
+<li><p><strong>return</strong> 0;</p>
+</li>
+<li><p>}</p>
+</li>
+</ol>
+<p>引用不但使得函数定义简洁明了，也使得调用函数方便了很多。整体来看，引用让编码更加漂亮。</p>
+<p>下面我们来总结一下定义模板函数的语法：<br>template &lt;typename 类型参数 1 , typename 类型参数 2 , …&gt;  返回值类型   函数名(形参列表){<br>    //在函数体中可以使用类型参数<br>}<br>类型参数可以有多个，它们之间以逗号<code>,</code>分隔。类型参数列表以<code>&lt; &gt;</code>包围，形式参数列表以<code>( )</code>包围。</p>
+<p><code>typename</code>关键字也可以使用<code>class</code>关键字替代，它们没有任何区别。C++ 早期对模板的支持并不严谨，没有引入新的关键字，而是用 class 来指明类型参数，但是 class 关键字本来已经用在类的定义中了，这样做显得不太友好，所以后来 C++ 又引入了一个新的关键字 typename，专门用来定义类型参数。不过至今仍然有很多代码在使用 class 关键字，包括 C++ 标准库、一些开源程序等。</p>
+<p>本教程会交替使用 typename 和 class，旨在让读者在别的地方遇到它们时不会感觉陌生。更改上面的 Swap() 函数，使用 class 来指明类型参数：</p>
+<ol>
+<li><strong>template</strong>&lt;**class** T&gt; void Swap(T &amp;a, T &amp;b){</li>
+<li>T temp = a;</li>
+<li>a = b;</li>
+<li>b = temp;</li>
+<li>}</li>
+</ol>
+<p>除了将 typename 替换为 class，其他都是一样的。</p>
+<p>为了加深对函数模板的理解，我们再来看一个求三个数的最大值的例子：</p>
+<ol>
+<li><p>#include <iostream></p>
+</li>
+<li><p><strong>using</strong> <strong>namespace</strong> std;</p>
+</li>
+<li></li>
+<li><p>//声明函数模板</p>
+</li>
+<li><p><strong>template</strong>&lt;**typename** T&gt; T max(T a, T b, T c);</p>
+</li>
+<li></li>
+<li><p>int main( ){</p>
+</li>
+<li><p>//求三个整数的最大值</p>
+</li>
+<li><p>int i1, i2, i3, i_max;</p>
+</li>
+<li><p>cin &gt;&gt; i1 &gt;&gt; i2 &gt;&gt; i3;</p>
+</li>
+<li><p>i_max = max(i1,i2,i3);</p>
+</li>
+<li><p>cout &lt;&lt; “i_max=” &lt;&lt; i_max &lt;&lt; endl;</p>
+</li>
+<li></li>
+<li><p>//求三个浮点数的最大值</p>
+</li>
+<li><p>double d1, d2, d3, d_max;</p>
+</li>
+<li><p>cin &gt;&gt; d1 &gt;&gt; d2 &gt;&gt; d3;</p>
+</li>
+<li><p>d_max = max(d1,d2,d3);</p>
+</li>
+<li><p>cout &lt;&lt; “d_max=” &lt;&lt; d_max &lt;&lt; endl;</p>
+</li>
+<li></li>
+<li><p>//求三个长整型数的最大值</p>
+</li>
+<li><p>long g1, g2, g3, g_max;</p>
+</li>
+<li><p>cin &gt;&gt; g1 &gt;&gt; g2 &gt;&gt; g3;</p>
+</li>
+<li><p>g_max = max(g1,g2,g3);</p>
+</li>
+<li><p>cout &lt;&lt; “g_max=” &lt;&lt; g_max &lt;&lt; endl;</p>
+</li>
+<li></li>
+<li><p><strong>return</strong> 0;</p>
+</li>
+<li><p>}</p>
+</li>
+<li></li>
+<li><p>//定义函数模板</p>
+</li>
+<li><p><strong>template</strong>&lt;**typename** T&gt; //模板头，这里不能有分号</p>
+</li>
+<li><p>T max(T a, T b, T c){ //函数头</p>
+</li>
+<li><p>T max_num = a;</p>
+</li>
+<li><p><strong>if</strong>(b &gt; max_num) max_num = b;</p>
+</li>
+<li><p><strong>if</strong>(c &gt; max_num) max_num = c;</p>
+</li>
+<li><p><strong>return</strong> max_num;</p>
+</li>
+<li><p>}</p>
+</li>
+</ol>
+<p>运行结果：<br>12  34  100↙<br>i_max=100<br>73.234  90.2  878.23↙<br>d_max=878.23<br>344  900  1000↙<br>g_max=1000</p>
+<p><strong>函数模板也可以提前声明，不过声明时需要带上模板头，并且模板头和函数定义（声明）是一个不可分割的整体，它们可以换行，但中间不能有分号。</strong></p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">Author: </span><span class="post-copyright-info"><a href="mailto:undefined">John Doe</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">Link: </span><span class="post-copyright-info"><a href="http://example.com/2020/01/15/C++%E5%87%BD%E6%95%B0%E6%A8%A1%E6%9D%BF5%E5%88%86%E9%92%9F%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B/">http://example.com/2020/01/15/C++%E5%87%BD%E6%95%B0%E6%A8%A1%E6%9D%BF5%E5%88%86%E9%92%9F%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">Copyright Notice: </span><span class="post-copyright-info">All articles in this blog are licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> unless stating additionally.</span></div></div><div class="tag_share"><div class="post-meta__tag-list"></div><div class="post_share"><div class="social-share" data-image="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2020/01/15/C++%E7%B1%BB%E6%A8%A1%E6%9D%BF5%E5%88%86%E9%92%9F%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B/"><img class="prev-cover" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">Previous Post</div><div class="prev_info">C++类模板5分钟入门教程</div></div></a></div><div class="next-post pull-right"><a href="/2020/01/15/C++%E6%A8%A1%E6%9D%BF%E5%92%8C%E6%B3%9B%E5%9E%8B%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1/"><img class="next-cover" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">Next Post</div><div class="next_info">C++模板和泛型程序设计</div></div></a></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://i.loli.net/2021/02/24/5O1day2nriDzjSu.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">John Doe</div><div class="author-info__description"></div></div><div class="card-info-data"><div class="card-info-data-item is-center"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">317</div></a></div></div><a class="button--animated" id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/xxxxxx"><i class="fab fa-github"></i><span>Follow Me</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn card-announcement-animation"></i><span>Announcement</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>Recent Post</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2021/06/10/%E5%88%A9%E7%94%A8mprotect%E4%BF%AE%E6%94%B9%E7%A8%8B%E5%BA%8F%E6%AE%B5%E6%9D%83%E9%99%90%E4%B8%BA%E5%8F%AF%E6%89%A7%E8%A1%8C/" title="利用mprotect修改程序段权限为可执行"><img src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="利用mprotect修改程序段权限为可执行"/></a><div class="content"><a class="title" href="/2021/06/10/%E5%88%A9%E7%94%A8mprotect%E4%BF%AE%E6%94%B9%E7%A8%8B%E5%BA%8F%E6%AE%B5%E6%9D%83%E9%99%90%E4%B8%BA%E5%8F%AF%E6%89%A7%E8%A1%8C/" title="利用mprotect修改程序段权限为可执行">利用mprotect修改程序段权限为可执行</a><time datetime="2021-06-10T07:59:46.000Z" title="Created 2021-06-10 15:59:46">2021-06-10</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/05/31/SROP%EF%BC%881%EF%BC%89--%E4%BB%8E%E4%B8%A4%E9%81%93%E9%A2%98%E9%87%8D%E6%96%B0%E8%AE%A4%E8%AF%86SROP%20attack/" title="SROP（1）--从两道题重新认识SROP attack"><img src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="SROP（1）--从两道题重新认识SROP attack"/></a><div class="content"><a class="title" href="/2021/05/31/SROP%EF%BC%881%EF%BC%89--%E4%BB%8E%E4%B8%A4%E9%81%93%E9%A2%98%E9%87%8D%E6%96%B0%E8%AE%A4%E8%AF%86SROP%20attack/" title="SROP（1）--从两道题重新认识SROP attack">SROP（1）--从两道题重新认识SROP attack</a><time datetime="2021-05-31T02:14:53.000Z" title="Created 2021-05-31 10:14:53">2021-05-31</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/05/18/how2heap(14)-unsortedbin%20attack/" title="how2heap(14)-unsortedbin attack"><img src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="how2heap(14)-unsortedbin attack"/></a><div class="content"><a class="title" href="/2021/05/18/how2heap(14)-unsortedbin%20attack/" title="how2heap(14)-unsortedbin attack">how2heap(14)-unsortedbin attack</a><time datetime="2021-05-18T07:48:53.000Z" title="Created 2021-05-18 15:48:53">2021-05-18</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/05/17/how2heap(13)-tcache_stashing_unlink_attack/" title="how2heap(13)-tcache_stashing_unlink_attack"><img src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="how2heap(13)-tcache_stashing_unlink_attack"/></a><div class="content"><a class="title" href="/2021/05/17/how2heap(13)-tcache_stashing_unlink_attack/" title="how2heap(13)-tcache_stashing_unlink_attack">how2heap(13)-tcache_stashing_unlink_attack</a><time datetime="2021-05-17T02:16:40.000Z" title="Created 2021-05-17 10:16:40">2021-05-17</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/05/14/how2heap(12)-house%20of%20lore/" title="how2heap(12)-house of lore"><img src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="how2heap(12)-house of lore"/></a><div class="content"><a class="title" href="/2021/05/14/how2heap(12)-house%20of%20lore/" title="how2heap(12)-house of lore">how2heap(12)-house of lore</a><time datetime="2021-05-14T08:02:54.000Z" title="Created 2021-05-14 16:02:54">2021-05-14</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2021 By John Doe</div><div class="framework-info"><span>Framework </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>Theme </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="Read Mode"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="Switch Between Light And Dark Mode"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="Toggle between single-column and double-column"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="Setting"><i class="fas fa-cog fa-spin"></i></button><button id="go-up" type="button" title="Back To Top"><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><div class="js-pjax"></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>

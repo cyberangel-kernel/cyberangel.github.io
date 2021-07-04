@@ -1,0 +1,410 @@
+<!DOCTYPE html><html lang="en" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>IDA学习笔记-汇编指令机器码对应列表 | Hexo</title><meta name="author" content="John Doe"><meta name="copyright" content="John Doe"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="referrer" content="no-referrer"><meta name="description" content="文章来自：https:&#x2F;&#x2F;blog.csdn.net&#x2F;liqiang981&#x2F;article&#x2F;details&#x2F;51895009  指令集依照机器操作码、汇编助记符和汇编操作数来描述指令，遵循下列约定：l     reg8: 8 位寄存器。l     reg16: 16 位寄存器。l     mem8: 8 位内存数值。l     mem16: 16 位内存数值。l     immed8: 8 位立">
+<meta property="og:type" content="article">
+<meta property="og:title" content="IDA学习笔记-汇编指令机器码对应列表">
+<meta property="og:url" content="http://example.com/2020/05/04/IDA%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E6%B1%87%E7%BC%96%E6%8C%87%E4%BB%A4%E6%9C%BA%E5%99%A8%E7%A0%81%E5%AF%B9%E5%BA%94%E5%88%97%E8%A1%A8/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="文章来自：https:&#x2F;&#x2F;blog.csdn.net&#x2F;liqiang981&#x2F;article&#x2F;details&#x2F;51895009  指令集依照机器操作码、汇编助记符和汇编操作数来描述指令，遵循下列约定：l     reg8: 8 位寄存器。l     reg16: 16 位寄存器。l     mem8: 8 位内存数值。l     mem16: 16 位内存数值。l     immed8: 8 位立">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg">
+<meta property="article:published_time" content="2020-05-04T08:37:06.000Z">
+<meta property="article:modified_time" content="2021-07-04T09:57:20.368Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://example.com/2020/05/04/IDA%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E6%B1%87%E7%BC%96%E6%8C%87%E4%BB%A4%E6%9C%BA%E5%99%A8%E7%A0%81%E5%AF%B9%E5%BA%94%E5%88%97%E8%A1%A8/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: 'Copy successfully',
+    error: 'Copy error',
+    noSupport: 'The browser does not support'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: 'Just',
+    min: 'minutes ago',
+    hour: 'hours ago',
+    day: 'days ago',
+    month: 'months ago'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    jQuery: 'https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js',
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+    },
+    fancybox: {
+      js: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isanchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'IDA学习笔记-汇编指令机器码对应列表',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: false,
+  postUpdate: '2021-07-04 17:57:20'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if (GLOBAL_CONFIG_SITE.isHome && /iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><meta name="generator" content="Hexo 5.4.0"><link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+</head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://i.loli.net/2021/02/24/5O1day2nriDzjSu.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data"><div class="data-item is-center"><div class="data-item-link"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">317</div></a></div></div></div><hr/></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">Hexo</a></span><div id="menus"><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">IDA学习笔记-汇编指令机器码对应列表</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">Created</span><time class="post-meta-date-created" datetime="2020-05-04T08:37:06.000Z" title="Created 2020-05-04 16:37:06">2020-05-04</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">Updated</span><time class="post-meta-date-updated" datetime="2021-07-04T09:57:20.368Z" title="Updated 2021-07-04 17:57:20">2021-07-04</time></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="IDA学习笔记-汇编指令机器码对应列表"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">Post View:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><blockquote>
+<p>文章来自：<a target="_blank" rel="noopener" href="https://blog.csdn.net/liqiang981/article/details/51895009">https://blog.csdn.net/liqiang981/article/details/51895009</a></p>
+</blockquote>
+<p>指令集依照机器操作码、汇编助记符和汇编操作数来描述指令，遵循下列约定：<br>l     reg8: 8 位寄存器。<br>l     reg16: 16 位寄存器。<br>l     mem8: 8 位内存数值。<br>l     mem16: 16 位内存数值。<br>l     immed8: 8 位立即数值。<br>l     immed16: 16 位立即数值。<br>l     immed32: 32 位立即数值。<br>l     segReg: 16 位段寄存器。</p>
+<p>机器操作码<br>  汇编助记符和操作数</p>
+<p>00<br> ADD reg8/mem8,reg8</p>
+<p>01<br> ADD reg16/mem16,reg16</p>
+<p>02<br> ADD reg8,reg8/mem8</p>
+<p>03<br> ADD reg16,reg16/mem16</p>
+<p>04<br> ADD AL,immed8</p>
+<p>05<br> ADD AX,immed16</p>
+<p>06<br> PUSH es</p>
+<p>07<br> POP es</p>
+<p>08<br> OR reg8/mem8,reg8</p>
+<p>09<br> OR reg16/mem16,reg16</p>
+<p>0A<br> OR reg8,reg8/mem8</p>
+<p>0B<br> OR reg16,reg16/mem16</p>
+<p>0C<br> OR al,immed8</p>
+<p>0D<br> OR ax,immed16</p>
+<p>0E<br> PUSH cs</p>
+<p>0F<br> Not used</p>
+<p>10<br> ADC reg8/mem8,reg8</p>
+<p>11<br> ADC reg16/mem16,reg16</p>
+<p>12<br> ADC reg8,reg8/mem8</p>
+<p>13<br> ADC reg16,reg16/mem16</p>
+<p>14<br> ADC al,immed8</p>
+<p>15<br> ADC ax,immed16</p>
+<p>16<br> PUSH ss</p>
+<p>17<br> POP ss</p>
+<p>18<br> SBB reg8/mem8,reg8</p>
+<p>19<br> SBB reg16/mem16,reg16</p>
+<p>1A<br> SBB reg8,reg8/mem8</p>
+<p>1B<br> SBB reg16,reg16/mem16</p>
+<p>1C<br> SBB al,immed8</p>
+<p>1D<br> SBB ax,immed16</p>
+<p>1E<br> PUSH ds</p>
+<p>1F<br> POP ds</p>
+<p>20<br> AND reg8/mem8,reg8</p>
+<p>21<br> AND reg16/mem16,reg16</p>
+<p>22<br> AND reg8,reg8/mem8</p>
+<p>23<br> AND reg16,reg16/mem16</p>
+<p>24<br> AND al,immed8</p>
+<p>25<br> AND ax,immed16</p>
+<p>26<br> Segment override</p>
+<p>27<br> DAA</p>
+<p>28<br> SUB reg8/mem8,reg8</p>
+<p>29<br> SUB reg16/mem16,reg16</p>
+<p>2A<br> SUB reg8,reg8/mem8</p>
+<p>2B<br> SUB reg16,reg16/mem16</p>
+<p>2C<br> SUB al,immed8</p>
+<p>2D<br> SUB ax,immed16</p>
+<p>2E<br> Segment override</p>
+<p>2F<br> DAS</p>
+<p>30<br> XOR reg8/mem8,reg8</p>
+<p>31<br> XOR reg16/mem16,reg16</p>
+<p>32<br> XOR reg8,reg8/mem8</p>
+<p>33<br> XOR reg16,reg16/mem16</p>
+<p>34<br> XOR al,immed8</p>
+<p>35<br> XOR ax,immed16</p>
+<p>36<br> Segment override</p>
+<p>37<br> AAA</p>
+<p>38<br> CMP reg8/mem8,reg8</p>
+<p>39<br> CMP reg16/mem16,reg16</p>
+<p>3A<br> CMP reg8,reg8/mem8</p>
+<p>3B<br> CMP reg16,reg16/mem16</p>
+<p>3C<br> CMP al,immed8</p>
+<p>3D<br> CMP ax,immed16</p>
+<p>3E<br> Segment override</p>
+<p>3F<br> AAS</p>
+<p>40<br> INC ax</p>
+<p>41<br> INC cx</p>
+<p>42<br> INC dx</p>
+<p>43<br> INC bx</p>
+<p>44<br> INC sp</p>
+<p>45<br> INC bp</p>
+<p>46<br> INC si</p>
+<p>47<br> INC di</p>
+<p>48<br> DEC ax</p>
+<p>49<br> DEC cx</p>
+<p>4A<br> DEC dx</p>
+<p>4B<br> DEC bx</p>
+<p>4C<br> DEC sp</p>
+<p>4D<br> DEC bp</p>
+<p>4E<br> DEC si</p>
+<p>4F<br> DEC di</p>
+<p>50<br> PUSH ax</p>
+<p>51<br> PUSH cx</p>
+<p>52<br> PUSH dx</p>
+<p>53<br> PUSH bx</p>
+<p>54<br> PUSH sp</p>
+<p>55<br> PUSH bp</p>
+<p>56<br> PUSH si</p>
+<p>57<br> PUSH di</p>
+<p>58<br> POP ax</p>
+<p>59<br> POP cx</p>
+<p>5A<br> POP dx</p>
+<p>5B<br> POP bx</p>
+<p>5C<br> POP sp</p>
+<p>5D<br> POP bp</p>
+<p>5E<br> POP si</p>
+<p>5F<br> POP di</p>
+<p>60<br> PUSHA</p>
+<p>61<br> POPA</p>
+<p>62<br> BOUND reg16/mem16,reg16</p>
+<p>63<br> Not used</p>
+<p>64<br> Not used</p>
+<p>65<br> Not used</p>
+<p>66<br> Not used</p>
+<p>67<br> Not used</p>
+<p>68<br> PUSH immed16</p>
+<p>69<br> IMUL reg16/mem16,immed16</p>
+<p>6A<br> PUSH immed8</p>
+<p>6B<br> IMUL reg8/mem8,immed8</p>
+<p>6C<br> INSB</p>
+<p>6D<br> INSW</p>
+<p>6E<br> OUTSB</p>
+<p>6F<br> OUTSW</p>
+<p>70<br> JO immed8</p>
+<p>71<br> JNO immed8</p>
+<p>72<br> JB immed8</p>
+<p>73<br> JNB immed8</p>
+<p>74<br> JZ immed8</p>
+<p>75<br> JNZ immed8</p>
+<p>76<br> JBE immed8</p>
+<p>77<br> JA immed8</p>
+<p>78<br> JS immed8</p>
+<p>79<br> JNS immed8</p>
+<p>7A<br> JP immed8</p>
+<p>7B<br> JNP immed8</p>
+<p>7C<br> JL immed8</p>
+<p>7D<br> JNL immed8</p>
+<p>7E<br> JLE immed8</p>
+<p>7F<br> JG immed8</p>
+<p>80<br> Table2 reg8</p>
+<p>81<br> Table2 reg16</p>
+<p>82<br> Table2 reg8</p>
+<p>83<br> Table2 reg8, reg16</p>
+<p>84<br> TEST reg8/mem8,reg8</p>
+<p>85<br> TEST reg16/mem16,reg16</p>
+<p>86<br> XCHG reg8,reg8</p>
+<p>87<br> XCHG reg16,reg16</p>
+<p>88<br> MOV reg8/mem8,reg8</p>
+<p>89<br> MOV reg16/mem16,reg16</p>
+<p>8A<br> MOV reg8,reg8/mem8</p>
+<p>8B<br> MOV reg16,reg16/mem16</p>
+<p>8C<br> MOV reg16/mem16,segReg</p>
+<p>8D<br> LEA reg16,reg16/mem16</p>
+<p>8E<br> MOV segReg,reg16/mem16</p>
+<p>8F<br> POP reg16/mem16</p>
+<p>90<br> NOP</p>
+<p>91<br> XCHG ax,cx</p>
+<p>92<br> XCHG ax,dx</p>
+<p>93<br> XCHG ax,bx</p>
+<p>94<br> XCHG ax,sp</p>
+<p>95<br> XCHG ax,bp</p>
+<p>96<br> XCHG ax,si</p>
+<p>97<br> XCHG ax,di</p>
+<p>98<br> CBW 99CWD</p>
+<p>9A<br> CALL immed32</p>
+<p>9B<br> WAIT</p>
+<p>9C<br> PUSHF</p>
+<p>9D<br> POPF</p>
+<p>9E<br> SAHF</p>
+<p>9F<br> LAHF</p>
+<p>A0<br> MOV al,[mem8]</p>
+<p>A1<br> MOV ax,[mem16]</p>
+<p>A2<br> MOV [mem8],al</p>
+<p>A3<br> MOV [mem16],ax</p>
+<p>A4<br> MOVSB</p>
+<p>A5<br> MOVSW</p>
+<p>A6<br> CMPSB</p>
+<p>A7<br> CMPSW</p>
+<p>A8<br> TEST al,[mem8]</p>
+<p>A9<br> TEST ax,[mem16]</p>
+<p>AA<br> STOSB</p>
+<p>AB<br> STOSW</p>
+<p>AC<br> LODSB</p>
+<p>AD<br> LODSW</p>
+<p>AE<br> SCASB</p>
+<p>AF<br> SCASW</p>
+<p>B0<br> MOV al,immed8</p>
+<p>B1<br> MOV cl,immed8</p>
+<p>B2<br> MOV dl,immed8</p>
+<p>B3<br> MOV bl,immed8</p>
+<p>B4<br> MOV ah,immed8</p>
+<p>B5<br> MOV ch,immed8</p>
+<p>B6<br> MOV dh,immed8</p>
+<p>B7<br> MOV bh,immed8</p>
+<p>B8<br> MOV ax,immed16</p>
+<p>B9<br> MOV cx,immed16</p>
+<p>BA<br> MOV dx,immed16</p>
+<p>BB<br> MOV bx,immed16</p>
+<p>BC<br> MOV sp,immed16</p>
+<p>BD<br> MOV bp,immed16</p>
+<p>BE<br> MOV si,immed16</p>
+<p>BF<br> MOV di,immed16</p>
+<p>C0<br> Table1 reg8</p>
+<p>C1<br> Table1 reg8, reg16</p>
+<p>C2<br> RET immed16</p>
+<p>C3<br> RET</p>
+<p>C4<br> LES reg16/mem16,mem16</p>
+<p>C5<br> LDS reg16/mem16,mem16</p>
+<p>C6<br> MOV reg8/mem8,immed8</p>
+<p>C7<br> MOV reg16/mem16,immed16</p>
+<p>C8<br> ENTER immed16, immed8</p>
+<p>C9<br> LEAVE</p>
+<p>CA<br> RET immed16</p>
+<p>CB<br> RET</p>
+<p>CC<br> INT 3</p>
+<p>CD<br> INT immed8</p>
+<p>CE<br> INTO</p>
+<p>CF<br> IRET</p>
+<p>D0<br> Table1 reg8</p>
+<p>D1<br> Table1 reg16</p>
+<p>D2<br> Table1 reg8</p>
+<p>D3<br> Table1 reg16</p>
+<p>D4<br> AAM</p>
+<p>D5<br> AAD</p>
+<p>D6<br> Not used</p>
+<p>D7<br> XLAT [bx]</p>
+<p>D8<br> ESC immed8</p>
+<p>D9<br> ESC immed8</p>
+<p>DA<br> ESC immed8</p>
+<p>DB<br> ESC immed8</p>
+<p>DC<br> ESC immed8</p>
+<p>DD<br> ESC immed8</p>
+<p>DE<br> ESC immed8</p>
+<p>DF<br> ESC immed8</p>
+<p>E0<br> LOOPNE immed8</p>
+<p>E1<br> LOOPE immed8</p>
+<p>E2<br> LOOP immed8</p>
+<p>E3<br> JCXZ immed8</p>
+<p>E4<br> IN al,immed8</p>
+<p>E5<br> IN ax,immed16</p>
+<p>E6<br> OUT al,immed8</p>
+<p>E7<br> OUT ax,immed16</p>
+<p>E8<br> CALL immed16</p>
+<p>E9<br> JMP immed16</p>
+<p>EA<br> JMP immed32</p>
+<p>EB<br> JMP immed8</p>
+<p>EC<br> IN al,dx</p>
+<p>ED<br> IN ax,dx</p>
+<p>EE<br> OUT al,dx</p>
+<p>EF<br> OUT ax,dx</p>
+<p>F0<br> LOCK</p>
+<p>F1<br> Not used</p>
+<p>F2<br> REPNE</p>
+<p>F3<br> REP</p>
+<p>F4<br> HLT</p>
+<p>F5<br> CMC</p>
+<p>F6<br> Table3 reg8</p>
+<p>F7<br> Table3 reg16</p>
+<p>F8<br> CLC</p>
+<p>F9<br> STC</p>
+<p>FA<br> CLI</p>
+<p>FB<br> STI</p>
+<p>FC<br> CLD</p>
+<p>FD<br> STD</p>
+<p>FE<br> Table4 reg8</p>
+<p>FF<br> Table4 reg16<br>————————————————<br>版权声明：本文为 CSDN 博主「liqiang981」的原创文章，遵循 CC 4.0 BY-SA 版权协议，转载请附上原文出处链接及本声明。<br>原文链接：<a target="_blank" rel="noopener" href="https://blog.csdn.net/liqiang981/java/article/details/51895009">https://blog.csdn.net/liqiang981/java/article/details/51895009</a></p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">Author: </span><span class="post-copyright-info"><a href="mailto:undefined">John Doe</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">Link: </span><span class="post-copyright-info"><a href="http://example.com/2020/05/04/IDA%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E6%B1%87%E7%BC%96%E6%8C%87%E4%BB%A4%E6%9C%BA%E5%99%A8%E7%A0%81%E5%AF%B9%E5%BA%94%E5%88%97%E8%A1%A8/">http://example.com/2020/05/04/IDA%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E6%B1%87%E7%BC%96%E6%8C%87%E4%BB%A4%E6%9C%BA%E5%99%A8%E7%A0%81%E5%AF%B9%E5%BA%94%E5%88%97%E8%A1%A8/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">Copyright Notice: </span><span class="post-copyright-info">All articles in this blog are licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> unless stating additionally.</span></div></div><div class="tag_share"><div class="post-meta__tag-list"></div><div class="post_share"><div class="social-share" data-image="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2020/05/04/%E6%B5%85%E8%B0%88Base64%E5%8F%8A%E6%8D%A2%E8%A1%A8%E7%AC%94%E8%AE%B0/"><img class="prev-cover" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">Previous Post</div><div class="prev_info">浅谈Base64及换表笔记</div></div></a></div><div class="next-post pull-right"><a href="/2020/05/04/IDA%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E5%AE%9E%E6%88%98IDC%E8%84%9A%E6%9C%AC%E8%BF%87%E8%8A%B1%E6%8C%87%E4%BB%A4/"><img class="next-cover" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">Next Post</div><div class="next_info">IDA学习笔记-实战IDC脚本过花指令</div></div></a></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://i.loli.net/2021/02/24/5O1day2nriDzjSu.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">John Doe</div><div class="author-info__description"></div></div><div class="card-info-data"><div class="card-info-data-item is-center"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">317</div></a></div></div><a class="button--animated" id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/xxxxxx"><i class="fab fa-github"></i><span>Follow Me</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn card-announcement-animation"></i><span>Announcement</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>Recent Post</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2021/06/10/%E5%88%A9%E7%94%A8mprotect%E4%BF%AE%E6%94%B9%E7%A8%8B%E5%BA%8F%E6%AE%B5%E6%9D%83%E9%99%90%E4%B8%BA%E5%8F%AF%E6%89%A7%E8%A1%8C/" title="利用mprotect修改程序段权限为可执行"><img src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="利用mprotect修改程序段权限为可执行"/></a><div class="content"><a class="title" href="/2021/06/10/%E5%88%A9%E7%94%A8mprotect%E4%BF%AE%E6%94%B9%E7%A8%8B%E5%BA%8F%E6%AE%B5%E6%9D%83%E9%99%90%E4%B8%BA%E5%8F%AF%E6%89%A7%E8%A1%8C/" title="利用mprotect修改程序段权限为可执行">利用mprotect修改程序段权限为可执行</a><time datetime="2021-06-10T07:59:46.000Z" title="Created 2021-06-10 15:59:46">2021-06-10</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/05/31/SROP%EF%BC%881%EF%BC%89--%E4%BB%8E%E4%B8%A4%E9%81%93%E9%A2%98%E9%87%8D%E6%96%B0%E8%AE%A4%E8%AF%86SROP%20attack/" title="SROP（1）--从两道题重新认识SROP attack"><img src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="SROP（1）--从两道题重新认识SROP attack"/></a><div class="content"><a class="title" href="/2021/05/31/SROP%EF%BC%881%EF%BC%89--%E4%BB%8E%E4%B8%A4%E9%81%93%E9%A2%98%E9%87%8D%E6%96%B0%E8%AE%A4%E8%AF%86SROP%20attack/" title="SROP（1）--从两道题重新认识SROP attack">SROP（1）--从两道题重新认识SROP attack</a><time datetime="2021-05-31T02:14:53.000Z" title="Created 2021-05-31 10:14:53">2021-05-31</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/05/18/how2heap(14)-unsortedbin%20attack/" title="how2heap(14)-unsortedbin attack"><img src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="how2heap(14)-unsortedbin attack"/></a><div class="content"><a class="title" href="/2021/05/18/how2heap(14)-unsortedbin%20attack/" title="how2heap(14)-unsortedbin attack">how2heap(14)-unsortedbin attack</a><time datetime="2021-05-18T07:48:53.000Z" title="Created 2021-05-18 15:48:53">2021-05-18</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/05/17/how2heap(13)-tcache_stashing_unlink_attack/" title="how2heap(13)-tcache_stashing_unlink_attack"><img src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="how2heap(13)-tcache_stashing_unlink_attack"/></a><div class="content"><a class="title" href="/2021/05/17/how2heap(13)-tcache_stashing_unlink_attack/" title="how2heap(13)-tcache_stashing_unlink_attack">how2heap(13)-tcache_stashing_unlink_attack</a><time datetime="2021-05-17T02:16:40.000Z" title="Created 2021-05-17 10:16:40">2021-05-17</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/05/14/how2heap(12)-house%20of%20lore/" title="how2heap(12)-house of lore"><img src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="how2heap(12)-house of lore"/></a><div class="content"><a class="title" href="/2021/05/14/how2heap(12)-house%20of%20lore/" title="how2heap(12)-house of lore">how2heap(12)-house of lore</a><time datetime="2021-05-14T08:02:54.000Z" title="Created 2021-05-14 16:02:54">2021-05-14</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2021 By John Doe</div><div class="framework-info"><span>Framework </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>Theme </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="Read Mode"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="Switch Between Light And Dark Mode"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="Toggle between single-column and double-column"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="Setting"><i class="fas fa-cog fa-spin"></i></button><button id="go-up" type="button" title="Back To Top"><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><div class="js-pjax"></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>

@@ -1,0 +1,447 @@
+<!DOCTYPE html><html lang="en" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>IDA学习笔记-IDC脚本介绍 | Hexo</title><meta name="author" content="John Doe"><meta name="copyright" content="John Doe"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="referrer" content="no-referrer"><meta name="description" content="IDC 语言为 IDA 的一种脚本引擎，它之所以叫做 IDC 是因为它的语法与 C 语言很相似，下面介绍一些 IDC 常用的基本语法。 1.IDC 的变量没有明确的类型，IDC 关键字 auto 用于引入一个局部变量的声明，用 extern 关键字引入全局变量的声明，不能在声明全局变量时为其提供初始值。Example1: 12auto addr, reg, val;    &#x2F;&#x2F;没有初始化声明的多个">
+<meta property="og:type" content="article">
+<meta property="og:title" content="IDA学习笔记-IDC脚本介绍">
+<meta property="og:url" content="http://example.com/2020/05/05/IDA%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-IDC%E8%84%9A%E6%9C%AC%E4%BB%8B%E7%BB%8D/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="IDC 语言为 IDA 的一种脚本引擎，它之所以叫做 IDC 是因为它的语法与 C 语言很相似，下面介绍一些 IDC 常用的基本语法。 1.IDC 的变量没有明确的类型，IDC 关键字 auto 用于引入一个局部变量的声明，用 extern 关键字引入全局变量的声明，不能在声明全局变量时为其提供初始值。Example1: 12auto addr, reg, val;    &#x2F;&#x2F;没有初始化声明的多个">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg">
+<meta property="article:published_time" content="2020-05-05T06:09:17.000Z">
+<meta property="article:modified_time" content="2021-07-04T09:57:20.043Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://example.com/2020/05/05/IDA%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-IDC%E8%84%9A%E6%9C%AC%E4%BB%8B%E7%BB%8D/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: 'Copy successfully',
+    error: 'Copy error',
+    noSupport: 'The browser does not support'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: 'Just',
+    min: 'minutes ago',
+    hour: 'hours ago',
+    day: 'days ago',
+    month: 'months ago'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    jQuery: 'https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js',
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+    },
+    fancybox: {
+      js: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isanchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'IDA学习笔记-IDC脚本介绍',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: false,
+  postUpdate: '2021-07-04 17:57:20'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if (GLOBAL_CONFIG_SITE.isHome && /iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><meta name="generator" content="Hexo 5.4.0"><link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+</head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://i.loli.net/2021/02/24/5O1day2nriDzjSu.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data"><div class="data-item is-center"><div class="data-item-link"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">317</div></a></div></div></div><hr/></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">Hexo</a></span><div id="menus"><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">IDA学习笔记-IDC脚本介绍</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">Created</span><time class="post-meta-date-created" datetime="2020-05-05T06:09:17.000Z" title="Created 2020-05-05 14:09:17">2020-05-05</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">Updated</span><time class="post-meta-date-updated" datetime="2021-07-04T09:57:20.043Z" title="Updated 2021-07-04 17:57:20">2021-07-04</time></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="IDA学习笔记-IDC脚本介绍"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">Post View:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><p><strong>IDC 语言为 IDA 的一种脚本引擎，它之所以叫做 IDC 是因为它的语法与 C 语言很相似，下面介绍一些 IDC 常用的基本语法。</strong></p>
+<p>1.IDC 的变量没有明确的类型，IDC 关键字 auto 用于引入一个局部变量的声明，用 extern 关键字引入全局变量的声明，不能在声明全局变量时为其提供初始值。<br>Example1:</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">auto</span> addr, reg, val;    <span class="comment">//没有初始化声明的多个变量</span></span><br><span class="line"><span class="keyword">auto</span> count = <span class="number">0</span>;         <span class="comment">//已声明和初始化</span></span><br></pre></td></tr></table></figure>
+
+<p>Example2:</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">extern</span> outsideGlobal;</span><br><span class="line"><span class="function"><span class="keyword">static</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">extern</span> insideGlobal;</span><br><span class="line">	outsideGlobal = “Global”;</span><br><span class="line">	insideGlobal = <span class="number">1</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>2.IDC 几乎支持 C 中的所有运算和逻辑操作符，所有整数操作数均作为有符号的值处理。这会影响到整数比较与右移位运算。如果需要进行逻辑右移位运算，你必须修改结果的最高位，自己移位，如下代码：<br>Example3:</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">result = ( x &gt;&gt; <span class="number">1</span> ) &amp; <span class="number">0x7fffffff</span>;   <span class="comment">//将最大有效位设置为0</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>关于 0x7fffffff :<br>每个十六进制数为 4bit，因此 8 位 16 进制是 4 个字节，刚好是一个 int 整型，F 的二进制码为 1111，7 的二进制码为 0111。这样一来，整个整数 0x7FFFFFFF 的二进制表示就是除了首位是 0，其余都是 1。也就是说，这是最大的整型数 int（因为第一位是符号位，0 表示他是正数）。</p>
+</blockquote>
+<p>3.虽然 IDC 没有数组数据类型,但你可以使用分片运算符来处理 IDC 字符串,就好像他们是数组一样,IDC 分片的用法：<br>Example4:</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">auto</span> str = “String to slice”;</span><br><span class="line"><span class="keyword">auto</span> s1, s2, s3, s4;</span><br><span class="line">s1 = str[<span class="number">7</span>:<span class="number">9</span>];          <span class="comment">//&#x27;to&#x27;</span></span><br><span class="line">s2 = str[ :<span class="number">6</span>];     <span class="comment">//&#x27;String&#x27;</span></span><br><span class="line">s3 = str[<span class="number">10</span>: ];     <span class="comment">//&#x27;slice&#x27;</span></span><br><span class="line">s4 = str[<span class="number">5</span>];         <span class="comment">//&#x27;g&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<p>4.与 C 语言一样，IDC 所有简单语句均以分号结束。Switch 语句是 IDC 唯一不支持的 C 风格复合语句。在使用 for 语句时 IDC 不支持复合赋值运算符，如果你希望以除 1 以外的其他值为单位进行计数，就需要注意这一点，如下代码：<br>Example5:</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">auto</span> i;</span><br><span class="line"><span class="keyword">for</span> (i = <span class="number">0</span>; i &lt; <span class="number">10</span>; i += <span class="number">2</span>) &#123;&#125;       <span class="comment">//不合法，不支持 +=</span></span><br><span class="line"><span class="keyword">for</span> (i = <span class="number">0</span>; i &lt; <span class="number">10</span>; i = i + <span class="number">2</span>) &#123;&#125;    <span class="comment">//合法</span></span><br></pre></td></tr></table></figure>
+
+<p>5.输出语句（Message 函数类似于 C 中的 printf 函数）<br>Example6:</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">auto</span> i = <span class="number">10</span>;</span><br><span class="line"><span class="keyword">auto</span> j = <span class="number">20</span>;</span><br><span class="line">Message(“i = %d\n”, i）;</span><br><span class="line">Message(“j = %d\n”, j）;</span><br></pre></td></tr></table></figure>
+
+<p>6.IDC 文件仅仅在独立程序(.idc 文件)支持用户自定义的函数，IDC 命令对话框不支持。IDC 程序文件的基本结构：<br>Example7:</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;idc.idc&gt;</span>   <span class="comment">//头文件</span></span></span><br><span class="line"><span class="function"><span class="keyword">static</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="comment">//do something fun here</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>7.一些常用函数：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">1</span>）<span class="function"><span class="keyword">void</span> <span class="title">PatchByte</span><span class="params">(<span class="keyword">long</span> addr , <span class="keyword">long</span> val)</span><span class="comment">//设置虚拟地址addr处的一个字节值，PatchByte可更换为PatchWord，PatchDword设置虚拟地址addr处的2字节和4字节值。</span></span></span><br><span class="line"><span class="function">2）<span class="keyword">long</span> Byte（<span class="keyword">long</span> addr<span class="comment">//从虚拟地址addr读取一个字节值，Byte可更换为Word，Dword读取2字节和4字节值。</span></span></span><br><span class="line"><span class="function">3）<span class="keyword">void</span> Message（<span class="built_in">string</span> format , …）<span class="comment">//在输出窗口打印一条格式化消息。</span></span></span><br><span class="line"><span class="function">4）<span class="keyword">void</span> print（…）<span class="comment">//在输出窗口中打印每个参数的字符串表示形式。</span></span></span><br><span class="line"><span class="function">5）<span class="keyword">long</span> atol（<span class="built_in">string</span> val）<span class="comment">//将10进制val转化成对应整数值。</span></span></span><br><span class="line"><span class="function">6）<span class="keyword">long</span> xtol（<span class="built_in">string</span> val）<span class="comment">//将16进制val转化成对应整数值。</span></span></span><br><span class="line"><span class="function">7）<span class="keyword">long</span> ord（<span class="built_in">string</span> ch）<span class="comment">//返回单字符字符串ch的ASCII值。</span></span></span><br><span class="line"><span class="function">8）<span class="built_in">string</span> Name（<span class="keyword">long</span> addr）<span class="comment">//返回与给定地址有关的名称，如果该位置没有名称，则返回空字符串。</span></span></span><br></pre></td></tr></table></figure>
+
+<p>另外，还有一些函数值得我们注意：</p>
+<table>
+<thead>
+<tr>
+<th align="center">返回值</th>
+<th align="center">函数名</th>
+<th align="center">参数</th>
+<th align="center">注释</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">long</td>
+<td align="center">Byte</td>
+<td align="center">long addr</td>
+<td align="center">从虚拟地址 addr 处读取一个字节</td>
+</tr>
+<tr>
+<td align="center">long</td>
+<td align="center">Word</td>
+<td align="center">long addr</td>
+<td align="center">从虚拟地址 addr 处读取两个字节</td>
+</tr>
+<tr>
+<td align="center">long</td>
+<td align="center">Dword</td>
+<td align="center">long addr</td>
+<td align="center">从虚拟地址 addr 处读取四个字节</td>
+</tr>
+<tr>
+<td align="center">void</td>
+<td align="center">PatchByte</td>
+<td align="center">long addr, long val</td>
+<td align="center">设置虚拟地址 addr 处的一个字节值</td>
+</tr>
+<tr>
+<td align="center">void</td>
+<td align="center">PatchWord</td>
+<td align="center">long addr, long val</td>
+<td align="center">设置虚拟地址 addr 处的两个字节值</td>
+</tr>
+<tr>
+<td align="center">void</td>
+<td align="center">PatchWord</td>
+<td align="center">long addr, long val</td>
+<td align="center">设置虚拟地址 addr 处的两个字节值</td>
+</tr>
+<tr>
+<td align="center">void</td>
+<td align="center">PatchDword</td>
+<td align="center">long addr, long val</td>
+<td align="center">设置虚拟地址 addr 处四个字节值</td>
+</tr>
+<tr>
+<td align="center">bool</td>
+<td align="center">isLoaded</td>
+<td align="center">long addr</td>
+<td align="center">如果 addr 包含有效数据，则返回 1，否则 0；如果提供一个无效的地址也会返回 0xff，所以 isloaded 可以判断是否有数据</td>
+</tr>
+<tr>
+<td align="center">void</td>
+<td align="center">Message</td>
+<td align="center">string format,….</td>
+<td align="center">在输出窗口打印一条格式化字符串</td>
+</tr>
+<tr>
+<td align="center">void</td>
+<td align="center">print</td>
+<td align="center">….</td>
+<td align="center">在输出窗口打印每个参数的字符串表示形式</td>
+</tr>
+<tr>
+<td align="center">void</td>
+<td align="center">Warning</td>
+<td align="center">string format,….</td>
+<td align="center">在对话框中显示一条格式化消息</td>
+</tr>
+<tr>
+<td align="center">string</td>
+<td align="center">AskStr</td>
+<td align="center">string default, string prompt</td>
+<td align="center">显示一个输入框，要求用户输入一个字符串。如果操作成功</td>
+</tr>
+<tr>
+<td align="center">返回用户字符串，如果取消则返回 0</td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center">string</td>
+<td align="center">AskFile</td>
+<td align="center">long doSave, string mask,string prompt</td>
+<td align="center">显示一个文件选择对话框，以简化选择文件任务，如果操作成功，返回选择文件的名称，如果取消，返回 0</td>
+</tr>
+<tr>
+<td align="center">long</td>
+<td align="center">AskYN</td>
+<td align="center">long default, string prompt</td>
+<td align="center">用一个答案为是或否提问，1 为是，0 为否，-1 取消</td>
+</tr>
+<tr>
+<td align="center">long</td>
+<td align="center">ScreenEA</td>
+<td align="center"></td>
+<td align="center">返回当前光标所在位置的虚拟地址</td>
+</tr>
+<tr>
+<td align="center">bool</td>
+<td align="center">Jump</td>
+<td align="center">long addr</td>
+<td align="center">跳转到反汇编窗口指定地址</td>
+</tr>
+<tr>
+<td align="center">string</td>
+<td align="center">form</td>
+<td align="center">string format,….</td>
+<td align="center">返回一个新字符串，由所提供的值格式化</td>
+</tr>
+<tr>
+<td align="center">string</td>
+<td align="center">sprintf</td>
+<td align="center">string format,….</td>
+<td align="center">在 ida5.6 代替 form</td>
+</tr>
+<tr>
+<td align="center">long</td>
+<td align="center">atol</td>
+<td align="center">string val</td>
+<td align="center">十进制转换为整数</td>
+</tr>
+<tr>
+<td align="center">long</td>
+<td align="center">xtol</td>
+<td align="center">string val</td>
+<td align="center">转换为 16 进制</td>
+</tr>
+<tr>
+<td align="center">string</td>
+<td align="center">ltoa</td>
+<td align="center">long val, long radix</td>
+<td align="center">以指定进制返回 val</td>
+</tr>
+<tr>
+<td align="center">long</td>
+<td align="center">ord</td>
+<td align="center">string ch</td>
+<td align="center">返回单个字符串 ASCII</td>
+</tr>
+<tr>
+<td align="center">long</td>
+<td align="center">strlen</td>
+<td align="center">string str</td>
+<td align="center">返回字符串长度</td>
+</tr>
+<tr>
+<td align="center">long</td>
+<td align="center">strstr</td>
+<td align="center">string str, string substr</td>
+<td align="center">返回 str 中 substr 的索引</td>
+</tr>
+<tr>
+<td align="center">string</td>
+<td align="center">substr</td>
+<td align="center">string str, long start ,long end</td>
+<td align="center">返回 start 到 end-1 的字符串</td>
+</tr>
+<tr>
+<td align="center">long</td>
+<td align="center">fopen</td>
+<td align="center">string filename, string mode</td>
+<td align="center">返回文件句柄，和 c 语言一样</td>
+</tr>
+<tr>
+<td align="center">void</td>
+<td align="center">fclose</td>
+<td align="center">long handle</td>
+<td align="center">关闭文件</td>
+</tr>
+<tr>
+<td align="center">long</td>
+<td align="center">filelength</td>
+<td align="center">long handle</td>
+<td align="center">返回指定文件长度，如果错误-1</td>
+</tr>
+<tr>
+<td align="center">long</td>
+<td align="center">fgetc</td>
+<td align="center">long handle</td>
+<td align="center">从文件中读取一个字节</td>
+</tr>
+<tr>
+<td align="center">long</td>
+<td align="center">fputc</td>
+<td align="center">long val, long handle</td>
+<td align="center">写入一个字节，成功则 0，失败-1</td>
+</tr>
+<tr>
+<td align="center">long</td>
+<td align="center">fprintf</td>
+<td align="center">long handle,string format, …</td>
+<td align="center">一个格式化字符串写入给定文件</td>
+</tr>
+<tr>
+<td align="center">long</td>
+<td align="center">writestr</td>
+<td align="center">long handle, string str</td>
+<td align="center">指定字符串写入文件</td>
+</tr>
+<tr>
+<td align="center">string/long</td>
+<td align="center">readstr</td>
+<td align="center">long handle</td>
+<td align="center">从给定文件中读取一个字符串，读到一个换行符为止，包括换行符，末尾返回-1</td>
+</tr>
+<tr>
+<td align="center">long</td>
+<td align="center">Dfirst</td>
+<td align="center">long from</td>
+<td align="center">返回给定地址应用一个数据值的第一个位置。没有返回-1</td>
+</tr>
+<tr>
+<td align="center">long</td>
+<td align="center">Dnext</td>
+<td align="center">long from,long current</td>
+<td align="center">如果已经有一个位置，可以利用当前位置，搜索下一个位置。错误返回-1</td>
+</tr>
+<tr>
+<td align="center">long</td>
+<td align="center">XrefType</td>
+<td align="center"></td>
+<td align="center">返回最后一个交叉引用查询函数返回的类型</td>
+</tr>
+<tr>
+<td align="center">long</td>
+<td align="center">DfirstB</td>
+<td align="center">long to</td>
+<td align="center">返回给顶地址作为数据引用的第一个位置，不存在返回-1</td>
+</tr>
+<tr>
+<td align="center">long</td>
+<td align="center">DnextB</td>
+<td align="center">long to, long current</td>
+<td align="center">如果已经有一个位置，可以利用当前位置，搜索下一个位置。错误返回-1</td>
+</tr>
+<tr>
+<td align="center">long</td>
+<td align="center">FindCode</td>
+<td align="center">long addr, long flags</td>
+<td align="center">flag 指定查找行为，SEARCH_DOWN,扫描高位地址，SEARCH_NEXT 跳过当前匹配，搜索下一个，SEARCH_CASE 以区分大小写方式扫描二进制文本</td>
+</tr>
+<tr>
+<td align="center">从给定地址搜索一条指令</td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center">long</td>
+<td align="center">FindeData</td>
+<td align="center">long addr, long flags</td>
+<td align="center">从给定地址搜索一个数据项</td>
+</tr>
+<tr>
+<td align="center">long</td>
+<td align="center">FindBinary</td>
+<td align="center">long addr, long flags, string binary</td>
+<td align="center">从给定地址搜索一个字节序列</td>
+</tr>
+</tbody></table>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">Author: </span><span class="post-copyright-info"><a href="mailto:undefined">John Doe</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">Link: </span><span class="post-copyright-info"><a href="http://example.com/2020/05/05/IDA%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-IDC%E8%84%9A%E6%9C%AC%E4%BB%8B%E7%BB%8D/">http://example.com/2020/05/05/IDA%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-IDC%E8%84%9A%E6%9C%AC%E4%BB%8B%E7%BB%8D/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">Copyright Notice: </span><span class="post-copyright-info">All articles in this blog are licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> unless stating additionally.</span></div></div><div class="tag_share"><div class="post-meta__tag-list"></div><div class="post_share"><div class="social-share" data-image="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2020/05/05/IDA%E7%AC%94%E8%AE%B0%E5%AD%A6%E4%B9%A0-%E4%BA%A4%E5%8F%89%E5%BC%95%E7%94%A8%EF%BC%88XREF)/"><img class="prev-cover" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">Previous Post</div><div class="prev_info">IDA笔记学习-交叉引用（XREF)</div></div></a></div><div class="next-post pull-right"><a href="/2020/05/05/IDA%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E7%94%B1%E4%BA%8E%E6%B1%87%E7%BC%96%E4%BB%A3%E7%A0%81%E8%BF%87%E9%95%BF%E5%AF%BC%E8%87%B4%E6%97%A0%E6%B3%95%E6%9F%A5%E7%9C%8B%E4%BC%AA%E4%BB%A3%E7%A0%81/"><img class="next-cover" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">Next Post</div><div class="next_info">IDA学习笔记-由于汇编代码过长导致无法查看伪代码</div></div></a></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://i.loli.net/2021/02/24/5O1day2nriDzjSu.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">John Doe</div><div class="author-info__description"></div></div><div class="card-info-data"><div class="card-info-data-item is-center"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">317</div></a></div></div><a class="button--animated" id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/xxxxxx"><i class="fab fa-github"></i><span>Follow Me</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn card-announcement-animation"></i><span>Announcement</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>Recent Post</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2021/06/10/%E5%88%A9%E7%94%A8mprotect%E4%BF%AE%E6%94%B9%E7%A8%8B%E5%BA%8F%E6%AE%B5%E6%9D%83%E9%99%90%E4%B8%BA%E5%8F%AF%E6%89%A7%E8%A1%8C/" title="利用mprotect修改程序段权限为可执行"><img src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="利用mprotect修改程序段权限为可执行"/></a><div class="content"><a class="title" href="/2021/06/10/%E5%88%A9%E7%94%A8mprotect%E4%BF%AE%E6%94%B9%E7%A8%8B%E5%BA%8F%E6%AE%B5%E6%9D%83%E9%99%90%E4%B8%BA%E5%8F%AF%E6%89%A7%E8%A1%8C/" title="利用mprotect修改程序段权限为可执行">利用mprotect修改程序段权限为可执行</a><time datetime="2021-06-10T07:59:46.000Z" title="Created 2021-06-10 15:59:46">2021-06-10</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/05/31/SROP%EF%BC%881%EF%BC%89--%E4%BB%8E%E4%B8%A4%E9%81%93%E9%A2%98%E9%87%8D%E6%96%B0%E8%AE%A4%E8%AF%86SROP%20attack/" title="SROP（1）--从两道题重新认识SROP attack"><img src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="SROP（1）--从两道题重新认识SROP attack"/></a><div class="content"><a class="title" href="/2021/05/31/SROP%EF%BC%881%EF%BC%89--%E4%BB%8E%E4%B8%A4%E9%81%93%E9%A2%98%E9%87%8D%E6%96%B0%E8%AE%A4%E8%AF%86SROP%20attack/" title="SROP（1）--从两道题重新认识SROP attack">SROP（1）--从两道题重新认识SROP attack</a><time datetime="2021-05-31T02:14:53.000Z" title="Created 2021-05-31 10:14:53">2021-05-31</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/05/18/how2heap(14)-unsortedbin%20attack/" title="how2heap(14)-unsortedbin attack"><img src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="how2heap(14)-unsortedbin attack"/></a><div class="content"><a class="title" href="/2021/05/18/how2heap(14)-unsortedbin%20attack/" title="how2heap(14)-unsortedbin attack">how2heap(14)-unsortedbin attack</a><time datetime="2021-05-18T07:48:53.000Z" title="Created 2021-05-18 15:48:53">2021-05-18</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/05/17/how2heap(13)-tcache_stashing_unlink_attack/" title="how2heap(13)-tcache_stashing_unlink_attack"><img src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="how2heap(13)-tcache_stashing_unlink_attack"/></a><div class="content"><a class="title" href="/2021/05/17/how2heap(13)-tcache_stashing_unlink_attack/" title="how2heap(13)-tcache_stashing_unlink_attack">how2heap(13)-tcache_stashing_unlink_attack</a><time datetime="2021-05-17T02:16:40.000Z" title="Created 2021-05-17 10:16:40">2021-05-17</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/05/14/how2heap(12)-house%20of%20lore/" title="how2heap(12)-house of lore"><img src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="how2heap(12)-house of lore"/></a><div class="content"><a class="title" href="/2021/05/14/how2heap(12)-house%20of%20lore/" title="how2heap(12)-house of lore">how2heap(12)-house of lore</a><time datetime="2021-05-14T08:02:54.000Z" title="Created 2021-05-14 16:02:54">2021-05-14</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2021 By John Doe</div><div class="framework-info"><span>Framework </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>Theme </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="Read Mode"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="Switch Between Light And Dark Mode"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="Toggle between single-column and double-column"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="Setting"><i class="fas fa-cog fa-spin"></i></button><button id="go-up" type="button" title="Back To Top"><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><div class="js-pjax"></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>

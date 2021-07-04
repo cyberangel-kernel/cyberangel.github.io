@@ -1,0 +1,1099 @@
+<!DOCTYPE html><html lang="en" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Linux64位系统调用号 | Hexo</title><meta name="author" content="John Doe"><meta name="copyright" content="John Doe"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="referrer" content="no-referrer"><meta name="description" content="来自:https:&#x2F;&#x2F;blog.csdn.net&#x2F;qq_41202237&#x2F;article&#x2F;details&#x2F;107250349     系统调用 调用号 系统调用 调用号    read 0 write 1   open 2 close 3   stat 4 fstat 5   lstat 6 poll 7   lseek 8 mmap 9   mprotect 10 munmap 11   br">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Linux64位系统调用号">
+<meta property="og:url" content="http://example.com/2020/08/24/Linux64%E4%BD%8D%E7%B3%BB%E7%BB%9F%E8%B0%83%E7%94%A8%E5%8F%B7/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="来自:https:&#x2F;&#x2F;blog.csdn.net&#x2F;qq_41202237&#x2F;article&#x2F;details&#x2F;107250349     系统调用 调用号 系统调用 调用号    read 0 write 1   open 2 close 3   stat 4 fstat 5   lstat 6 poll 7   lseek 8 mmap 9   mprotect 10 munmap 11   br">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg">
+<meta property="article:published_time" content="2020-08-24T06:03:50.000Z">
+<meta property="article:modified_time" content="2021-07-04T09:57:16.980Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://example.com/2020/08/24/Linux64%E4%BD%8D%E7%B3%BB%E7%BB%9F%E8%B0%83%E7%94%A8%E5%8F%B7/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: 'Copy successfully',
+    error: 'Copy error',
+    noSupport: 'The browser does not support'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: 'Just',
+    min: 'minutes ago',
+    hour: 'hours ago',
+    day: 'days ago',
+    month: 'months ago'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    jQuery: 'https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js',
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+    },
+    fancybox: {
+      js: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isanchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'Linux64位系统调用号',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: false,
+  postUpdate: '2021-07-04 17:57:16'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if (GLOBAL_CONFIG_SITE.isHome && /iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><meta name="generator" content="Hexo 5.4.0"><link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+</head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://i.loli.net/2021/02/24/5O1day2nriDzjSu.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data"><div class="data-item is-center"><div class="data-item-link"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">317</div></a></div></div></div><hr/></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">Hexo</a></span><div id="menus"><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">Linux64位系统调用号</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">Created</span><time class="post-meta-date-created" datetime="2020-08-24T06:03:50.000Z" title="Created 2020-08-24 14:03:50">2020-08-24</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">Updated</span><time class="post-meta-date-updated" datetime="2021-07-04T09:57:16.980Z" title="Updated 2021-07-04 17:57:16">2021-07-04</time></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="Linux64位系统调用号"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">Post View:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><blockquote>
+<p>来自:<a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_41202237/article/details/107250349">https://blog.csdn.net/qq_41202237/article/details/107250349</a></p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>系统调用</th>
+<th>调用号</th>
+<th>系统调用</th>
+<th>调用号</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>read</td>
+<td>0</td>
+<td>write</td>
+<td>1</td>
+</tr>
+<tr>
+<td>open</td>
+<td>2</td>
+<td>close</td>
+<td>3</td>
+</tr>
+<tr>
+<td>stat</td>
+<td>4</td>
+<td>fstat</td>
+<td>5</td>
+</tr>
+<tr>
+<td>lstat</td>
+<td>6</td>
+<td>poll</td>
+<td>7</td>
+</tr>
+<tr>
+<td>lseek</td>
+<td>8</td>
+<td>mmap</td>
+<td>9</td>
+</tr>
+<tr>
+<td>mprotect</td>
+<td>10</td>
+<td>munmap</td>
+<td>11</td>
+</tr>
+<tr>
+<td>brk</td>
+<td>12</td>
+<td>rt_sigaction</td>
+<td>13</td>
+</tr>
+<tr>
+<td>rt_sigprocmask</td>
+<td>14</td>
+<td>rt_sigreturn</td>
+<td>15</td>
+</tr>
+<tr>
+<td>ioctl</td>
+<td>16</td>
+<td>pread64</td>
+<td>17</td>
+</tr>
+<tr>
+<td>pwrite64</td>
+<td>18</td>
+<td>readv</td>
+<td>19</td>
+</tr>
+<tr>
+<td>writev</td>
+<td>20</td>
+<td>access</td>
+<td>21</td>
+</tr>
+<tr>
+<td>pipe</td>
+<td>22</td>
+<td>select</td>
+<td>23</td>
+</tr>
+<tr>
+<td>sched_yield</td>
+<td>24</td>
+<td>mremap</td>
+<td>25</td>
+</tr>
+<tr>
+<td>msync</td>
+<td>26</td>
+<td>mincore</td>
+<td>27</td>
+</tr>
+<tr>
+<td>madvise</td>
+<td>28</td>
+<td>shmget</td>
+<td>29</td>
+</tr>
+<tr>
+<td>shmat</td>
+<td>30</td>
+<td>shmctl</td>
+<td>31</td>
+</tr>
+<tr>
+<td>dup</td>
+<td>32</td>
+<td>dup2</td>
+<td>33</td>
+</tr>
+<tr>
+<td>pause</td>
+<td>34</td>
+<td>nanosleep</td>
+<td>35</td>
+</tr>
+<tr>
+<td>getitimer</td>
+<td>36</td>
+<td>alarm</td>
+<td>37</td>
+</tr>
+<tr>
+<td>setitimer</td>
+<td>38</td>
+<td>getpid</td>
+<td>39</td>
+</tr>
+<tr>
+<td>sendfile</td>
+<td>40</td>
+<td>socket</td>
+<td>41</td>
+</tr>
+<tr>
+<td>connect</td>
+<td>42</td>
+<td>accept</td>
+<td>43</td>
+</tr>
+<tr>
+<td>sendto</td>
+<td>44</td>
+<td>recvfrom</td>
+<td>45</td>
+</tr>
+<tr>
+<td>sendmsg</td>
+<td>46</td>
+<td>recvmsg</td>
+<td>47</td>
+</tr>
+<tr>
+<td>shutdown</td>
+<td>48</td>
+<td>bind</td>
+<td>49</td>
+</tr>
+<tr>
+<td>listen</td>
+<td>50</td>
+<td>getsockname</td>
+<td>51</td>
+</tr>
+<tr>
+<td>getpeername</td>
+<td>52</td>
+<td>socketpair</td>
+<td>53</td>
+</tr>
+<tr>
+<td>setsockopt</td>
+<td>54</td>
+<td>getsockopt</td>
+<td>55</td>
+</tr>
+<tr>
+<td>clone</td>
+<td>56</td>
+<td>fork</td>
+<td>57</td>
+</tr>
+<tr>
+<td>vfork</td>
+<td>58</td>
+<td>execve</td>
+<td>59</td>
+</tr>
+<tr>
+<td>exit</td>
+<td>60</td>
+<td>wait4</td>
+<td>61</td>
+</tr>
+<tr>
+<td>kill</td>
+<td>62</td>
+<td>uname</td>
+<td>63</td>
+</tr>
+<tr>
+<td>semget</td>
+<td>64</td>
+<td>semop</td>
+<td>65</td>
+</tr>
+<tr>
+<td>semctl</td>
+<td>66</td>
+<td>shmdt</td>
+<td>67</td>
+</tr>
+<tr>
+<td>msgget</td>
+<td>68</td>
+<td>msgsnd</td>
+<td>69</td>
+</tr>
+<tr>
+<td>msgrcv</td>
+<td>70</td>
+<td>msgctl</td>
+<td>71</td>
+</tr>
+<tr>
+<td>fcntl</td>
+<td>72</td>
+<td>flock</td>
+<td>73</td>
+</tr>
+<tr>
+<td>fsync</td>
+<td>74</td>
+<td>fdatasync</td>
+<td>75</td>
+</tr>
+<tr>
+<td>truncate</td>
+<td>76</td>
+<td>ftruncate</td>
+<td>77</td>
+</tr>
+<tr>
+<td>getdents</td>
+<td>78</td>
+<td>getcwd</td>
+<td>79</td>
+</tr>
+<tr>
+<td>chdir</td>
+<td>80</td>
+<td>fchdir</td>
+<td>81</td>
+</tr>
+<tr>
+<td>rename</td>
+<td>82</td>
+<td>mkdir</td>
+<td>83</td>
+</tr>
+<tr>
+<td>rmdir</td>
+<td>84</td>
+<td>creat</td>
+<td>85</td>
+</tr>
+<tr>
+<td>link</td>
+<td>86</td>
+<td>unlink</td>
+<td>87</td>
+</tr>
+<tr>
+<td>symlink</td>
+<td>88</td>
+<td>readlink</td>
+<td>89</td>
+</tr>
+<tr>
+<td>chmod</td>
+<td>90</td>
+<td>fchmod</td>
+<td>91</td>
+</tr>
+<tr>
+<td>chown</td>
+<td>92</td>
+<td>fchown</td>
+<td>93</td>
+</tr>
+<tr>
+<td>lchown</td>
+<td>94</td>
+<td>umask</td>
+<td>95</td>
+</tr>
+<tr>
+<td>gettimeofday</td>
+<td>96</td>
+<td>getrlimit</td>
+<td>97</td>
+</tr>
+<tr>
+<td>getrusage</td>
+<td>98</td>
+<td>sysinfo</td>
+<td>99</td>
+</tr>
+<tr>
+<td>times</td>
+<td>100</td>
+<td>ptrace</td>
+<td>101</td>
+</tr>
+<tr>
+<td>getuid</td>
+<td>102</td>
+<td>syslog</td>
+<td>103</td>
+</tr>
+<tr>
+<td>getgid</td>
+<td>104</td>
+<td>setuid</td>
+<td>105</td>
+</tr>
+<tr>
+<td>setgid</td>
+<td>106</td>
+<td>geteuid</td>
+<td>107</td>
+</tr>
+<tr>
+<td>getegid</td>
+<td>108</td>
+<td>setpgid</td>
+<td>109</td>
+</tr>
+<tr>
+<td>getppid</td>
+<td>110</td>
+<td>getpgrp</td>
+<td>111</td>
+</tr>
+<tr>
+<td>setsid</td>
+<td>112</td>
+<td>setreuid</td>
+<td>113</td>
+</tr>
+<tr>
+<td>setregid</td>
+<td>114</td>
+<td>getgroups</td>
+<td>115</td>
+</tr>
+<tr>
+<td>setgroups</td>
+<td>116</td>
+<td>setresuid</td>
+<td>117</td>
+</tr>
+<tr>
+<td>getresuid</td>
+<td>118</td>
+<td>setresgid</td>
+<td>119</td>
+</tr>
+<tr>
+<td>getresgid</td>
+<td>120</td>
+<td>getpgid</td>
+<td>121</td>
+</tr>
+<tr>
+<td>setfsuid</td>
+<td>122</td>
+<td>setfsgid</td>
+<td>123</td>
+</tr>
+<tr>
+<td>getsid</td>
+<td>124</td>
+<td>capget</td>
+<td>125</td>
+</tr>
+<tr>
+<td>capset</td>
+<td>126</td>
+<td>rt_sigpending</td>
+<td>127</td>
+</tr>
+<tr>
+<td>rt_sigtimedwait</td>
+<td>128</td>
+<td>rt_sigqueueinfo</td>
+<td>129</td>
+</tr>
+<tr>
+<td>rt_sigsuspend</td>
+<td>130</td>
+<td>sigaltstack</td>
+<td>131</td>
+</tr>
+<tr>
+<td>utime</td>
+<td>132</td>
+<td>mknod</td>
+<td>133</td>
+</tr>
+<tr>
+<td>uselib</td>
+<td>13</td>
+<td>4personality</td>
+<td>135</td>
+</tr>
+<tr>
+<td>ustat</td>
+<td>136</td>
+<td>statfs</td>
+<td>137</td>
+</tr>
+<tr>
+<td>fstatfs</td>
+<td>138</td>
+<td>sysfs</td>
+<td>139</td>
+</tr>
+<tr>
+<td>getpriority</td>
+<td>140</td>
+<td>setpriority</td>
+<td>141</td>
+</tr>
+<tr>
+<td>sched_setparam</td>
+<td>142</td>
+<td>sched_getparam</td>
+<td>143</td>
+</tr>
+<tr>
+<td>sched_setscheduler</td>
+<td>144</td>
+<td>sched_getscheduler</td>
+<td>145</td>
+</tr>
+<tr>
+<td>sched_get_priority_max</td>
+<td>146</td>
+<td>sched_get_priority_min</td>
+<td>147</td>
+</tr>
+<tr>
+<td>sched_rr_get_interval</td>
+<td>148</td>
+<td>mlock</td>
+<td>149</td>
+</tr>
+<tr>
+<td>munlock</td>
+<td>150</td>
+<td>mlockall</td>
+<td>151</td>
+</tr>
+<tr>
+<td>munlockall</td>
+<td>152</td>
+<td>vhangup</td>
+<td>153</td>
+</tr>
+<tr>
+<td>modify_ldt</td>
+<td>154</td>
+<td>pivot_root</td>
+<td>155</td>
+</tr>
+<tr>
+<td>_sysctl</td>
+<td>156</td>
+<td>prctl</td>
+<td>157</td>
+</tr>
+<tr>
+<td>arch_prctl</td>
+<td>158</td>
+<td>adjtimex</td>
+<td>159</td>
+</tr>
+<tr>
+<td>setrlimit</td>
+<td>160</td>
+<td>chroot</td>
+<td>161</td>
+</tr>
+<tr>
+<td>sync</td>
+<td>162</td>
+<td>acct</td>
+<td>163</td>
+</tr>
+<tr>
+<td>settimeofday</td>
+<td>164</td>
+<td>mount</td>
+<td>165</td>
+</tr>
+<tr>
+<td>umount2</td>
+<td>166</td>
+<td>swapon</td>
+<td>167</td>
+</tr>
+<tr>
+<td>swapoff</td>
+<td>168</td>
+<td>reboot</td>
+<td>169</td>
+</tr>
+<tr>
+<td>sethostname</td>
+<td>170</td>
+<td>setdomainname</td>
+<td>171</td>
+</tr>
+<tr>
+<td>iopl</td>
+<td>172</td>
+<td>ioperm</td>
+<td>173</td>
+</tr>
+<tr>
+<td>create_module</td>
+<td>174</td>
+<td>init_module</td>
+<td>175</td>
+</tr>
+<tr>
+<td>delete_module</td>
+<td>176</td>
+<td>get_kernel_syms</td>
+<td>177</td>
+</tr>
+<tr>
+<td>query_module</td>
+<td>178</td>
+<td>quotactl</td>
+<td>179</td>
+</tr>
+<tr>
+<td>nfsservctl</td>
+<td>180</td>
+<td>getpmsg</td>
+<td>181</td>
+</tr>
+<tr>
+<td>putpmsg</td>
+<td>182</td>
+<td>afs_syscall</td>
+<td>183</td>
+</tr>
+<tr>
+<td>tuxcall</td>
+<td>184</td>
+<td>security</td>
+<td>185</td>
+</tr>
+<tr>
+<td>gettid</td>
+<td>186</td>
+<td>readahead</td>
+<td>187</td>
+</tr>
+<tr>
+<td>setxattr</td>
+<td>188</td>
+<td>lsetxattr</td>
+<td>189</td>
+</tr>
+<tr>
+<td>fsetxattr</td>
+<td>190</td>
+<td>getxattr</td>
+<td>191</td>
+</tr>
+<tr>
+<td>lgetxattr</td>
+<td>192</td>
+<td>fgetxattr</td>
+<td>193</td>
+</tr>
+<tr>
+<td>listxattr</td>
+<td>194</td>
+<td>llistxattr</td>
+<td>195</td>
+</tr>
+<tr>
+<td>flistxattr</td>
+<td>196</td>
+<td>removexattr</td>
+<td>197</td>
+</tr>
+<tr>
+<td>lremovexattr</td>
+<td>198</td>
+<td>fremovexattr</td>
+<td>199</td>
+</tr>
+<tr>
+<td>tkill</td>
+<td>200</td>
+<td>time</td>
+<td>201</td>
+</tr>
+<tr>
+<td>futex</td>
+<td>202</td>
+<td>sched_setaffinity</td>
+<td>203</td>
+</tr>
+<tr>
+<td>sched_getaffinity</td>
+<td>204</td>
+<td>set_thread_area</td>
+<td>205</td>
+</tr>
+<tr>
+<td>io_setup</td>
+<td>206</td>
+<td>io_destroy</td>
+<td>207</td>
+</tr>
+<tr>
+<td>io_getevents</td>
+<td>208</td>
+<td>io_submit</td>
+<td>209</td>
+</tr>
+<tr>
+<td>io_cancel</td>
+<td>210</td>
+<td>get_thread_area</td>
+<td>211</td>
+</tr>
+<tr>
+<td>lookup_dcookie</td>
+<td>212</td>
+<td>epoll_create</td>
+<td>213</td>
+</tr>
+<tr>
+<td>epoll_ctl_old</td>
+<td>214</td>
+<td>epoll_wait_old</td>
+<td>215</td>
+</tr>
+<tr>
+<td>remap_file_pages</td>
+<td>216</td>
+<td>getdents64</td>
+<td>217</td>
+</tr>
+<tr>
+<td>set_tid_address</td>
+<td>218</td>
+<td>restart_syscall</td>
+<td>219</td>
+</tr>
+<tr>
+<td>semtimedop</td>
+<td>220</td>
+<td>fadvise64</td>
+<td>221</td>
+</tr>
+<tr>
+<td>timer_create</td>
+<td>222</td>
+<td>timer_settime</td>
+<td>223</td>
+</tr>
+<tr>
+<td>timer_gettime</td>
+<td>224</td>
+<td>timer_getoverrun</td>
+<td>225</td>
+</tr>
+<tr>
+<td>timer_delete</td>
+<td>226</td>
+<td>clock_settime</td>
+<td>227</td>
+</tr>
+<tr>
+<td>clock_gettime</td>
+<td>228</td>
+<td>clock_getres</td>
+<td>229</td>
+</tr>
+<tr>
+<td>clock_nanosleep</td>
+<td>230</td>
+<td>exit_group</td>
+<td>231</td>
+</tr>
+<tr>
+<td>epoll_wait</td>
+<td>232</td>
+<td>epoll_ctl</td>
+<td>233</td>
+</tr>
+<tr>
+<td>tgkill</td>
+<td>234</td>
+<td>utimes</td>
+<td>235</td>
+</tr>
+<tr>
+<td>vserver</td>
+<td>236</td>
+<td>mbind</td>
+<td>237</td>
+</tr>
+<tr>
+<td>set_mempolicy</td>
+<td>238</td>
+<td>get_mempolicy</td>
+<td>239</td>
+</tr>
+<tr>
+<td>mq_open</td>
+<td>240</td>
+<td>mq_unlink</td>
+<td>241</td>
+</tr>
+<tr>
+<td>mq_timedsend</td>
+<td>242</td>
+<td>mq_timedreceive</td>
+<td>243</td>
+</tr>
+<tr>
+<td>mq_notify</td>
+<td>244</td>
+<td>mq_getsetattr</td>
+<td>245</td>
+</tr>
+<tr>
+<td>kexec_load</td>
+<td>246</td>
+<td>waitid</td>
+<td>247</td>
+</tr>
+<tr>
+<td>add_key</td>
+<td>248</td>
+<td>request_key</td>
+<td>249</td>
+</tr>
+<tr>
+<td>keyctl</td>
+<td>250</td>
+<td>ioprio_set</td>
+<td>251</td>
+</tr>
+<tr>
+<td>ioprio_get</td>
+<td>252</td>
+<td>inotify_init</td>
+<td>253</td>
+</tr>
+<tr>
+<td>inotify_add_watch</td>
+<td>254</td>
+<td>inotify_rm_watch</td>
+<td>255</td>
+</tr>
+<tr>
+<td>migrate_pages</td>
+<td>256</td>
+<td>openat</td>
+<td>257</td>
+</tr>
+<tr>
+<td>mkdirat</td>
+<td>258</td>
+<td>mknodat</td>
+<td>259</td>
+</tr>
+<tr>
+<td>fchownat</td>
+<td>260</td>
+<td>futimesat</td>
+<td>261</td>
+</tr>
+<tr>
+<td>newfstatat</td>
+<td>262</td>
+<td>unlinkat</td>
+<td>263</td>
+</tr>
+<tr>
+<td>renameat</td>
+<td>264</td>
+<td>linkat</td>
+<td>265</td>
+</tr>
+<tr>
+<td>symlinkat</td>
+<td>266</td>
+<td>readlinkat</td>
+<td>267</td>
+</tr>
+<tr>
+<td>fchmodat</td>
+<td>268</td>
+<td>faccessat</td>
+<td>269</td>
+</tr>
+<tr>
+<td>pselect6</td>
+<td>270</td>
+<td>ppoll</td>
+<td>271</td>
+</tr>
+<tr>
+<td>unshare</td>
+<td>272</td>
+<td>set_robust_list</td>
+<td>273</td>
+</tr>
+<tr>
+<td>get_robust_list</td>
+<td>274</td>
+<td>splice</td>
+<td>275</td>
+</tr>
+<tr>
+<td>tee</td>
+<td>276</td>
+<td>sync_file_range</td>
+<td>277</td>
+</tr>
+<tr>
+<td>vmsplice</td>
+<td>278</td>
+<td>move_pages</td>
+<td>279</td>
+</tr>
+<tr>
+<td>utimensat</td>
+<td>280</td>
+<td>epoll_pwait</td>
+<td>281</td>
+</tr>
+<tr>
+<td>signalfd</td>
+<td>282</td>
+<td>timerfd_create</td>
+<td>283</td>
+</tr>
+<tr>
+<td>eventfd</td>
+<td>284</td>
+<td>fallocate</td>
+<td>285</td>
+</tr>
+<tr>
+<td>timerfd_settime</td>
+<td>286</td>
+<td>timerfd_gettime</td>
+<td>287</td>
+</tr>
+<tr>
+<td>accept4</td>
+<td>288</td>
+<td>signalfd4</td>
+<td>289</td>
+</tr>
+<tr>
+<td>eventfd2</td>
+<td>290</td>
+<td>epoll_create1</td>
+<td>291</td>
+</tr>
+<tr>
+<td>dup3</td>
+<td>292</td>
+<td>pipe2</td>
+<td>293</td>
+</tr>
+<tr>
+<td>inotify_init1</td>
+<td>294</td>
+<td>preadv</td>
+<td>295</td>
+</tr>
+<tr>
+<td>pwritev</td>
+<td>296</td>
+<td>rt_tgsigqueueinfo</td>
+<td>297</td>
+</tr>
+<tr>
+<td>perf_event_open</td>
+<td>298</td>
+<td>recvmmsg</td>
+<td>299</td>
+</tr>
+<tr>
+<td>fanotify_init</td>
+<td>300</td>
+<td>fanotify_mark</td>
+<td>301</td>
+</tr>
+<tr>
+<td>prlimit64</td>
+<td>302</td>
+<td>name_to_handle_at</td>
+<td>303</td>
+</tr>
+<tr>
+<td>open_by_handle_at</td>
+<td>304</td>
+<td>clock_adjtime</td>
+<td>305</td>
+</tr>
+<tr>
+<td>syncfs</td>
+<td>306</td>
+<td>sendmmsg</td>
+<td>307</td>
+</tr>
+<tr>
+<td>set_ns</td>
+<td>308</td>
+<td>get_cpu</td>
+<td>309</td>
+</tr>
+<tr>
+<td>process_vm_readv</td>
+<td>310</td>
+<td>process_vm_writev</td>
+<td>311</td>
+</tr>
+</tbody></table>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">Author: </span><span class="post-copyright-info"><a href="mailto:undefined">John Doe</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">Link: </span><span class="post-copyright-info"><a href="http://example.com/2020/08/24/Linux64%E4%BD%8D%E7%B3%BB%E7%BB%9F%E8%B0%83%E7%94%A8%E5%8F%B7/">http://example.com/2020/08/24/Linux64%E4%BD%8D%E7%B3%BB%E7%BB%9F%E8%B0%83%E7%94%A8%E5%8F%B7/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">Copyright Notice: </span><span class="post-copyright-info">All articles in this blog are licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> unless stating additionally.</span></div></div><div class="tag_share"><div class="post-meta__tag-list"></div><div class="post_share"><div class="social-share" data-image="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2020/08/31/PWN%E5%85%A5%E9%97%A8%EF%BC%882-4-2%EF%BC%89-%E8%8A%B1%E5%BC%8F%E6%A0%88%E6%BA%A2%E5%87%BA%E6%8A%80%E5%B7%A7-Stack%20pivoting%EF%BC%88%E5%A0%86%E6%A0%88%E7%BF%BB%E8%BD%AC%EF%BC%89--%E6%A0%88%E7%BF%BB%E8%BD%AC/"><img class="prev-cover" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">Previous Post</div><div class="prev_info">PWN入门（2-4-2）-花式栈溢出技巧-Stack pivoting（堆栈翻转）--栈翻转</div></div></a></div><div class="next-post pull-right"><a href="/2020/08/24/Linux32%E4%BD%8D%E7%B3%BB%E7%BB%9F%E8%B0%83%E7%94%A8%E5%8F%B7/"><img class="next-cover" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">Next Post</div><div class="next_info">Linux32位系统调用号</div></div></a></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://i.loli.net/2021/02/24/5O1day2nriDzjSu.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">John Doe</div><div class="author-info__description"></div></div><div class="card-info-data"><div class="card-info-data-item is-center"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">317</div></a></div></div><a class="button--animated" id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/xxxxxx"><i class="fab fa-github"></i><span>Follow Me</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn card-announcement-animation"></i><span>Announcement</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>Recent Post</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2021/06/10/%E5%88%A9%E7%94%A8mprotect%E4%BF%AE%E6%94%B9%E7%A8%8B%E5%BA%8F%E6%AE%B5%E6%9D%83%E9%99%90%E4%B8%BA%E5%8F%AF%E6%89%A7%E8%A1%8C/" title="利用mprotect修改程序段权限为可执行"><img src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="利用mprotect修改程序段权限为可执行"/></a><div class="content"><a class="title" href="/2021/06/10/%E5%88%A9%E7%94%A8mprotect%E4%BF%AE%E6%94%B9%E7%A8%8B%E5%BA%8F%E6%AE%B5%E6%9D%83%E9%99%90%E4%B8%BA%E5%8F%AF%E6%89%A7%E8%A1%8C/" title="利用mprotect修改程序段权限为可执行">利用mprotect修改程序段权限为可执行</a><time datetime="2021-06-10T07:59:46.000Z" title="Created 2021-06-10 15:59:46">2021-06-10</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/05/31/SROP%EF%BC%881%EF%BC%89--%E4%BB%8E%E4%B8%A4%E9%81%93%E9%A2%98%E9%87%8D%E6%96%B0%E8%AE%A4%E8%AF%86SROP%20attack/" title="SROP（1）--从两道题重新认识SROP attack"><img src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="SROP（1）--从两道题重新认识SROP attack"/></a><div class="content"><a class="title" href="/2021/05/31/SROP%EF%BC%881%EF%BC%89--%E4%BB%8E%E4%B8%A4%E9%81%93%E9%A2%98%E9%87%8D%E6%96%B0%E8%AE%A4%E8%AF%86SROP%20attack/" title="SROP（1）--从两道题重新认识SROP attack">SROP（1）--从两道题重新认识SROP attack</a><time datetime="2021-05-31T02:14:53.000Z" title="Created 2021-05-31 10:14:53">2021-05-31</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/05/18/how2heap(14)-unsortedbin%20attack/" title="how2heap(14)-unsortedbin attack"><img src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="how2heap(14)-unsortedbin attack"/></a><div class="content"><a class="title" href="/2021/05/18/how2heap(14)-unsortedbin%20attack/" title="how2heap(14)-unsortedbin attack">how2heap(14)-unsortedbin attack</a><time datetime="2021-05-18T07:48:53.000Z" title="Created 2021-05-18 15:48:53">2021-05-18</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/05/17/how2heap(13)-tcache_stashing_unlink_attack/" title="how2heap(13)-tcache_stashing_unlink_attack"><img src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="how2heap(13)-tcache_stashing_unlink_attack"/></a><div class="content"><a class="title" href="/2021/05/17/how2heap(13)-tcache_stashing_unlink_attack/" title="how2heap(13)-tcache_stashing_unlink_attack">how2heap(13)-tcache_stashing_unlink_attack</a><time datetime="2021-05-17T02:16:40.000Z" title="Created 2021-05-17 10:16:40">2021-05-17</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/05/14/how2heap(12)-house%20of%20lore/" title="how2heap(12)-house of lore"><img src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="how2heap(12)-house of lore"/></a><div class="content"><a class="title" href="/2021/05/14/how2heap(12)-house%20of%20lore/" title="how2heap(12)-house of lore">how2heap(12)-house of lore</a><time datetime="2021-05-14T08:02:54.000Z" title="Created 2021-05-14 16:02:54">2021-05-14</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2021 By John Doe</div><div class="framework-info"><span>Framework </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>Theme </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="Read Mode"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="Switch Between Light And Dark Mode"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="Toggle between single-column and double-column"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="Setting"><i class="fas fa-cog fa-spin"></i></button><button id="go-up" type="button" title="Back To Top"><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><div class="js-pjax"></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>

@@ -1,0 +1,360 @@
+<!DOCTYPE html><html lang="en" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>C++ list，STL list（双向链表）详解 | Hexo</title><meta name="author" content="John Doe"><meta name="copyright" content="John Doe"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="referrer" content="no-referrer"><meta name="description" content="list 是顺序容器的一种。list 是一个双向链表。使用 list 需要包含头文件 list。双向链表的每个元素中都有一个指针指向后一个元素，也有一个指针指向前一个元素，如图 1 所示。 在 list 容器中，在已经定位到要增删元素的位置的情况下，增删元素能在常数时间内完成。如图 2 所示，在 a  和 a  之间插入一个元素，只需要修改 a  和 a  中的指针即可。 图 1 ：双向链表 图">
+<meta property="og:type" content="article">
+<meta property="og:title" content="C++ list，STL list（双向链表）详解">
+<meta property="og:url" content="http://example.com/2020/01/15/C++%20list%EF%BC%8CSTL%20list%EF%BC%88%E5%8F%8C%E5%90%91%E9%93%BE%E8%A1%A8%EF%BC%89%E8%AF%A6%E8%A7%A3/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="list 是顺序容器的一种。list 是一个双向链表。使用 list 需要包含头文件 list。双向链表的每个元素中都有一个指针指向后一个元素，也有一个指针指向前一个元素，如图 1 所示。 在 list 容器中，在已经定位到要增删元素的位置的情况下，增删元素能在常数时间内完成。如图 2 所示，在 a  和 a  之间插入一个元素，只需要修改 a  和 a  中的指针即可。 图 1 ：双向链表 图">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg">
+<meta property="article:published_time" content="2020-01-15T11:45:47.000Z">
+<meta property="article:modified_time" content="2021-07-04T09:57:25.187Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://example.com/2020/01/15/C++%20list%EF%BC%8CSTL%20list%EF%BC%88%E5%8F%8C%E5%90%91%E9%93%BE%E8%A1%A8%EF%BC%89%E8%AF%A6%E8%A7%A3/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: 'Copy successfully',
+    error: 'Copy error',
+    noSupport: 'The browser does not support'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: 'Just',
+    min: 'minutes ago',
+    hour: 'hours ago',
+    day: 'days ago',
+    month: 'months ago'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    jQuery: 'https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js',
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+    },
+    fancybox: {
+      js: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isanchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'C++ list，STL list（双向链表）详解',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: false,
+  postUpdate: '2021-07-04 17:57:25'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if (GLOBAL_CONFIG_SITE.isHome && /iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><meta name="generator" content="Hexo 5.4.0"><link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+</head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://i.loli.net/2021/02/24/5O1day2nriDzjSu.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data"><div class="data-item is-center"><div class="data-item-link"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">317</div></a></div></div></div><hr/></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">Hexo</a></span><div id="menus"><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">C++ list，STL list（双向链表）详解</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">Created</span><time class="post-meta-date-created" datetime="2020-01-15T11:45:47.000Z" title="Created 2020-01-15 19:45:47">2020-01-15</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">Updated</span><time class="post-meta-date-updated" datetime="2021-07-04T09:57:25.187Z" title="Updated 2021-07-04 17:57:25">2021-07-04</time></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="C++ list，STL list（双向链表）详解"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">Post View:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><p>list 是顺序容器的一种。list 是一个双向链表。使用 list 需要包含头文件 list。双向链表的每个元素中都有一个<a target="_blank" rel="noopener" href="http://c.biancheng.net/c/80/">指针</a>指向后一个元素，也有一个指针指向前一个元素，如图 1 所示。</p>
+<p>在 list 容器中，在已经定位到要增删元素的位置的情况下，增删元素能在常数时间内完成。如图 2 所示，在 a  和 a  之间插入一个元素，只需要修改 a  和 a  中的指针即可。</p>
+<p><img src="https://cdn.nlark.com/yuque/0/2020/jpeg/574026/1579088765207-45b7ee81-b4a0-43e3-affe-86f1755dedb7.jpeg#align=left&display=inline&height=34&originHeight=34&originWidth=439&size=0&status=done&style=none&width=439"><br>图 1 ：双向链表</p>
+<p><img src="https://cdn.nlark.com/yuque/0/2020/jpeg/574026/1579088765243-359f8bc2-3f9d-40d7-8eac-1ab42a14e8dd.jpeg#align=left&display=inline&height=108&originHeight=108&originWidth=297&size=0&status=done&style=none&width=297"><br>图 2：在双向链表中插入元素</p>
+<p>list 容器不支持根据下标随机存取元素。</p>
+<p>list 的构造函数和许多成员函数的用法都与 vector 类似，此处不再列举。除了顺序容器都有的成员函数外，list 容器还独有如表 1 所示的成员函数（此表不包含全部成员函数，且有些函数的参数较为复杂，表中只列出函数名）。</p>
+<p>表 1：list 的成员函数</p>
+<table>
+<thead>
+<tr>
+<th>成员函数或成员函数模板</th>
+<th>作   用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>void push_front(const T &amp; val)</td>
+<td>将 val 插入链表最前面</td>
+</tr>
+<tr>
+<td>void pop_front()</td>
+<td>删除链表最前面的元素</td>
+</tr>
+<tr>
+<td>void sort()</td>
+<td>将链表从小到大排序</td>
+</tr>
+<tr>
+<td>void remove (const T &amp; val)</td>
+<td>删除和 val 相等的元素</td>
+</tr>
+<tr>
+<td>remove_if</td>
+<td>删除符合某种条件的元素</td>
+</tr>
+<tr>
+<td>void unique()</td>
+<td>删除所有和前一个元素相等的元素</td>
+</tr>
+<tr>
+<td>void merge(list <T> &amp; x)</td>
+<td>将链表 x 合并进来并清空 x。要求链表自身和 x 都是有序的</td>
+</tr>
+<tr>
+<td>void splice(iterator i, list <T> &amp; x, iterator first, iterator last)</td>
+<td>在位置 i 前面插入链表 x 中的区间 [first, last)，并在链表 x  中删除该区间。链表自身和链表 x 可以是同一个链表，只要  i 不在 [first, last) 中即可</td>
+</tr>
+</tbody></table>
+<p>表 1 中列出的成员函数有些是重载的，如 unique、merge、splice 成员函数都不止一个， 这里不再一一列举并解释。后面对于其他容器以及算法的介绍，对于有重载的情况也不再指出。要详细了解  <a target="_blank" rel="noopener" href="http://c.biancheng.net/stl/">STL</a>，还需要查阅专门的 STL 手册，或查看编译器提供的联机帮助。</p>
+<p>STL 中的算法 sort 可以用来对 vector 和 deque 排序，它需要随机访问迭代器的支持。因为 list 不支持随机访问迭代器，所以不能用算法 sort 对 list 容器排序。因此，list 容器引入了 sort 成员函数以完成排序。</p>
+<p>list 的示例程序如下：</p>
+<ol>
+<li><p>#include <list> //使用 list 需要包含此头文件</p>
+</li>
+<li><p>#include <iostream></p>
+</li>
+<li><p>#include <algorithm> //使用 STL 中的算法需要包含此头文件</p>
+</li>
+<li><p><strong>u</strong><a target="_blank" rel="noopener" href="http://c.biancheng.net/ref/sin.html"><strong>sin</strong></a><strong>g</strong> <strong>namespace</strong> std;</p>
+</li>
+<li><p><strong>class</strong> A {</p>
+</li>
+<li><p><strong>private</strong>: int n;</p>
+</li>
+<li><p><strong>public</strong>:</p>
+</li>
+<li><p>A(int n*) { n = n*; }</p>
+</li>
+<li><p><strong>friend</strong> bool <strong>operator</strong> &lt; (<strong>const</strong> A &amp; a1, <strong>const</strong> A &amp; a2);</p>
+</li>
+<li><p><strong>friend</strong> bool <strong>operator</strong> == (<strong>const</strong> A &amp; a1, <strong>const</strong> A &amp; a2);</p>
+</li>
+<li><p><strong>friend</strong> ostream &amp; <strong>operator</strong> &lt;&lt; (ostream &amp; o, <strong>const</strong> A &amp; a);</p>
+</li>
+<li><p>};</p>
+</li>
+<li><p>bool <strong>operator</strong> &lt; (<strong>const</strong> A &amp; a1, <strong>const</strong> A &amp; a2) {</p>
+</li>
+<li><p><strong>return</strong> a1.n &lt; a2.n;</p>
+</li>
+<li><p>}</p>
+</li>
+<li><p>bool <strong>operator</strong> == (<strong>const</strong> A &amp; a1, <strong>const</strong> A &amp; a2) {</p>
+</li>
+<li><p><strong>return</strong> a1.n == a2.n;</p>
+</li>
+<li><p>}</p>
+</li>
+<li><p>ostream &amp; <strong>operator</strong> &lt;&lt; (ostream &amp; o, <strong>const</strong> A &amp; a) {</p>
+</li>
+<li><p>o &lt;&lt; a.n;</p>
+</li>
+<li><p><strong>return</strong> o;</p>
+</li>
+<li><p>}</p>
+</li>
+<li><p><strong>template</strong> &lt;**class** T&gt;</p>
+</li>
+<li><p>void Print(T first, T last)</p>
+</li>
+<li><p>{</p>
+</li>
+<li><p><strong>for</strong> (; first != last; ++first)</p>
+</li>
+<li><p>cout &lt;&lt; *first &lt;&lt; “ “;</p>
+</li>
+<li><p>cout &lt;&lt; endl;</p>
+</li>
+<li><p>}</p>
+</li>
+<li><p>int main()</p>
+</li>
+<li><p>{</p>
+</li>
+<li><p>A a[5] = { 1, 3, 2, 4, 2 };</p>
+</li>
+<li><p>A b[7] = { 10, 30, 20, 30, 30, 40, 40 };</p>
+</li>
+<li><p>list<A> lst1(a, a + 5), lst2(b, b + 7);</p>
+</li>
+<li><p>lst1.sort();</p>
+</li>
+<li><p>cout &lt;&lt; “1)”; Print(lst1.begin(), lst1.end()); //输出：1)1 2 2 3 4</p>
+</li>
+<li><p>lst1.remove(2); //删除所有和 A(2)相等的元素</p>
+</li>
+<li><p>cout &lt;&lt; “2)”; Print(lst1.begin(), lst1.end()); //输出：2)1 3 4</p>
+</li>
+<li><p>lst2.pop_front(); //删除第一个元素</p>
+</li>
+<li><p>cout &lt;&lt; “3)”; Print(lst2.begin(), lst2.end()); //输出：3)30 20 30 30 40 40</p>
+</li>
+<li><p>lst2.unique(); //删除所有和前一个元素相等的元素</p>
+</li>
+<li><p>cout &lt;&lt; “4)”; Print(lst2.begin(), lst2.end()); //输出：4)30 20 30 40</p>
+</li>
+<li><p>lst2.sort();</p>
+</li>
+<li><p>lst1.merge(lst2); //合并 lst2 到 lst1 并清空 lst2</p>
+</li>
+<li><p>cout &lt;&lt; “5)”; Print(lst1.begin(), lst1.end()); //输出：5)1 3 4 20 30 30 40</p>
+</li>
+<li><p>cout &lt;&lt; “6)”; Print(lst2.begin(), lst2.end()); //lst2 是空的，输出：6)</p>
+</li>
+<li><p>lst1.reverse(); //将 lst1 前后颠倒</p>
+</li>
+<li></li>
+<li><p>cout &lt;&lt; “7)”; Print(lst1.begin(), lst1.end()); //输出 7)40 30 30 20 4 3 1</p>
+</li>
+<li><p>lst2.insert(lst2.begin(), a + 1, a + 4); //在 lst2 中插入 3,2,4 三个元素</p>
+</li>
+<li><p>list <A>::iterator p1, p2, p3;</p>
+</li>
+<li><p>p1 = find(lst1.begin(), lst1.end(), 30);</p>
+</li>
+<li><p>p2 = find(lst2.begin(), lst2.end(), 2);</p>
+</li>
+<li><p>p3 = find(lst2.begin(), lst2.end(), 4);</p>
+</li>
+<li><p>lst1.splice(p1, lst2, p2, p3); //将[p2, p3)插入 p1 之前，并从 lst2 中删除[p2,p3)</p>
+</li>
+<li><p>cout &lt;&lt; “8)”; Print(lst1.begin(), lst1.end()); //输出：8)40 2 30 30 20 4 3 1</p>
+</li>
+<li><p>cout &lt;&lt; “9)”; Print(lst2.begin(), lst2.end()); //输出：9)3 4</p>
+</li>
+<li><p><strong>return</strong> 0;</p>
+</li>
+<li><p>}</p>
+</li>
+</ol>
+<p>【实例】用 list 解决约瑟夫问题。</p>
+<p>约瑟夫问题是：有 n 只猴子，按顺时针方向围成一圈选大王（编号为 1~n），从第 1 号开始报数，一直数到 m，数到 m 的猴子退到圈外，剩下的猴子再接着从 1 开始报数。就这样，直到圈内只剩下一只猴子时，这个猴子就是猴王。编程求输入 n、m 后,输出最后猴王的编号。</p>
+<p>输入数据：每行是用空格分开的两个整数，第一个是 n，第二个是 m（0&lt;m, n&lt;=1 000 000）。最后一行是：<br>0 0</p>
+<p>输出要求：对于每行输入数据（最后一行除外），输出数据也是一行，即最后猴王的编号。</p>
+<p>输入样例：<br>6 2<br>12 4<br>8 3<br>0 0</p>
+<p>输出样例：<br>5<br>1<br>7</p>
+<p>示例程序如下：</p>
+<ol>
+<li>#include <list></li>
+<li>#include <iostream></li>
+<li><strong>using</strong> <strong>namespace</strong> std;</li>
+<li>int main()</li>
+<li>{</li>
+<li>list<int> monkeys;</li>
+<li>int n, m;</li>
+<li><strong>while</strong> (<strong>true</strong>) {</li>
+<li>cin &gt;&gt; n &gt;&gt; m;</li>
+<li><strong>if</strong> (n == 0 &amp;&amp; m == 0)</li>
+<li><strong>break</strong>;</li>
+<li>monkeys.clear(); //清空 list 容器</li>
+<li><strong>for</strong> (int i = 1; i &lt;= n; ++i) //将猴子的编号放入 list</li>
+<li>monkeys.push_back(i);</li>
+<li>list<int>::iterator it = monkeys.begin();</li>
+<li><strong>while</strong> (monkeys.size() &gt; 1) { //只要还有不止一只猴子，就要找一只猴子让其出列</li>
+<li><strong>for</strong> (int i = 1; i &lt; m; ++i) { //报数</li>
+<li>++it;</li>
+<li><strong>if</strong> (it == monkeys.end())</li>
+<li>it = monkeys.begin();</li>
+<li>}</li>
+<li>it = monkeys.erase(it); //删除元素后，迭代器失效，</li>
+<li>//要重新让迭代器指向被删元素的后面</li>
+<li><strong>if</strong> (it == monkeys.end())</li>
+<li>it = monkeys.begin();</li>
+<li>}</li>
+<li>cout &lt;&lt; monkeys.front() &lt;&lt; endl; //front 返回第一个元素的引用</li>
+<li>}</li>
+<li><strong>return</strong> 0;</li>
+<li>}</li>
+</ol>
+<p>erase 成员函数返回被删除元素后面那个元素的迭代器。如果被删除的是最后一个元素，则返回 end()。</p>
+<p>这个程序也可以用 vector 实现，但是执行速度要慢很多。因为 vector 的 erase 操作牵涉元素的移动，不能在常数时间内完成，所花费的时间和容器中的元素个数有关；而 list 的 erase 操作只是修改几个指针而已，可以在常数时间内完成。当 n 很大（数十万）时，两种写法在速度上会有明显区别。</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">Author: </span><span class="post-copyright-info"><a href="mailto:undefined">John Doe</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">Link: </span><span class="post-copyright-info"><a href="http://example.com/2020/01/15/C++%20list%EF%BC%8CSTL%20list%EF%BC%88%E5%8F%8C%E5%90%91%E9%93%BE%E8%A1%A8%EF%BC%89%E8%AF%A6%E8%A7%A3/">http://example.com/2020/01/15/C++%20list%EF%BC%8CSTL%20list%EF%BC%88%E5%8F%8C%E5%90%91%E9%93%BE%E8%A1%A8%EF%BC%89%E8%AF%A6%E8%A7%A3/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">Copyright Notice: </span><span class="post-copyright-info">All articles in this blog are licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> unless stating additionally.</span></div></div><div class="tag_share"><div class="post-meta__tag-list"></div><div class="post_share"><div class="social-share" data-image="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2020/01/15/C++%20deque%EF%BC%8CSTL%20deque%EF%BC%88%E5%8F%8C%E5%90%91%E9%98%9F%E5%88%97%E8%AF%A6%E8%A7%A3%EF%BC%89/"><img class="prev-cover" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">Previous Post</div><div class="prev_info">C++ deque，STL deque（双向队列详解）</div></div></a></div><div class="next-post pull-right"><a href="/2020/01/15/C++%20vector%EF%BC%8CSTL%20vector%EF%BC%88%E5%8F%AF%E5%8F%98%E9%95%BF%E7%9A%84%E5%8A%A8%E6%80%81%E6%95%B0%E7%BB%84%EF%BC%89%E8%AF%A6%E8%A7%A3/"><img class="next-cover" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">Next Post</div><div class="next_info">C++ vector，STL vector（可变长的动态数组）详解</div></div></a></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://i.loli.net/2021/02/24/5O1day2nriDzjSu.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">John Doe</div><div class="author-info__description"></div></div><div class="card-info-data"><div class="card-info-data-item is-center"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">317</div></a></div></div><a class="button--animated" id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/xxxxxx"><i class="fab fa-github"></i><span>Follow Me</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn card-announcement-animation"></i><span>Announcement</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>Recent Post</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2021/06/10/%E5%88%A9%E7%94%A8mprotect%E4%BF%AE%E6%94%B9%E7%A8%8B%E5%BA%8F%E6%AE%B5%E6%9D%83%E9%99%90%E4%B8%BA%E5%8F%AF%E6%89%A7%E8%A1%8C/" title="利用mprotect修改程序段权限为可执行"><img src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="利用mprotect修改程序段权限为可执行"/></a><div class="content"><a class="title" href="/2021/06/10/%E5%88%A9%E7%94%A8mprotect%E4%BF%AE%E6%94%B9%E7%A8%8B%E5%BA%8F%E6%AE%B5%E6%9D%83%E9%99%90%E4%B8%BA%E5%8F%AF%E6%89%A7%E8%A1%8C/" title="利用mprotect修改程序段权限为可执行">利用mprotect修改程序段权限为可执行</a><time datetime="2021-06-10T07:59:46.000Z" title="Created 2021-06-10 15:59:46">2021-06-10</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/05/31/SROP%EF%BC%881%EF%BC%89--%E4%BB%8E%E4%B8%A4%E9%81%93%E9%A2%98%E9%87%8D%E6%96%B0%E8%AE%A4%E8%AF%86SROP%20attack/" title="SROP（1）--从两道题重新认识SROP attack"><img src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="SROP（1）--从两道题重新认识SROP attack"/></a><div class="content"><a class="title" href="/2021/05/31/SROP%EF%BC%881%EF%BC%89--%E4%BB%8E%E4%B8%A4%E9%81%93%E9%A2%98%E9%87%8D%E6%96%B0%E8%AE%A4%E8%AF%86SROP%20attack/" title="SROP（1）--从两道题重新认识SROP attack">SROP（1）--从两道题重新认识SROP attack</a><time datetime="2021-05-31T02:14:53.000Z" title="Created 2021-05-31 10:14:53">2021-05-31</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/05/18/how2heap(14)-unsortedbin%20attack/" title="how2heap(14)-unsortedbin attack"><img src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="how2heap(14)-unsortedbin attack"/></a><div class="content"><a class="title" href="/2021/05/18/how2heap(14)-unsortedbin%20attack/" title="how2heap(14)-unsortedbin attack">how2heap(14)-unsortedbin attack</a><time datetime="2021-05-18T07:48:53.000Z" title="Created 2021-05-18 15:48:53">2021-05-18</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/05/17/how2heap(13)-tcache_stashing_unlink_attack/" title="how2heap(13)-tcache_stashing_unlink_attack"><img src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="how2heap(13)-tcache_stashing_unlink_attack"/></a><div class="content"><a class="title" href="/2021/05/17/how2heap(13)-tcache_stashing_unlink_attack/" title="how2heap(13)-tcache_stashing_unlink_attack">how2heap(13)-tcache_stashing_unlink_attack</a><time datetime="2021-05-17T02:16:40.000Z" title="Created 2021-05-17 10:16:40">2021-05-17</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/05/14/how2heap(12)-house%20of%20lore/" title="how2heap(12)-house of lore"><img src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="how2heap(12)-house of lore"/></a><div class="content"><a class="title" href="/2021/05/14/how2heap(12)-house%20of%20lore/" title="how2heap(12)-house of lore">how2heap(12)-house of lore</a><time datetime="2021-05-14T08:02:54.000Z" title="Created 2021-05-14 16:02:54">2021-05-14</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2021 By John Doe</div><div class="framework-info"><span>Framework </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>Theme </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="Read Mode"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="Switch Between Light And Dark Mode"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="Toggle between single-column and double-column"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="Setting"><i class="fas fa-cog fa-spin"></i></button><button id="go-up" type="button" title="Back To Top"><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><div class="js-pjax"></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>

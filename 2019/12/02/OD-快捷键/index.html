@@ -1,0 +1,542 @@
+<!DOCTYPE html><html lang="en" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>OD-快捷键 | Hexo</title><meta name="author" content="John Doe"><meta name="copyright" content="John Doe"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="referrer" content="no-referrer"><meta name="description" content="参考资料：https:&#x2F;&#x2F;www.cnblogs.com&#x2F;YiShen&#x2F;p&#x2F;9742872.htmlOllyDbg 窗口通用快捷键    快捷键 功能    Ctrl+F2 重启程序，即重新启动被调试程序。如果当前没有调试的程序，OllyDbg 会运行历史列表［historylist］中的第一个程序。程序重启后，将会删除所有内存断点和硬件断点。   译者注：从实际使用效果看，硬件断点在程序重启后并">
+<meta property="og:type" content="article">
+<meta property="og:title" content="OD-快捷键">
+<meta property="og:url" content="http://example.com/2019/12/02/OD-%E5%BF%AB%E6%8D%B7%E9%94%AE/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="参考资料：https:&#x2F;&#x2F;www.cnblogs.com&#x2F;YiShen&#x2F;p&#x2F;9742872.htmlOllyDbg 窗口通用快捷键    快捷键 功能    Ctrl+F2 重启程序，即重新启动被调试程序。如果当前没有调试的程序，OllyDbg 会运行历史列表［historylist］中的第一个程序。程序重启后，将会删除所有内存断点和硬件断点。   译者注：从实际使用效果看，硬件断点在程序重启后并">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg">
+<meta property="article:published_time" content="2019-12-02T12:03:11.000Z">
+<meta property="article:modified_time" content="2021-07-04T09:57:30.635Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://example.com/2019/12/02/OD-%E5%BF%AB%E6%8D%B7%E9%94%AE/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: 'Copy successfully',
+    error: 'Copy error',
+    noSupport: 'The browser does not support'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: 'Just',
+    min: 'minutes ago',
+    hour: 'hours ago',
+    day: 'days ago',
+    month: 'months ago'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    jQuery: 'https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js',
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+    },
+    fancybox: {
+      js: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isanchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'OD-快捷键',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: false,
+  postUpdate: '2021-07-04 17:57:30'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if (GLOBAL_CONFIG_SITE.isHome && /iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><meta name="generator" content="Hexo 5.4.0"><link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+</head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://i.loli.net/2021/02/24/5O1day2nriDzjSu.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data"><div class="data-item is-center"><div class="data-item-link"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">317</div></a></div></div></div><hr/></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">Hexo</a></span><div id="menus"><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">OD-快捷键</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">Created</span><time class="post-meta-date-created" datetime="2019-12-02T12:03:11.000Z" title="Created 2019-12-02 20:03:11">2019-12-02</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">Updated</span><time class="post-meta-date-updated" datetime="2021-07-04T09:57:30.635Z" title="Updated 2021-07-04 17:57:30">2021-07-04</time></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="OD-快捷键"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">Post View:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><p>参考资料：<a target="_blank" rel="noopener" href="https://www.cnblogs.com/YiShen/p/9742872.html">https://www.cnblogs.com/YiShen/p/9742872.html</a><br>OllyDbg 窗口通用快捷键</p>
+<table>
+<thead>
+<tr>
+<th>快捷键</th>
+<th>功能</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Ctrl+F2</td>
+<td>重启程序，即重新启动被调试程序。如果当前没有调试的程序，OllyDbg 会运行历史列表［historylist］中的第一个程序。程序重启后，将会删除所有内存断点和硬件断点。</td>
+</tr>
+<tr>
+<td>译者注：从实际使用效果看，硬件断点在程序重启后并没有移除。</td>
+<td></td>
+</tr>
+<tr>
+<td>Alt+F2</td>
+<td>关闭，即关闭被调试程序。如果程序仍在运行，会弹出一个提示信息，询问您是否要关闭程序。</td>
+</tr>
+<tr>
+<td>F3</td>
+<td>弹出“打开 32 位.EXE 文件”对话框［Open 32-bit .EXE file］，您可以选择可执行文件，并可以输入运行参数。</td>
+</tr>
+<tr>
+<td>Alt+F5</td>
+<td>让 OllyDbg 总在最前面。如果被调试程序在某个断点处发生中断，而这时调试程序弹出一个总在最前面的窗口（一般为模式消息或模式对话框［modal message or dialog］），它可能会遮住 OllyDbg 的一部分，但是我们又不能移动最小化这个窗口。</td>
+</tr>
+</tbody></table>
+<p>激活 OllyDbg（比如按任务栏上的标签）并按 Alt+F5，OllyDbg 将设置成总在最前面，会反过来遮住刚才那个窗口。如果您再按一下 Alt+F5，OllyDbg 会恢复到正常状态。<br>OllyDbg 是否处于总在最前面状态，将会保存，在下一次调试时依然有效。当前是否处于总在最前面状态，会显示在状态栏中。 |<br>| F7 | 单步步入到下一条命令，如果当前命令是一个函数［Call］，则会停在这个函数体的第一条命令上。如果当前命令是是含有 REP 前缀，则只执行一次重复操作。 |<br>| Shift+F7  | 与 F7 相同，但是如果被调试程序发生异常而中止，调试器会首先尝试步入被调试程序指定的异常处理（请参考忽略 Kernel32 中的内存非法访问）。 |<br>| Ctrl+F7 | 自动步入，在所有的函数调用中一条一条地执行命令（就像您按住 F7 键不放一样，只是更快一些）。当您执行其他一些单步命令，或者程序到达断点，或者发生异常时，自动步入过程都会停止。<br>每次单步步入，OllyDbg 都会更新所有的窗口。所以为了提高自动步入的速度，请您关闭不必要成窗口，对于保留的窗口最好尽量的小。按 Esc 键，可以停止自动步入。 |<br>| F8 | 单步步过到下一条命令。如果当前命令是一个函数，则一次执行完这个函数（除非这个函数内部包含断点，或发生了异常）。<br>如果当前命令是含有 REP 前缀，则会执行完重复操作，并停在下一条命令上。 |<br>| Shift+F8 | 与 F8 相同，但是如果被调试程序发生异常而中止，调试器会首先尝试步过被调试程序指定的异常处理（请参考忽略 Kernel32 中的内存非法访问）。 |<br>| Ctrl+F8  | 自动步过，一条一条的执行命令，但并不进入函数调用内部（就像您按住 F8 键不放一样，只是更快一些）。<br>当您执行其他一些单步命令，或者程序到达断点，或者发生异常时，自动步过过程都会停止。每次单步步过，OllyDbg 都会更新所有的窗口。<br>所以为了提高自动步过的速度，请您关闭不必要成窗口，对于保留的窗口最好尽量的小。按 Esc 键，可以停止自动步过。 |<br>| F9  | 让程序继续执行。 |<br>| Shift+F9 | 与 F9 相同，但是如果被调试程序发生异常而中止，调试器会首先尝试执行被调试程序指定的异常处理（请参考忽略 Kernel32 中的内存非法访问）。 |<br>| Ctrl+F9  | 执行直到返回，跟踪程序直到遇到返回，在此期间不进入子函数也不更新 CPU 数据。因为程序是一条一条命令执行的，所以速度可能会慢一些。按 Esc 键，可以停止跟踪。 |<br>| Alt+F9  | 执行直到返回到用户代码段，跟踪程序直到指令所属于的模块不在系统目录中，在此期间不进入子函数也不更新 CPU 数据。<br>因为程序是一条一条执行的，所以速度可能会慢一些。按 Esc 键，可以停止跟踪。 |<br>| Ctrl+F11 | Run 跟踪步入，一条一条执行命令，进入每个子函数调用，并把寄存器的信息加入到 Run 跟踪的存储数据中。Run 跟踪不会同步更新 CPU 窗口。 |<br>| F12 | 停止程序执行，同时暂停被调试程序的所有线程。<br>请不要手动恢复线程运行，最好使用继续执行快捷键或菜单选项（像 F9）。 |<br>| Ctrl+F12  | Run 跟踪。步过，一条一条执行命令，但是不进入子函数调用，并把寄存器的信息加入到 Run 跟踪的存储数据中。<br>Run 跟踪不会同步更新 CPU 窗口。 |<br>| Esc  | 如果当前处于自动运行或跟踪状态，则停止自动运行或跟踪。<br>如果 CPU 显示的是跟踪数据，则显示真实数据。 |<br>| Alt+B  | 显示断点窗口。在这个窗口中，您可以编辑、删除、或跟进到断点处。 |<br>| Alt+C  | 显示 CPU 窗口。 |<br>| Alt+E | 显示模块列表［list of modules］。 |<br>| Alt+K | 显示调用栈［Call stack］窗口。 |<br>| Alt+L | 显示日志窗口。 |<br>| Alt+M  |   显示内存窗口。 |<br>| Alt+O | 显示选项对话框［Options dialog］ |<br>| Ctrl+P | 显示补丁窗口。 |<br>| Ctrl+T  | 打开 暂停 Run 跟踪 对话框 |<br>| Alt+X  | 关闭 OllyDbg。 |<br>| Alt+F3  | 关闭当前窗口。 |<br>| F5 | 最大化当前窗口或将当前窗口大小改为正常化。 |<br>| F6 | 切换到下一个窗口。 |<br>| Shift+F6 | 切换到前一个窗口。 |<br>| F10  | 打开与当前窗口或面板相关的快捷菜单。 |<br>| 左方向键 | 显示窗口左方一个字节宽度的内容。 |<br>| Ctrl+左方向键   　　　　　　　　 | 显示窗口左方一栏的内容。 |<br>| 右方向键 | 显示窗口右方一个字节宽度的内容 |<br>| Ctrl+右方向键 | 显示窗口右方一栏的内容 |</p>
+<p>反汇编窗口中的快捷键［Disassembler shortcuts］<br>当 CPU 窗口中的反汇编面板［Disassembler pane］处于激活状态时，您可以使用以下快捷键：</p>
+<table>
+<thead>
+<tr>
+<th>快捷键</th>
+<th>功能</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>回车键</td>
+<td>将选中的命令添加到命令历史［command history］中，如果当前命令是一个跳转、函数或者是转换表的一个部分，则进入到目的地址。</td>
+</tr>
+<tr>
+<td>退格键</td>
+<td>移除选中部分的自动分析信息。如果分析器将代码误识别为数据，这个快捷键就非常有用。</td>
+</tr>
+<tr>
+<td>Alt+退格键</td>
+<td>撤消所选部分的修改，以备份数据的相应内容替换所选部分。仅当备份数据存在且与所选部分不同时可用。</td>
+</tr>
+<tr>
+<td>Ctrl+F1</td>
+<td>如果 API 帮助文件已经选择，将打开与首个选择行内的符号名相关联的帮助主题。</td>
+</tr>
+<tr>
+<td>F2</td>
+<td>在首个选择的命令上开关 INT3 断点［Breakpoint］，也可以双击该行第二列。</td>
+</tr>
+<tr>
+<td>Shift+F2</td>
+<td>在首个选择命令设置条件断点，参见忽略 Kernel32 中内存访问异常［Ignore memory access violationsin Kernel32］。</td>
+</tr>
+<tr>
+<td>F4</td>
+<td>执行到所选行，在首个选择的命令上设置一次性断点，然后继续执行调试程序，直到 OllyDbg 捕获到异常或者停止在该断点上。在程序执行到该命令之前，该一次性断点一直有效。如有必要，可在断点窗口［Breakpoints window］中删除它。</td>
+</tr>
+<tr>
+<td>Shift+F4</td>
+<td>设置记录断点（一种条件断点，当条件满足时一些表达式的值会记录下来）， 详情参见断点［Breakpoint］。</td>
+</tr>
+<tr>
+<td>Ctrl+F5</td>
+<td>打开与首个选择的命令相对应的源文件。</td>
+</tr>
+<tr>
+<td>Alt+F7</td>
+<td>转到上一个找到的参考。</td>
+</tr>
+<tr>
+<td>Alt+F8</td>
+<td>转到下一个找到参考。</td>
+</tr>
+<tr>
+<td>Ctrl+A</td>
+<td>分析当前模块的代码段。</td>
+</tr>
+<tr>
+<td>Ctrl+B</td>
+<td>开始二进制搜索。</td>
+</tr>
+<tr>
+<td>Ctrl+C</td>
+<td>复制所选内容到剪贴板。复制时会简单地按列宽截断不可见内容，如果希望排除不需要的列，可把这些列的宽度调整到最小。</td>
+</tr>
+<tr>
+<td>Ctrl+E</td>
+<td>以二进制（十六进制）格式编辑所选内容。</td>
+</tr>
+<tr>
+<td>Ctrl+F</td>
+<td>开始命令搜索。</td>
+</tr>
+<tr>
+<td>Ctrl+G</td>
+<td>转到某地址。该命令将弹出输入地址或表达式的窗口。该命令不会修改 EIP。</td>
+</tr>
+<tr>
+<td>Ctrl+J</td>
+<td>列出所有的涉及到该位置的调用和跳转，在您用这个功能之前，您必须使用分析代码功能。</td>
+</tr>
+<tr>
+<td>Ctrl+K</td>
+<td>查看与当前函数相关的调用树［Call tree］。在您用这个功能之前，您必须使用分析代码功能。</td>
+</tr>
+<tr>
+<td>Ctrl+L</td>
+<td>搜索下一个，重复上一次的搜索内容。</td>
+</tr>
+<tr>
+<td>Ctrl+N</td>
+<td>打开当前模块的名称（标签）列表。</td>
+</tr>
+<tr>
+<td>Ctrl+O</td>
+<td>扫描 object 文件。扫描 Object 文件。该命令会显示扫描 Object 文件对话框，您可以在该对话框中选择 Object 文件或者 lib 文件，并扫描这个文件，试图找到在实际代码段中用到的目标模块。</td>
+</tr>
+<tr>
+<td>Ctrl+R</td>
+<td>搜索所选命令的参考。该命令扫描激活模块的全部可执行代码，以找到涉及到首个选中的命令的全部相关参考（包括：常量、跳转及调用），您可以在参考中使用快捷键 Alt+F7 和 Alt+F8 来浏览这些参考。为便于您使用，被参考的命令也包含在该列表中。</td>
+</tr>
+<tr>
+<td>Ctrl+S</td>
+<td>命令搜索。该命令显示命令查找［Find command］对话框供您输入汇编命令，并从当前命令开始搜索。</td>
+</tr>
+<tr>
+<td>星号(*)</td>
+<td>转到原始位置（激活线程的 EIP 处）。</td>
+</tr>
+<tr>
+<td>Ctrl+星号(*)</td>
+<td>指定新的起始位置，设置当前所选线程的 EIP 为首个选择字节的地址。您可以在选择 EIP 并撤消该操作。</td>
+</tr>
+<tr>
+<td>加号(+)</td>
+<td>如果 run 跟踪［run trace］ 没有激活，则根据命令历史［command history］跳到下一条运行过命令的地方；否则跳到 Run 跟踪的下一个记录。</td>
+</tr>
+<tr>
+<td>Ctrl+加号</td>
+<td>跳到前一个函数开始处。（注意只是跳到，并不执行）</td>
+</tr>
+<tr>
+<td>减号(-)</td>
+<td>如果 run 跟踪［run trace］ 没有激活，则根据命令历史［command history］跳到前一条运行过命令的地方；否则跳到 Run 跟踪的前一个记录。</td>
+</tr>
+<tr>
+<td>Ctrl+减号</td>
+<td>跳到下一个函数开始处。（注意只是跳到，并不执行）</td>
+</tr>
+<tr>
+<td>空格</td>
+<td>修改命令。您可在显示对话框中以汇编语言修改实际指令或输入新指令，这些指令将替换实际代码，您也可以在想要修改的指令处双击鼠标。</td>
+</tr>
+<tr>
+<td>冒号(:)</td>
+<td>添加标签。显示添加标签窗口［Add label］或修改标签窗口［Change</td>
+</tr>
+<tr>
+<td>label］，您可在此输入与首个选择的命令中的第一个字节相关联的标签（符号名）。注意，在多种编程语言中，冒号可以是标签的一部分。</td>
+<td></td>
+</tr>
+<tr>
+<td>分号(;)</td>
+<td>添加注释［comment］。显示添加注释窗口［Add label］或修改注释窗口［Changelabel］，您可在此输入与首条所选命令的第一个字节相关联的注释（注释串会显示在最后一列中）。</td>
+</tr>
+<tr>
+<td>注意，多种汇编语言使用分号作为注释开始。您也可以在注释列双击需要注释的命令行。</td>
+<td></td>
+</tr>
+</tbody></table>
+<p>命令行插件支持的命令</p>
+<table>
+<thead>
+<tr>
+<th>命令</th>
+<th>功能</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>CALC</td>
+<td>判断表达式</td>
+</tr>
+<tr>
+<td>WATCH</td>
+<td>添加监视表达式</td>
+</tr>
+<tr>
+<td>AT</td>
+<td>在指定地址进行反汇编</td>
+</tr>
+<tr>
+<td>FOLLOW</td>
+<td>跟随命令</td>
+</tr>
+<tr>
+<td>ORIG</td>
+<td>反汇编于 EIP</td>
+</tr>
+<tr>
+<td>DUMP</td>
+<td>在指定地址进行转存</td>
+</tr>
+<tr>
+<td>DA</td>
+<td>转存为反汇编代码</td>
+</tr>
+<tr>
+<td>DB</td>
+<td>使用十六进制字节格式转存</td>
+</tr>
+<tr>
+<td>DC</td>
+<td>使用 ASCII 格式转存</td>
+</tr>
+<tr>
+<td>DD</td>
+<td>转存在堆栈格式</td>
+</tr>
+<tr>
+<td>DU</td>
+<td>转存在 UNICODE 格式</td>
+</tr>
+<tr>
+<td>DW</td>
+<td>使用十六进制字词格式转存</td>
+</tr>
+<tr>
+<td>STK</td>
+<td>前往堆栈中的地址</td>
+</tr>
+<tr>
+<td>AS</td>
+<td>（AS + 地址 + 字符串）</td>
+</tr>
+<tr>
+<td>在指定地址进行汇编</td>
+<td></td>
+</tr>
+<tr>
+<td>BP</td>
+<td>进行条件中断（有条件的断点）</td>
+</tr>
+<tr>
+<td>BPX</td>
+<td>中断在全部调用 （Call）</td>
+</tr>
+<tr>
+<td>BPD</td>
+<td>清除全部调用中的断点</td>
+</tr>
+<tr>
+<td>BC</td>
+<td>清除断点</td>
+</tr>
+<tr>
+<td>MR</td>
+<td>内存断点于访问时</td>
+</tr>
+<tr>
+<td>MW</td>
+<td>内存断点于写入时</td>
+</tr>
+<tr>
+<td>MD</td>
+<td>清除内存断点</td>
+</tr>
+<tr>
+<td>HR</td>
+<td>访问时进行硬件中断</td>
+</tr>
+<tr>
+<td>HW</td>
+<td>写入时进行硬件中断</td>
+</tr>
+<tr>
+<td>HE</td>
+<td>执行时进行硬件中断</td>
+</tr>
+<tr>
+<td>HD</td>
+<td>清除硬件断点</td>
+</tr>
+<tr>
+<td>STOP</td>
+<td>停止运行程序调试</td>
+</tr>
+<tr>
+<td>PAUSE</td>
+<td>暂停执行程序调试</td>
+</tr>
+<tr>
+<td>RUN</td>
+<td>运行程序进行调试</td>
+</tr>
+<tr>
+<td>GE</td>
+<td>运行和通过例外</td>
+</tr>
+<tr>
+<td>SI</td>
+<td>单步进入 Call 中</td>
+</tr>
+<tr>
+<td>SO</td>
+<td>步过 Call</td>
+</tr>
+<tr>
+<td>TI</td>
+<td>跟踪进入直到地址</td>
+</tr>
+<tr>
+<td>TO</td>
+<td>跟踪步过直到地址</td>
+</tr>
+<tr>
+<td>TC</td>
+<td>跟踪进入直到满足条件</td>
+</tr>
+<tr>
+<td>TOC</td>
+<td>跟踪步过直到满足条件</td>
+</tr>
+<tr>
+<td>TR</td>
+<td>运行直到返回</td>
+</tr>
+<tr>
+<td>TU</td>
+<td>运行直到用户代码</td>
+</tr>
+<tr>
+<td>LOG</td>
+<td>查看记录窗口</td>
+</tr>
+<tr>
+<td>MOD</td>
+<td>查看模块窗口</td>
+</tr>
+<tr>
+<td>MEM</td>
+<td>查看内存窗口</td>
+</tr>
+<tr>
+<td>CPU</td>
+<td>查看 CPU 窗口</td>
+</tr>
+<tr>
+<td>CS</td>
+<td>查看 Call 堆栈</td>
+</tr>
+<tr>
+<td>BRK</td>
+<td>查看断点窗口</td>
+</tr>
+<tr>
+<td>OPT</td>
+<td>打开选项设置窗口</td>
+</tr>
+<tr>
+<td>EXIT</td>
+<td>退出 OllyDbg</td>
+</tr>
+<tr>
+<td>QUIT</td>
+<td>退出 OllyDbg</td>
+</tr>
+<tr>
+<td>OPEN</td>
+<td>打开一个可执行文件</td>
+</tr>
+<tr>
+<td>CLOSE</td>
+<td>关闭可执行文件</td>
+</tr>
+<tr>
+<td>RST</td>
+<td>重新运行当前程序</td>
+</tr>
+<tr>
+<td>HELP</td>
+<td>查看 API 函数的帮助</td>
+</tr>
+</tbody></table>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">Author: </span><span class="post-copyright-info"><a href="mailto:undefined">John Doe</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">Link: </span><span class="post-copyright-info"><a href="http://example.com/2019/12/02/OD-%E5%BF%AB%E6%8D%B7%E9%94%AE/">http://example.com/2019/12/02/OD-%E5%BF%AB%E6%8D%B7%E9%94%AE/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">Copyright Notice: </span><span class="post-copyright-info">All articles in this blog are licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> unless stating additionally.</span></div></div><div class="tag_share"><div class="post-meta__tag-list"></div><div class="post_share"><div class="social-share" data-image="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2019/12/04/OD-%E8%B7%B3%E8%BD%AC%E8%AF%AD%E5%8F%A5/"><img class="prev-cover" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">Previous Post</div><div class="prev_info">OD-跳转语句</div></div></a></div><div class="next-post pull-right"><a href="/2019/12/02/OD-%E6%96%AD%E7%82%B9%E7%9A%84%E5%88%86%E7%B1%BB/"><img class="next-cover" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">Next Post</div><div class="next_info">OD-断点的分类</div></div></a></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://i.loli.net/2021/02/24/5O1day2nriDzjSu.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">John Doe</div><div class="author-info__description"></div></div><div class="card-info-data"><div class="card-info-data-item is-center"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">317</div></a></div></div><a class="button--animated" id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/xxxxxx"><i class="fab fa-github"></i><span>Follow Me</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn card-announcement-animation"></i><span>Announcement</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>Recent Post</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2021/06/10/%E5%88%A9%E7%94%A8mprotect%E4%BF%AE%E6%94%B9%E7%A8%8B%E5%BA%8F%E6%AE%B5%E6%9D%83%E9%99%90%E4%B8%BA%E5%8F%AF%E6%89%A7%E8%A1%8C/" title="利用mprotect修改程序段权限为可执行"><img src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="利用mprotect修改程序段权限为可执行"/></a><div class="content"><a class="title" href="/2021/06/10/%E5%88%A9%E7%94%A8mprotect%E4%BF%AE%E6%94%B9%E7%A8%8B%E5%BA%8F%E6%AE%B5%E6%9D%83%E9%99%90%E4%B8%BA%E5%8F%AF%E6%89%A7%E8%A1%8C/" title="利用mprotect修改程序段权限为可执行">利用mprotect修改程序段权限为可执行</a><time datetime="2021-06-10T07:59:46.000Z" title="Created 2021-06-10 15:59:46">2021-06-10</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/05/31/SROP%EF%BC%881%EF%BC%89--%E4%BB%8E%E4%B8%A4%E9%81%93%E9%A2%98%E9%87%8D%E6%96%B0%E8%AE%A4%E8%AF%86SROP%20attack/" title="SROP（1）--从两道题重新认识SROP attack"><img src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="SROP（1）--从两道题重新认识SROP attack"/></a><div class="content"><a class="title" href="/2021/05/31/SROP%EF%BC%881%EF%BC%89--%E4%BB%8E%E4%B8%A4%E9%81%93%E9%A2%98%E9%87%8D%E6%96%B0%E8%AE%A4%E8%AF%86SROP%20attack/" title="SROP（1）--从两道题重新认识SROP attack">SROP（1）--从两道题重新认识SROP attack</a><time datetime="2021-05-31T02:14:53.000Z" title="Created 2021-05-31 10:14:53">2021-05-31</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/05/18/how2heap(14)-unsortedbin%20attack/" title="how2heap(14)-unsortedbin attack"><img src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="how2heap(14)-unsortedbin attack"/></a><div class="content"><a class="title" href="/2021/05/18/how2heap(14)-unsortedbin%20attack/" title="how2heap(14)-unsortedbin attack">how2heap(14)-unsortedbin attack</a><time datetime="2021-05-18T07:48:53.000Z" title="Created 2021-05-18 15:48:53">2021-05-18</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/05/17/how2heap(13)-tcache_stashing_unlink_attack/" title="how2heap(13)-tcache_stashing_unlink_attack"><img src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="how2heap(13)-tcache_stashing_unlink_attack"/></a><div class="content"><a class="title" href="/2021/05/17/how2heap(13)-tcache_stashing_unlink_attack/" title="how2heap(13)-tcache_stashing_unlink_attack">how2heap(13)-tcache_stashing_unlink_attack</a><time datetime="2021-05-17T02:16:40.000Z" title="Created 2021-05-17 10:16:40">2021-05-17</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/05/14/how2heap(12)-house%20of%20lore/" title="how2heap(12)-house of lore"><img src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="how2heap(12)-house of lore"/></a><div class="content"><a class="title" href="/2021/05/14/how2heap(12)-house%20of%20lore/" title="how2heap(12)-house of lore">how2heap(12)-house of lore</a><time datetime="2021-05-14T08:02:54.000Z" title="Created 2021-05-14 16:02:54">2021-05-14</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2021 By John Doe</div><div class="framework-info"><span>Framework </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>Theme </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="Read Mode"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="Switch Between Light And Dark Mode"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="Toggle between single-column and double-column"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="Setting"><i class="fas fa-cog fa-spin"></i></button><button id="go-up" type="button" title="Back To Top"><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><div class="js-pjax"></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>

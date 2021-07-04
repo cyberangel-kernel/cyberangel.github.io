@@ -1,0 +1,214 @@
+<!DOCTYPE html><html lang="en" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>PWN疑难（1-1）-栈溢出中栈偏移的测量方法（x86、x64） | Hexo</title><meta name="author" content="John Doe"><meta name="copyright" content="John Doe"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="referrer" content="no-referrer"><meta name="description" content="附件下载：链接: https:&#x2F;&#x2F;pan.baidu.com&#x2F;s&#x2F;1sF1mE85Kx-negqK0hNGYBw   密码: qt61–来自百度网盘超级会员 V3 的分享  前言在栈溢出的题目中，寻找程序的栈偏移是十分必要的，在之前的 PWN 入门文章中出现了几种测量栈偏移的方法，在这篇文章中我们对这些方法进行一个归纳总结。 目的测量栈偏移的目的只有一个：通过输入大量的数据来覆盖程序的返回地址，">
+<meta property="og:type" content="article">
+<meta property="og:title" content="PWN疑难（1-1）-栈溢出中栈偏移的测量方法（x86、x64）">
+<meta property="og:url" content="http://example.com/2020/12/05/PWN%E7%96%91%E9%9A%BE%EF%BC%881-1%EF%BC%89-%E6%A0%88%E6%BA%A2%E5%87%BA%E4%B8%AD%E6%A0%88%E5%81%8F%E7%A7%BB%E7%9A%84%E6%B5%8B%E9%87%8F%E6%96%B9%E6%B3%95%EF%BC%88x86%E3%80%81x64%EF%BC%89/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="附件下载：链接: https:&#x2F;&#x2F;pan.baidu.com&#x2F;s&#x2F;1sF1mE85Kx-negqK0hNGYBw   密码: qt61–来自百度网盘超级会员 V3 的分享  前言在栈溢出的题目中，寻找程序的栈偏移是十分必要的，在之前的 PWN 入门文章中出现了几种测量栈偏移的方法，在这篇文章中我们对这些方法进行一个归纳总结。 目的测量栈偏移的目的只有一个：通过输入大量的数据来覆盖程序的返回地址，">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg">
+<meta property="article:published_time" content="2020-12-05T03:38:57.000Z">
+<meta property="article:modified_time" content="2021-07-04T09:57:14.193Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://example.com/2020/12/05/PWN%E7%96%91%E9%9A%BE%EF%BC%881-1%EF%BC%89-%E6%A0%88%E6%BA%A2%E5%87%BA%E4%B8%AD%E6%A0%88%E5%81%8F%E7%A7%BB%E7%9A%84%E6%B5%8B%E9%87%8F%E6%96%B9%E6%B3%95%EF%BC%88x86%E3%80%81x64%EF%BC%89/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: 'Copy successfully',
+    error: 'Copy error',
+    noSupport: 'The browser does not support'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: 'Just',
+    min: 'minutes ago',
+    hour: 'hours ago',
+    day: 'days ago',
+    month: 'months ago'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    jQuery: 'https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js',
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+    },
+    fancybox: {
+      js: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isanchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'PWN疑难（1-1）-栈溢出中栈偏移的测量方法（x86、x64）',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2021-07-04 17:57:14'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if (GLOBAL_CONFIG_SITE.isHome && /iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><meta name="generator" content="Hexo 5.4.0"><link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+</head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://i.loli.net/2021/02/24/5O1day2nriDzjSu.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data"><div class="data-item is-center"><div class="data-item-link"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">317</div></a></div></div></div><hr/></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">Hexo</a></span><div id="menus"><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">PWN疑难（1-1）-栈溢出中栈偏移的测量方法（x86、x64）</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">Created</span><time class="post-meta-date-created" datetime="2020-12-05T03:38:57.000Z" title="Created 2020-12-05 11:38:57">2020-12-05</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">Updated</span><time class="post-meta-date-updated" datetime="2021-07-04T09:57:14.193Z" title="Updated 2021-07-04 17:57:14">2021-07-04</time></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="PWN疑难（1-1）-栈溢出中栈偏移的测量方法（x86、x64）"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">Post View:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><blockquote>
+<p>附件下载：<br>链接: <a target="_blank" rel="noopener" href="https://pan.baidu.com/s/1sF1mE85Kx-negqK0hNGYBw">https://pan.baidu.com/s/1sF1mE85Kx-negqK0hNGYBw</a>   密码: qt61<br>–来自百度网盘超级会员 V3 的分享</p>
+</blockquote>
+<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>在栈溢出的题目中，寻找程序的栈偏移是十分必要的，在之前的 PWN 入门文章中出现了几种测量栈偏移的方法，在这篇文章中我们对这些方法进行一个归纳总结。</p>
+<h1 id="目的"><a href="#目的" class="headerlink" title="目的"></a>目的</h1><p>测量栈偏移的目的只有一个：通过输入大量的数据来覆盖程序的返回地址，从而劫持程序的流程。下图是程序通用的栈帧：<br><img src="https://cdn.nlark.com/yuque/0/2020/png/574026/1608787478087-06009e14-4757-4253-8d7e-bc8a803991f7.png#align=left&display=inline&height=218&margin=%5Bobject%20Object%5D&name=image.png&originHeight=468&originWidth=300&size=16324&status=done&style=none&width=140" alt="image.png"></p>
+<blockquote>
+<p>假如程序开启了 canary 保护，在栈帧中才会出现 canary 的值。</p>
+</blockquote>
+<h1 id="32-位-ELF-测栈偏移的方法"><a href="#32-位-ELF-测栈偏移的方法" class="headerlink" title="32 位 ELF 测栈偏移的方法"></a>32 位 ELF 测栈偏移的方法</h1><blockquote>
+<p>题目来源：BUUCTF-铁人三项(第五赛区)_2018_rop</p>
+</blockquote>
+<p>首先查看 IDA 伪代码，熟悉程序的流程，步骤略。<br>将题目文件下载下来，检查一下文件的保护：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">➜  test checksec --file=2018_rop</span><br><span class="line">[*] <span class="string">&#x27;/home/ubuntu/Desktop/test/2018_rop&#x27;</span></span><br><span class="line">    Arch:     i386-<span class="number">32</span>-little</span><br><span class="line">    RELRO:    Partial RELRO</span><br><span class="line">    Stack:    No canary found</span><br><span class="line">    NX:       NX enabled</span><br><span class="line">    PIE:      No PIE (<span class="number">0x8048000</span>)</span><br><span class="line">➜  test</span><br></pre></td></tr></table></figure>
+
+<p>32 位程序，只开启了 NX 保护。我们介绍第一种测栈偏移的方法：pwndbg</p>
+<h2 id="pwndbg-调试"><a href="#pwndbg-调试" class="headerlink" title="pwndbg 调试"></a>pwndbg 调试</h2><p>开始使用 pwndbg 进行调试，首先使用 cyclic 生成一串字符串：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">pwndbg&gt; cyclic <span class="number">200</span></span><br><span class="line">aaaabaaacaaadaaaeaaafaaagaaahaaaiaaajaaakaaalaaamaaanaaaoaaapaaaqaaaraaasaaataaauaaavaaawaaaxaaayaaazaabbaabcaabdaabeaabfaabgaabhaabiaabjaabkaablaabmaabnaaboaabpaabqaabraabsaabtaabuaabvaabwaabxaabyaab</span><br><span class="line">pwndbg&gt;</span><br></pre></td></tr></table></figure>
+
+<p>然后运行程序，将上面的字符串粘贴到窗口中，程序会崩溃：<br><img src="https://cdn.nlark.com/yuque/0/2020/png/574026/1608788475442-c6cb97a9-d0cc-46b2-9dfc-83c367cc5d5d.png#align=left&display=inline&height=890&margin=%5Bobject%20Object%5D&name=%E6%88%AA%E5%B1%8F2020-12-24%2013.41.09.png&originHeight=890&originWidth=726&size=162472&status=done&style=none&width=726" alt="截屏2020-12-24 13.41.09.png"><br>看到上图中的无效地址了吗？Invalid address 0x6261616b<br>这个无效地址就是程序被覆盖的返回地址，使用 cyclic 进行计算偏移：<br><img src="https://cdn.nlark.com/yuque/0/2020/png/574026/1608788568433-1919767d-f202-4320-9ec1-da3d29ab1830.png#align=left&display=inline&height=59&margin=%5Bobject%20Object%5D&name=%E6%88%AA%E5%B1%8F2020-12-24%2013.42.45.png&originHeight=59&originWidth=259&size=8126&status=done&style=none&width=259" alt="截屏2020-12-24 13.42.45.png"><br>偏移为 140，因此 payload 中部分内容如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">payload=<span class="string">&#x27;a&#x27;</span>*<span class="number">140</span>+p32(retn_addr)+p32(another payload)</span><br></pre></td></tr></table></figure>
+
+<p>这就产生疑问了，为什么“Invalid address 0x6261616b”中的 0x6261616b 就是程序的返回地址，将程序扔到 IDA 中查看一下<br><img src="https://cdn.nlark.com/yuque/0/2020/png/574026/1608788822000-e8c2b1a5-b068-4afd-ad69-25384a344f57.png#align=left&display=inline&height=329&margin=%5Bobject%20Object%5D&name=%E6%88%AA%E5%B1%8F2020-12-24%2013.46.59.png&originHeight=329&originWidth=837&size=101165&status=done&style=none&width=837" alt="截屏2020-12-24 13.46.59.png"><br>在 vulnerable_function 函数中的 0x0804849B 地址进行下断点，重新调试程序：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">pwndbg&gt; b *<span class="number">0x0804849B</span></span><br><span class="line">Breakpoint <span class="number">1</span> at <span class="number">0x804849b</span></span><br><span class="line">pwndbg&gt; r</span><br></pre></td></tr></table></figure>
+
+<p>将原来的那一长串字符串粘进去，此时程序会断在 0x0804849B 处。<br>紧接着看一下程序的 stack 情况：<br><img src="https://cdn.nlark.com/yuque/0/2020/png/574026/1608789093003-1d457802-dfc9-485b-bf8b-ffd62880c5f5.png#align=left&display=inline&height=716&margin=%5Bobject%20Object%5D&name=%E6%88%AA%E5%B1%8F2020-12-24%2013.51.28.png&originHeight=716&originWidth=561&size=231010&status=done&style=none&width=561" alt="截屏2020-12-24 13.51.28.png"></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">26</span>:0098│ ebp  <span class="number">0xffffcfe8</span> ◂— <span class="number">0x6261616a</span> (<span class="string">&#x27;jaab&#x27;</span>)</span><br><span class="line"><span class="number">27</span>:009c│      <span class="number">0xffffcfec</span> ◂— <span class="number">0x6261616b</span> (<span class="string">&#x27;kaab&#x27;</span>)</span><br><span class="line">    		  //此时，<span class="number">0x6261616b</span>是函数vulnerable_function的返回地址</span><br></pre></td></tr></table></figure>
+
+<p>单步走，让程序执行 leave 语句：</p>
+<blockquote>
+<p>leave 语句相当于 mov esp,ebp pop ebp</p>
+</blockquote>
+<p>执行结果后如下：<br><img src="https://cdn.nlark.com/yuque/0/2020/png/574026/1608789389564-e4864c1b-a1ca-4af5-a0c5-d3644fe74c13.png#align=left&display=inline&height=272&margin=%5Bobject%20Object%5D&name=%E6%88%AA%E5%B1%8F2020-12-24%2013.56.25.png&originHeight=272&originWidth=569&size=77867&status=done&style=none&width=569" alt="截屏2020-12-24 13.56.25.png"><br><img src="https://cdn.nlark.com/yuque/0/2020/png/574026/1608789415893-3c4f5bae-e4e8-4bfb-96c6-78f5471de1e8.png#align=left&display=inline&height=377&margin=%5Bobject%20Object%5D&name=%E6%88%AA%E5%B1%8F2020-12-24%2013.56.46.png&originHeight=377&originWidth=728&size=135655&status=done&style=none&width=728" alt="截屏2020-12-24 13.56.46.png"><br>现在 esp 指向了 0x6261616b，接下来的 retn 语句相当于 pop eip，因此程序将要跳转到 0x6261616b 执行语句，由于地址 0x6261616b 是一个不合法的地址，因此程序自然而然的会崩溃：<br><img src="https://cdn.nlark.com/yuque/0/2020/png/574026/1608789594057-a83e2dc9-0d0d-4703-a4f5-3c07d012d89b.png#align=left&display=inline&height=261&margin=%5Bobject%20Object%5D&name=%E6%88%AA%E5%B1%8F2020-12-24%2013.59.45.png&originHeight=261&originWidth=521&size=61115&status=done&style=none&width=521" alt="截屏2020-12-24 13.59.45.png"><br>再来看一下之前的“cyclic -l 0x6261616b”，将 6261616b 转换一下即可得到字符串：kaab。<br>研究一下 cyclic -l 0x6261616b 的含义，结合一下之前的超长字符串：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">aaaabaaacaaadaaaeaaafaaagaaahaaaiaaajaaakaaalaaamaaanaaaoaaapaaaqaaaraaasaaataaauaaavaaawaaaxaaayaaazaabbaabcaabdaabeaabfaabgaabhaabiaabjaabkaablaabmaabnaaboaabpaabqaabraabsaabtaabuaabvaabwaabxaabyaab</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://cdn.nlark.com/yuque/0/2020/png/574026/1608790191637-d996d021-2bf3-4862-994f-93fcb2bd8650.png#align=left&display=inline&height=546&margin=%5Bobject%20Object%5D&name=QQ20201224-140918.png&originHeight=546&originWidth=951&size=44771&status=done&style=none&width=951" alt="QQ20201224-140918.png"><br>再结合一下“cyclic 的结果：140”，可以轻易得到：cyclic -l 0x6261616b 的实际含义是计算 kaab 之前有多少个字符，可以输入这些字符的数量来达到劫持返回地址的目的。</p>
+<h2 id="IDA-stack-of-function-窗口"><a href="#IDA-stack-of-function-窗口" class="headerlink" title="IDA-stack of function 窗口"></a>IDA-stack of function 窗口</h2><p>来到 IDA 的伪代码窗口（汇编窗口也行），双击 buf 变量即可进入 stack of function 窗口：<br><img src="https://cdn.nlark.com/yuque/0/2020/png/574026/1608790550627-802909c1-f0f0-4d5b-8490-505e957e9dff.png#align=left&display=inline&height=748&margin=%5Bobject%20Object%5D&name=QQ20201224-141452.png&originHeight=748&originWidth=767&size=123237&status=done&style=none&width=767" alt="QQ20201224-141452.png"><br>或者是在汇编窗口中双击 buf：<br><img src="https://cdn.nlark.com/yuque/0/2020/png/574026/1608790534561-5f0649a8-6800-402d-81c8-5853c24adc12.png" alt="QQ20201224-141512.png"><br>来到：<br><img src="https://cdn.nlark.com/yuque/0/2020/png/574026/1608790587834-d34d52cc-e887-4bcf-940f-9d2948cea734.png#align=left&display=inline&height=860&margin=%5Bobject%20Object%5D&name=%E6%88%AA%E5%B1%8F2020-12-24%2014.16.24.png&originHeight=860&originWidth=997&size=296272&status=done&style=none&width=997" alt="截屏2020-12-24 14.16.24.png"><br>我们将这个窗口的内容简化一下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">-00000098 ; D/A/*   : change <span class="built_in">type</span> (data/<span class="built_in">ascii</span>/array)</span><br><span class="line">-00000098 ; N       : rename</span><br><span class="line">-00000098 ; U       : undefine</span><br><span class="line">-00000098 ; Use data definition commands to create local variables <span class="keyword">and</span> function arguments.</span><br><span class="line">-00000098 ; Two special fields <span class="string">&quot; r&quot;</span> <span class="keyword">and</span> <span class="string">&quot; s&quot;</span> represent <span class="keyword">return</span> address <span class="keyword">and</span> saved registers.</span><br><span class="line">-00000098 ; Frame size: <span class="number">98</span>; Saved regs: <span class="number">4</span>; Purge: <span class="number">0</span></span><br><span class="line">-00000098 ;</span><br><span class="line">......</span><br><span class="line">-00000089                 db ? ; undefined</span><br><span class="line">-00000088 buf             db ?</span><br><span class="line">......</span><br><span class="line">+<span class="number">00000000</span>  s              db <span class="number">4</span> dup(?)</span><br><span class="line">+00000004  r              db <span class="number">4</span> dup(?)</span><br><span class="line">+00000008</span><br><span class="line">+00000008 ; end of stack variables</span><br></pre></td></tr></table></figure>
+
+<p>0x88 的十进制为 136，这说明变量完全覆盖 ebp 所需的字符串长度为 140（<strong>也就是说栈偏移为 140：0x88+0x4</strong>），因此在这个程序中完全覆盖函数的返回地址所需要的字符串长度为 144(0x88+0x4+p32(retn_addr))。</p>
+<h1 id="64-位-ELF-测栈偏移的方法"><a href="#64-位-ELF-测栈偏移的方法" class="headerlink" title="64 位 ELF 测栈偏移的方法"></a>64 位 ELF 测栈偏移的方法</h1><p>接下来介绍 64 位 ELF 测栈偏移的方法</p>
+<blockquote>
+<p>题目来源：BUUCTF-rip</p>
+</blockquote>
+<h2 id="pwndbg-调试-1"><a href="#pwndbg-调试-1" class="headerlink" title="pwndbg 调试"></a>pwndbg 调试</h2><p>首先检查一下文件的保护：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">[*] <span class="string">&#x27;/home/ubuntu/Desktop/test/pwn1&#x27;</span></span><br><span class="line">    Arch:     amd64-<span class="number">64</span>-little</span><br><span class="line">    RELRO:    Partial RELRO</span><br><span class="line">    Stack:    No canary found</span><br><span class="line">    NX:       NX disabled</span><br><span class="line">    PIE:      No PIE (<span class="number">0x400000</span>)</span><br><span class="line">    RWX:      Has RWX segments</span><br><span class="line">➜  test</span><br></pre></td></tr></table></figure>
+
+<p>64 位程序，什么保护也没有开启。首先查看 IDA 伪代码，熟悉程序的流程，步骤略。<br>和 32 位测栈偏移一样，重复之前的步骤：<br><img src="https://cdn.nlark.com/yuque/0/2020/png/574026/1608791366769-6b7834d6-1431-40ee-a3ab-493dd9a4e69e.png#align=left&display=inline&height=849&margin=%5Bobject%20Object%5D&name=%E6%88%AA%E5%B1%8F2020-12-24%2014.29.21.png&originHeight=849&originWidth=1857&size=246100&status=done&style=none&width=1857" alt="截屏2020-12-24 14.29.21.png"><br><img src="https://cdn.nlark.com/yuque/0/2020/png/574026/1608791383559-2a698fd5-1e0b-471d-9a1b-5933e03c0199.png#align=left&display=inline&height=583&margin=%5Bobject%20Object%5D&name=%E6%88%AA%E5%B1%8F2020-12-24%2014.29.37.png&originHeight=583&originWidth=1855&size=128293&status=done&style=none&width=1855" alt="截屏2020-12-24 14.29.37.png"><br>然后执行下面的步骤即可得到栈偏移：<br><img src="https://cdn.nlark.com/yuque/0/2020/png/574026/1608791708005-267317b1-1525-4722-a9a3-50a93e416288.png#align=left&display=inline&height=89&margin=%5Bobject%20Object%5D&name=%E6%88%AA%E5%B1%8F2020-12-24%2014.35.04.png&originHeight=89&originWidth=255&size=11503&status=done&style=none&width=255" alt="截屏2020-12-24 14.35.04.png"></p>
+<blockquote>
+<p>0x61616761 可以转换为 aaga</p>
+</blockquote>
+<p>为什么要执行 x/wx $rsp？IDA 查看一下：<br><img src="https://cdn.nlark.com/yuque/0/2020/png/574026/1608792330925-740ad92b-548e-41c0-b542-0ac6d7defdff.png#align=left&display=inline&height=821&margin=%5Bobject%20Object%5D&name=%E6%88%AA%E5%B1%8F2020-12-24%2014.45.26.png&originHeight=821&originWidth=1079&size=314801&status=done&style=none&width=1079" alt="截屏2020-12-24 14.45.26.png"><br>在 leave 处下断点：b *0x401184，重新调试程序，并输入那个超长字符串，结果如下：<br><img src="https://cdn.nlark.com/yuque/0/2020/png/574026/1608792430481-2626a597-2412-48ff-9c9f-946ec7208750.png#align=left&display=inline&height=1080&margin=%5Bobject%20Object%5D&name=%E6%88%AA%E5%B1%8F2020-12-24%2014.47.04.png&originHeight=1080&originWidth=1920&size=355090&status=done&style=none&width=1920" alt="截屏2020-12-24 14.47.04.png"><br>查看一下此时的栈情况：<br><img src="https://cdn.nlark.com/yuque/0/2020/png/574026/1608792472466-060da838-f28b-4a9a-ab20-455787f49618.png#align=left&display=inline&height=435&margin=%5Bobject%20Object%5D&name=%E6%88%AA%E5%B1%8F2020-12-24%2014.47.47.png&originHeight=435&originWidth=1860&size=203401&status=done&style=none&width=1860" alt="截屏2020-12-24 14.47.47.png"><br>单步让程序执行 leave（mov rsp,rbp;pop rbp）：<br><img src="https://cdn.nlark.com/yuque/0/2020/png/574026/1608792643829-f331c70d-e807-4d76-8652-ed0de7eb58b2.png#align=left&display=inline&height=969&margin=%5Bobject%20Object%5D&name=%E6%88%AA%E5%B1%8F2020-12-24%2014.50.39.png&originHeight=969&originWidth=1857&size=234290&status=done&style=none&width=1857" alt="截屏2020-12-24 14.50.39.png"><br>单步让程序执行 retn（pop rip）：<br><img src="https://cdn.nlark.com/yuque/0/2020/png/574026/1608792941039-7377ab61-6b1a-4c2a-8783-515ab541ccd8.png#align=left&display=inline&height=1004&margin=%5Bobject%20Object%5D&name=%E6%88%AA%E5%B1%8F2020-12-24%2014.55.36.png&originHeight=1004&originWidth=1855&size=238551&status=done&style=none&width=1855" alt="截屏2020-12-24 14.55.36.png"><br>此时程序出现 Program received signal SIGSEGV, Segmentation fault.，说明程序已经崩溃。<br>仔细观察图中的内容，此时寄存器 RIP 仍然指向  (main+67) ◂— ret：<br><img src="https://cdn.nlark.com/yuque/0/2020/png/574026/1608793074413-30f0d2c9-ba82-4f88-8300-7d8953d29686.png#align=left&display=inline&height=76&margin=%5Bobject%20Object%5D&name=%E6%88%AA%E5%B1%8F2020-12-24%2014.57.49.png&originHeight=76&originWidth=476&size=15667&status=done&style=none&width=476" alt="截屏2020-12-24 14.57.49.png">（64 位 RIP：aaha aaga）<br><img src="https://cdn.nlark.com/yuque/0/2020/png/574026/1608793327218-fda25477-526f-49c7-83ab-9aef40a1da45.png#align=left&display=inline&height=58&margin=%5Bobject%20Object%5D&name=%E6%88%AA%E5%B1%8F2020-12-24%2015.02.01.png&originHeight=58&originWidth=242&size=8691&status=done&style=none&width=242" alt="截屏2020-12-24 15.02.01.png">（和 64 位不同，32 位 retn 后 EIP 指向无效地址）<br>因此，可以使用 ret 所指向的地址来计算栈偏移</p>
+<blockquote>
+<p>cyclic -l 0x???????? ，cyclic -l 只能接受类似于 0x????????的地址</p>
+</blockquote>
+<p>由于这个程序是小端序，内存 0x6161686161616761 等价于在地址中写入内容时先写入 61616761，再写入 61616861。因此只用计算 61616761（aaga）之前有多少字符即可。<br>也可以使用此时的 rsp 来测量栈偏移：<br><img src="https://cdn.nlark.com/yuque/0/2020/png/574026/1608794202815-0ac1d1d2-4bc0-4d58-81c4-ee16d7a4f425.png#align=left&display=inline&height=25&margin=%5Bobject%20Object%5D&name=%E6%88%AA%E5%B1%8F2020-12-24%2015.16.38.png&originHeight=25&originWidth=1831&size=12485&status=done&style=none&width=1831" alt="截屏2020-12-24 15.16.38.png"><br>此时 rsp 所指向的内存：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">pwndbg&gt; x/16gx <span class="number">0x7fffffffde28</span></span><br><span class="line"><span class="number">0x7fffffffde28</span>:	<span class="number">0x6161686161616761</span>	<span class="number">0x61616a6161616961</span></span><br><span class="line">    			<span class="comment">#也是retn的内容</span></span><br><span class="line"><span class="number">0x7fffffffde38</span>:	<span class="number">0x61616c6161616b61</span>	<span class="number">0x61616e6161616d61</span></span><br><span class="line"><span class="number">0x7fffffffde48</span>:	<span class="number">0x6161706161616f61</span>	<span class="number">0x6161726161617161</span></span><br><span class="line"><span class="number">0x7fffffffde58</span>:	<span class="number">0x6161746161617361</span>	<span class="number">0x6161766161617561</span></span><br><span class="line"><span class="number">0x7fffffffde68</span>:	<span class="number">0x6161786161617761</span>	<span class="number">0x61617a6161617961</span></span><br><span class="line"><span class="number">0x7fffffffde78</span>:	<span class="number">0x6161636261616262</span>	<span class="number">0x6161656261616462</span></span><br><span class="line"><span class="number">0x7fffffffde88</span>:	<span class="number">0x6161676261616662</span>	<span class="number">0x6161696261616862</span></span><br><span class="line"><span class="number">0x7fffffffde98</span>:	<span class="number">0x61616b6261616a62</span>	<span class="number">0x61616d6261616c62</span></span><br><span class="line">pwndbg&gt;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">pwndbg&gt; cyclic -l <span class="number">0x61616761</span></span><br><span class="line"><span class="number">23</span></span><br><span class="line">pwndbg&gt;</span><br></pre></td></tr></table></figure>
+
+<p>两种方法没有本质差别，都是使用同一内存中的内容。</p>
+<h2 id="IDA-stack-of-function-窗口-1"><a href="#IDA-stack-of-function-窗口-1" class="headerlink" title="IDA-stack of function 窗口"></a>IDA-stack of function 窗口</h2><p>不仔细说了，和 32 位基本相同：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">-0000000000000010 ; D/A/*   : change <span class="built_in">type</span> (data/<span class="built_in">ascii</span>/array)</span><br><span class="line">-0000000000000010 ; N       : rename</span><br><span class="line">-0000000000000010 ; U       : undefine</span><br><span class="line">-0000000000000010 ; Use data definition commands to create local variables <span class="keyword">and</span> function arguments.</span><br><span class="line">-0000000000000010 ; Two special fields <span class="string">&quot; r&quot;</span> <span class="keyword">and</span> <span class="string">&quot; s&quot;</span> represent <span class="keyword">return</span> address <span class="keyword">and</span> saved registers.</span><br><span class="line">-0000000000000010 ; Frame size: <span class="number">10</span>; Saved regs: <span class="number">8</span>; Purge: <span class="number">0</span></span><br><span class="line">-0000000000000010 ;</span><br><span class="line">-0000000000000010</span><br><span class="line">-0000000000000010                 db ? ; undefined</span><br><span class="line">-000000000000000F s               db ?</span><br><span class="line">......</span><br><span class="line">+<span class="number">0000000000000000</span>  s              db <span class="number">8</span> dup(?)</span><br><span class="line">+0000000000000008  r              db <span class="number">8</span> dup(?)</span><br><span class="line">+0000000000000010</span><br><span class="line">+0000000000000010 ; end of stack variables</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">payload=(<span class="number">0xF</span>+<span class="number">0x8</span>)*<span class="string">&#x27;a&#x27;</span>+p64(retn_addr)</span><br></pre></td></tr></table></figure>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">Author: </span><span class="post-copyright-info"><a href="mailto:undefined">John Doe</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">Link: </span><span class="post-copyright-info"><a href="http://example.com/2020/12/05/PWN%E7%96%91%E9%9A%BE%EF%BC%881-1%EF%BC%89-%E6%A0%88%E6%BA%A2%E5%87%BA%E4%B8%AD%E6%A0%88%E5%81%8F%E7%A7%BB%E7%9A%84%E6%B5%8B%E9%87%8F%E6%96%B9%E6%B3%95%EF%BC%88x86%E3%80%81x64%EF%BC%89/">http://example.com/2020/12/05/PWN%E7%96%91%E9%9A%BE%EF%BC%881-1%EF%BC%89-%E6%A0%88%E6%BA%A2%E5%87%BA%E4%B8%AD%E6%A0%88%E5%81%8F%E7%A7%BB%E7%9A%84%E6%B5%8B%E9%87%8F%E6%96%B9%E6%B3%95%EF%BC%88x86%E3%80%81x64%EF%BC%89/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">Copyright Notice: </span><span class="post-copyright-info">All articles in this blog are licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> unless stating additionally.</span></div></div><div class="tag_share"><div class="post-meta__tag-list"></div><div class="post_share"><div class="social-share" data-image="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2020/12/25/PWN%E7%96%91%E9%9A%BE%EF%BC%881-2%EF%BC%89-%E5%BD%BC%E5%B2%B8%E5%8F%8C%E7%94%9F%EF%BC%9ALinux%E5%8A%A8%E6%80%81%E9%93%BE%E6%8E%A5%E4%B8%AD%E7%9A%84got.plt%E8%A1%A8%E3%80%81plt%E8%A1%A8/"><img class="prev-cover" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">Previous Post</div><div class="prev_info">PWN疑难（1-2）-彼岸双生：Linux动态链接中的got.plt表、plt表</div></div></a></div><div class="next-post pull-right"><a href="/2020/12/02/PWN%E5%85%A5%E9%97%A8%EF%BC%883-18-1%EF%BC%89-Tcache%20Attack%E4%B8%AD%E7%9A%84tcache_perthread_struct%EF%BC%88%E5%9F%BA%E7%A1%80%E3%80%81%E4%BE%8B%E9%A2%98%EF%BC%89%EF%BC%88%E9%99%84%EF%BC%9A%E5%90%91__malloc_hook%E4%B8%AD%E5%86%99%E5%85%A5one_gadget%E6%97%A0%E6%B3%95getshell%E7%9A%84/"><img class="next-cover" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">Next Post</div><div class="next_info">PWN入门（3-18-1）-Tcache Attack中的tcache_perthread_struct（基础、例题）（附：向__malloc_hook中写入one_gadget无法getshell的问题及解决方案）</div></div></a></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://i.loli.net/2021/02/24/5O1day2nriDzjSu.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">John Doe</div><div class="author-info__description"></div></div><div class="card-info-data"><div class="card-info-data-item is-center"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">317</div></a></div></div><a class="button--animated" id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/xxxxxx"><i class="fab fa-github"></i><span>Follow Me</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn card-announcement-animation"></i><span>Announcement</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>Catalog</span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%89%8D%E8%A8%80"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%9B%AE%E7%9A%84"><span class="toc-number">2.</span> <span class="toc-text">目的</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#32-%E4%BD%8D-ELF-%E6%B5%8B%E6%A0%88%E5%81%8F%E7%A7%BB%E7%9A%84%E6%96%B9%E6%B3%95"><span class="toc-number">3.</span> <span class="toc-text">32 位 ELF 测栈偏移的方法</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#pwndbg-%E8%B0%83%E8%AF%95"><span class="toc-number">3.1.</span> <span class="toc-text">pwndbg 调试</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#IDA-stack-of-function-%E7%AA%97%E5%8F%A3"><span class="toc-number">3.2.</span> <span class="toc-text">IDA-stack of function 窗口</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#64-%E4%BD%8D-ELF-%E6%B5%8B%E6%A0%88%E5%81%8F%E7%A7%BB%E7%9A%84%E6%96%B9%E6%B3%95"><span class="toc-number">4.</span> <span class="toc-text">64 位 ELF 测栈偏移的方法</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#pwndbg-%E8%B0%83%E8%AF%95-1"><span class="toc-number">4.1.</span> <span class="toc-text">pwndbg 调试</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#IDA-stack-of-function-%E7%AA%97%E5%8F%A3-1"><span class="toc-number">4.2.</span> <span class="toc-text">IDA-stack of function 窗口</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>Recent Post</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2021/06/10/%E5%88%A9%E7%94%A8mprotect%E4%BF%AE%E6%94%B9%E7%A8%8B%E5%BA%8F%E6%AE%B5%E6%9D%83%E9%99%90%E4%B8%BA%E5%8F%AF%E6%89%A7%E8%A1%8C/" title="利用mprotect修改程序段权限为可执行"><img src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="利用mprotect修改程序段权限为可执行"/></a><div class="content"><a class="title" href="/2021/06/10/%E5%88%A9%E7%94%A8mprotect%E4%BF%AE%E6%94%B9%E7%A8%8B%E5%BA%8F%E6%AE%B5%E6%9D%83%E9%99%90%E4%B8%BA%E5%8F%AF%E6%89%A7%E8%A1%8C/" title="利用mprotect修改程序段权限为可执行">利用mprotect修改程序段权限为可执行</a><time datetime="2021-06-10T07:59:46.000Z" title="Created 2021-06-10 15:59:46">2021-06-10</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/05/31/SROP%EF%BC%881%EF%BC%89--%E4%BB%8E%E4%B8%A4%E9%81%93%E9%A2%98%E9%87%8D%E6%96%B0%E8%AE%A4%E8%AF%86SROP%20attack/" title="SROP（1）--从两道题重新认识SROP attack"><img src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="SROP（1）--从两道题重新认识SROP attack"/></a><div class="content"><a class="title" href="/2021/05/31/SROP%EF%BC%881%EF%BC%89--%E4%BB%8E%E4%B8%A4%E9%81%93%E9%A2%98%E9%87%8D%E6%96%B0%E8%AE%A4%E8%AF%86SROP%20attack/" title="SROP（1）--从两道题重新认识SROP attack">SROP（1）--从两道题重新认识SROP attack</a><time datetime="2021-05-31T02:14:53.000Z" title="Created 2021-05-31 10:14:53">2021-05-31</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/05/18/how2heap(14)-unsortedbin%20attack/" title="how2heap(14)-unsortedbin attack"><img src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="how2heap(14)-unsortedbin attack"/></a><div class="content"><a class="title" href="/2021/05/18/how2heap(14)-unsortedbin%20attack/" title="how2heap(14)-unsortedbin attack">how2heap(14)-unsortedbin attack</a><time datetime="2021-05-18T07:48:53.000Z" title="Created 2021-05-18 15:48:53">2021-05-18</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/05/17/how2heap(13)-tcache_stashing_unlink_attack/" title="how2heap(13)-tcache_stashing_unlink_attack"><img src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="how2heap(13)-tcache_stashing_unlink_attack"/></a><div class="content"><a class="title" href="/2021/05/17/how2heap(13)-tcache_stashing_unlink_attack/" title="how2heap(13)-tcache_stashing_unlink_attack">how2heap(13)-tcache_stashing_unlink_attack</a><time datetime="2021-05-17T02:16:40.000Z" title="Created 2021-05-17 10:16:40">2021-05-17</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/05/14/how2heap(12)-house%20of%20lore/" title="how2heap(12)-house of lore"><img src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="how2heap(12)-house of lore"/></a><div class="content"><a class="title" href="/2021/05/14/how2heap(12)-house%20of%20lore/" title="how2heap(12)-house of lore">how2heap(12)-house of lore</a><time datetime="2021-05-14T08:02:54.000Z" title="Created 2021-05-14 16:02:54">2021-05-14</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2021 By John Doe</div><div class="framework-info"><span>Framework </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>Theme </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="Read Mode"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="Switch Between Light And Dark Mode"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="Toggle between single-column and double-column"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="Setting"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="Table Of Contents"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="Back To Top"><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><div class="js-pjax"></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>

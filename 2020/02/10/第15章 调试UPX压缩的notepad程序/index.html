@@ -1,0 +1,183 @@
+<!DOCTYPE html><html lang="en" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>第15章 调试UPX压缩的notepad程序 | Hexo</title><meta name="author" content="John Doe"><meta name="copyright" content="John Doe"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="referrer" content="no-referrer"><meta name="description" content="本章将调试 UPX 压缩的 notepad_upx.exe 程序，进一步了解运行时压缩的相关概念。我们的目标是通过调试一点点地跟踪代码，最终找出原 notepad.exe 程序代码。最后再简单讲解一下经过 UPX 压缩的文件如何通过调试器。提示——————————————————————————————————————本章示例使用的是 WindowsXPSP3 中的 notepad.exe 程序。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="第15章 调试UPX压缩的notepad程序">
+<meta property="og:url" content="http://example.com/2020/02/10/%E7%AC%AC15%E7%AB%A0%20%E8%B0%83%E8%AF%95UPX%E5%8E%8B%E7%BC%A9%E7%9A%84notepad%E7%A8%8B%E5%BA%8F/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="本章将调试 UPX 压缩的 notepad_upx.exe 程序，进一步了解运行时压缩的相关概念。我们的目标是通过调试一点点地跟踪代码，最终找出原 notepad.exe 程序代码。最后再简单讲解一下经过 UPX 压缩的文件如何通过调试器。提示——————————————————————————————————————本章示例使用的是 WindowsXPSP3 中的 notepad.exe 程序。">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg">
+<meta property="article:published_time" content="2020-02-10T03:17:18.000Z">
+<meta property="article:modified_time" content="2021-07-04T09:57:22.564Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://example.com/2020/02/10/%E7%AC%AC15%E7%AB%A0%20%E8%B0%83%E8%AF%95UPX%E5%8E%8B%E7%BC%A9%E7%9A%84notepad%E7%A8%8B%E5%BA%8F/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: 'Copy successfully',
+    error: 'Copy error',
+    noSupport: 'The browser does not support'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: 'Just',
+    min: 'minutes ago',
+    hour: 'hours ago',
+    day: 'days ago',
+    month: 'months ago'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    jQuery: 'https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js',
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+    },
+    fancybox: {
+      js: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isanchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '第15章 调试UPX压缩的notepad程序',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2021-07-04 17:57:22'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if (GLOBAL_CONFIG_SITE.isHome && /iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><meta name="generator" content="Hexo 5.4.0"><link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+</head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://i.loli.net/2021/02/24/5O1day2nriDzjSu.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data"><div class="data-item is-center"><div class="data-item-link"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">317</div></a></div></div></div><hr/></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">Hexo</a></span><div id="menus"><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">第15章 调试UPX压缩的notepad程序</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">Created</span><time class="post-meta-date-created" datetime="2020-02-10T03:17:18.000Z" title="Created 2020-02-10 11:17:18">2020-02-10</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">Updated</span><time class="post-meta-date-updated" datetime="2021-07-04T09:57:22.564Z" title="Updated 2021-07-04 17:57:22">2021-07-04</time></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="第15章 调试UPX压缩的notepad程序"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">Post View:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><p>本章将调试 UPX 压缩的 notepad_upx.exe 程序，进一步了解运行时压缩的相关概念。<strong>我们的目标是通过调试一点点地跟踪代码，最终找出原 notepad.exe 程序代码。最后再简单讲解一下经过 UPX 压缩的文件如何通过调试器。</strong><br>提示——————————————————————————————————————<br>本章示例使用的是 WindowsXPSP3 中的 notepad.exe 程序。</p>
+<hr>
+<h1 id="15-1-notepad-exe-的-EP-代码"><a href="#15-1-notepad-exe-的-EP-代码" class="headerlink" title="15.1 notepad.exe 的 EP 代码"></a>15.1 notepad.exe 的 EP 代码</h1><p>首先看一下原 notepad.exe 程序的 EP 代码，如图 15-1 所示。<br><img src="https://cdn.nlark.com/yuque/0/2020/png/574026/1581304818773-15d7d256-b9bb-443f-8c0e-d87e12b22834.png#align=left&display=inline&height=525&name=QQ%E6%88%AA%E5%9B%BE20200210112004.png&originHeight=525&originWidth=1159&size=92308&status=done&style=none&width=1159" alt="QQ截图20200210112004.png"><br>图 15-1 notepad.exe 的 EP 代码<br>在 010073B2 地址处调用了 GetModuleHandleA()API，获取 notepad.exe 程序的 ImageBase（<strong>基准位置</strong>）。然后在 010073B4 与 010073C0 地址处比较 MZ 与 PE 签名。希望各位熟记原 notepad.exe 的 EP 代码。</p>
+<h1 id="15-2-notepad-upx-exe-的-EP-代码"><a href="#15-2-notepad-upx-exe-的-EP-代码" class="headerlink" title="15.2 notepad_upx.exe 的 EP 代码"></a>15.2 notepad_upx.exe 的 EP 代码</h1><p>使用 olyDbg 打开 notepad_upx.exe 时，弹出图 15-2 所示的警告消息框。<br><img src="https://cdn.nlark.com/yuque/0/2020/png/574026/1581305044077-50b5ba64-074f-4eb7-82ae-2a1081a5842e.png#align=left&display=inline&height=119&name=QQ%E6%88%AA%E5%9B%BE20200210112355.png&originHeight=208&originWidth=593&size=44633&status=done&style=none&width=338" alt="QQ截图20200210112355.png"><br>图 15-2OllyDbg 警告消息框<br>调试器判断该文件为压缩文件，在“是”与“否”中<strong>任选一个</strong>，显示出<strong>UPX EP</strong>代码，如图 15-3 所示。<br><img src="https://cdn.nlark.com/yuque/0/2020/png/574026/1581305124985-5e9c6055-0141-4bef-aaca-73f54e48304c.png#align=left&display=inline&height=522&name=QQ%E6%88%AA%E5%9B%BE20200210112516.png&originHeight=522&originWidth=1158&size=72547&status=done&style=none&width=1158" alt="QQ截图20200210112516.png"><br>图 15-3 notepad_upx.exe 的 EP 代码<br><strong>EP 地址为 01015330，该处即为第二个节区的末端部分。</strong>实际压缩的 notepad 源代码存在于 EP 地址（01015330）的上方。<br>下面看一下代码的开始部分（01015330）。<br><img src="https://cdn.nlark.com/yuque/0/2020/png/574026/1581305344053-b337a0bd-0180-4ca4-9ff1-7cedee4dbf1f.png#align=left&display=inline&height=62&name=QQ%E6%88%AA%E5%9B%BE20200210112854.png&originHeight=62&originWidth=1159&size=10157&status=done&style=none&width=1159" alt="QQ截图20200210112854.png"><br><strong>首先使用 PUSHAD 命令将 EAX~EDI 寄存器的值保存到栈，</strong>然后分别把<strong>第二个节区的起始地址（01011000)<strong>与</strong>第一个节区的起始地址（01001000）</strong>设置到<strong>ESI</strong>与<strong>EDI</strong>寄存器。<strong>UPX 文件第一个节区仅存在于内存。该处即是解压缩后保存源文件代码的地方。</strong><br><strong>调试时像这样同时设置 ESI 与 EDI，就能预见从 ESI 所指缓冲区到 EDI 所指缓冲区的内存发生了复制。此时从 Source（ESI）读取数据，解压缩后保存到 Destination（EDI）。</strong>我们的目标是跟踪图 15-3 中的全部 UPX EP 代码，并最终找到原 notepad 的 EP 代码，如图 15-1 所示。<br>提示——————————————————————————————————————</p>
+<ul>
+<li>代码逆向分析称源文件的 EP 为 OEP。</li>
+<li>“跟踪”一词的含义是通过逐一分析代码进行追踪。</li>
+<li>实际的代码逆向分析中并不会逐一跟踪执行压缩代码，常使用自动化脚本、特殊技巧等找到 OEP。但是对于初次学习运行时压缩文件的朋友而言，逐一跟踪代码才是正确的学习方法。</li>
+</ul>
+<hr>
+<h1 id="15-3-跟踪-UPX-文件"><a href="#15-3-跟踪-UPX-文件" class="headerlink" title="15.3 跟踪 UPX 文件"></a>15.3 跟踪 UPX 文件</h1><p>下面开始跟踪代码，跟踪数量庞大的代码时，请遵循如下法则。</p>
+<blockquote>
+<p><strong>“遇到循环（Loop）时，先了解作用再跳出。”</strong></p>
+</blockquote>
+<p>整个解压缩过程由无数循环组成。因此，只有适当跳出循环才能加快速度。</p>
+<h2 id="15-3-1OllyDbg-的跟踪命令"><a href="#15-3-1OllyDbg-的跟踪命令" class="headerlink" title="15.3.1OllyDbg 的跟踪命令"></a>15.3.1OllyDbg 的跟踪命令</h2><p>跟踪数量庞大的代码时，通常不会使用 Step Into（F7)命令，而使用 OllyDbg 中另外提供的跟踪调试命令，如表 15-1 所示。<br><img src="https://cdn.nlark.com/yuque/0/2020/png/574026/1581305889259-637b420b-7f8c-45d1-9a48-fdedc690bca2.png#align=left&display=inline&height=195&name=QQ%E6%88%AA%E5%9B%BE20200210113759.png&originHeight=195&originWidth=985&size=74219&status=done&style=none&width=985" alt="QQ截图20200210113759.png"><br>除了画面显示的之外，Animate 命令与跟踪命令是类似的，由于 Animate 命令要把跟踪过程显示在画面中，所以执行速度略微慢一些。而两者最大的差别在于，<strong>跟踪命令会自动在事先设置的跟踪条件处停下来，并生成日志文件。在 UPX 文件跟踪中将使用 Animate Over(Ctrl+F8)命令</strong>。</p>
+<h2 id="15-3-2-循环-1"><a href="#15-3-2-循环-1" class="headerlink" title="15.3.2 循环#1"></a>15.3.2 循环#1</h2><p><strong>在 EP 代码处执行 Animate Over(Ctrl+F8)命令，开始跟踪代码。可以看到光标快速上下移动。</strong><br><strong>若想停止跟踪，执行 Step Into（F7）命令即可。</strong><br>开始跟踪代码不久后，会遇到一个短循环。暂停跟踪（<strong>执行 Step Into（F7）命令</strong>），仔细查看相应循环，如图 15-4 所示。<br><img src="https://cdn.nlark.com/yuque/0/2020/png/574026/1581306643524-5b6c9976-281a-4f63-86d5-02cb5a092101.png#align=left&display=inline&height=1030&name=QQ%E6%88%AA%E5%9B%BE20200210114952.png&originHeight=1030&originWidth=1920&size=257247&status=done&style=none&width=1920" alt="QQ截图20200210114952.png"><br>图 15-4 第一个循环（要想出现图中的情况，可以在 010153DD 处 F2 下断点，然后执行 F9）<br>循环次数 ECX=36B，循环内容为“从 EDX（01001000）中读取一个字节写入 EDI（01001001）”。<br>EDI 寄存器所指的 01001000 地址即是第一个节区（UPX0）的起始地址，仅存在于内存中的节区（反正内容全部为 NULL）。<br>调试经过运行时压缩的文件时，遇到这样的循环应该跳出来。在 010153E6 地址处按 F2 键设置好断点后，按 F9（F9：运行到断点处）跳出循环（取消之前在 010153DD 处 F2 下的断点）。</p>
+<h2 id="15-3-3-循环-2"><a href="#15-3-3-循环-2" class="headerlink" title="15.3.3 循环#2"></a>15.3.3 循环#2</h2><p>在断点处再次使用 Animate Over(Ctrl+F8)命令继续跟踪代码，不久后遇到图 15-5 所示的循环（比前面那个循环略大一些）。<br><img src="https://cdn.nlark.com/yuque/0/2020/png/574026/1581307390018-965c2b11-3b7c-457d-9da6-bc551caf8d35.png#align=left&display=inline&height=1030&name=QQ%E6%88%AA%E5%9B%BE20200210120300.png&originHeight=1030&originWidth=1920&size=295821&status=done&style=none&width=1920" alt="QQ截图20200210120300.png"><br>图 15-5 第二个循环（要想出现图中的情况，可以在 01015402 处 F2 下断点，然后执行 F9）<br>该循环是正式的解码循环（或称为解压缩循环）。<br>先从 ESI 所指的第二个节区（UPX1)地址中依次读取值，经过适当的运算解压缩后，将值写入 EDI 所指的第一个节区（UPX0）地址。该过程中使用的指令如下：<br><img src="https://cdn.nlark.com/yuque/0/2020/png/574026/1581307071982-acd856b1-2eb2-4f10-97e0-3bd08efab06d.png#align=left&display=inline&height=319&name=QQ%E6%88%AA%E5%9B%BE20200210115743.png&originHeight=319&originWidth=977&size=256104&status=done&style=none&width=977" alt="QQ截图20200210115743.png"><br>只要在 01015402 地址处设置好断点再运行（F9），即可跳出第二个循环，如图 15-5 所示。运行到 01015402 地址后，在转储窗口中可以看到解压缩后的代码已经被写人第一个节区（UPX0）区域（01007000），如图 15-5 中原来用 NULL 填充的区域。</p>
+<h2 id="15-3-4-循环-3"><a href="#15-3-4-循环-3" class="headerlink" title="15.3.4 循环#3"></a>15.3.4 循环#3</h2><p>重新跟踪代码，稍后会遇到图 15-6 所示的第三个循环。<br><img src="https://cdn.nlark.com/yuque/0/2020/png/574026/1581307699499-d9c875f6-66c1-46cf-8549-163c3517a579.png#align=left&display=inline&height=1030&name=QQ%E6%88%AA%E5%9B%BE20200210120807.png&originHeight=1030&originWidth=1920&size=268903&status=done&style=none&width=1920" alt="QQ截图20200210120807.png"><br>图 15-5 第三个循环（要想出现图中的情况，可以在 01015434 处 F2 下断点，然后执行 F9）<br>图 15-6 第三个循环该段循环代码用于恢复源代码的 CALL/JMP 指令（操作码：E8/E9）的 destination 地址。在 01015436 地址处设置断点运行后即可跳出循环。<br>到此几乎接近尾声了，只要再设置好 IAT，UPX 解压缩代码就结束了。<br>提示——————————————————————————————————————<br>对于普通的运行时压缩文件，源文件代码、数据、资源解压缩之后，先设置好 IAT 再转到 OEP。<br>**IAT（Import Address Table，导入地址表）****简言之，IAT 是一种表格，用来记录程序正在使用哪些库中的哪些函数。**</p>
+<hr>
+<h2 id="15-3-5-循环-4"><a href="#15-3-5-循环-4" class="headerlink" title="15.3.5 循环#4"></a>15.3.5 循环#4</h2><p>重新跟踪代码，再稍微进行一段。<br>图 15-7 深色显示的部分即为设置 IAT 的循环。在 01015436 地址处设置 EDI=01014000，它指向第二个节区（UPX1）区域，该区域中保存着原 notepad.exe 调用的 API 函数名称的字符串（参考图 15-8）。<br><img src="https://cdn.nlark.com/yuque/0/2020/png/574026/1581308062235-5df12e48-6654-44a2-baf4-d72c398d258a.png#align=left&display=inline&height=593&name=QQ%E6%88%AA%E5%9B%BE20200210121414.png&originHeight=593&originWidth=1159&size=102996&status=done&style=none&width=1159" alt="QQ截图20200210121414.png"><br>图 15-5 第四个循环（要想出现图中的情况，可以在 01015436 处 F2 下断点，然后执行 F9）<br><img src="https://cdn.nlark.com/yuque/0/2020/png/574026/1581308146790-4d9bb746-6fd7-41bf-acdd-60255b433e42.png#align=left&display=inline&height=298&name=QQ%E6%88%AA%E5%9B%BE20200210121539.png&originHeight=298&originWidth=760&size=44672&status=done&style=none&width=760" alt="QQ截图20200210121539.png"><br>    图 15-8 API 名称字符串<br>UPX 压缩原 notepad.exe 文件时，它会分析其 IAT，提取出程序中调用的 APl 名称列表，形成 API 名称字符串。<br>用这些 API 名称字符串调用图 15-7 中 01015467 地址处的 GetProcAddress()函数，获取 API 的起始地址，然后把 API 地址输入 EBX 寄存器所指的原 notepad.exe 的 IAT 区域。该过程会反复进行至 API 名称字符串结束，最终恢复原 notepad.exe 的 IAT。<br>notepad.exe 全部解压缩完成后，应该将程序的控制返回到 OEP 处。图 15-9 显示的就是跳转到 OEP 的代码。<br><img src="https://cdn.nlark.com/yuque/0/2020/png/574026/1581308357168-93da9623-dff2-4f8d-8b00-33629645470c.png#align=left&display=inline&height=222&name=QQ%E6%88%AA%E5%9B%BE20200210121910.png&originHeight=222&originWidth=1158&size=28771&status=done&style=none&width=1158" alt="QQ截图20200210121910.png"><br>图 15-9 JUMP to OEP<br>另外，010154AD 地址处的<strong>POPAD 命令与 UPX 代码的第一条 PUSHAD 命令对应</strong>，用来把当前寄存器恢复原状（参考图 15-3）。<br>最终，使用 010154BB 地址处的 JMP 命令跳转到 OEP 处，要跳转到的目标地址为 0100739D，它就是原 notepad.exe 的 EP 地址（请各位确认）。</p>
+<h1 id="15-4-快速查找-UPX-OEP-的方法"><a href="#15-4-快速查找-UPX-OEP-的方法" class="headerlink" title="15.4 快速查找 UPX OEP 的方法"></a>15.4 快速查找 UPX OEP 的方法</h1><p>各位都像上面这样顺利完成代码跟踪了吗?代码逆向技术的初学者一定要亲自试试，这有助于调试用其他压缩器压缩的文件。但每次都使用上述方法（跳出循环）查找 OEP 非常麻烦，实际代码逆向分析中有一些更简单的方法可以找到 OEP（以 UPX 压缩的文件为例）。</p>
+<h2 id="15-4-1-在-POPAD-指令后的-JMP-指令处设置断点"><a href="#15-4-1-在-POPAD-指令后的-JMP-指令处设置断点" class="headerlink" title="15.4.1 在 POPAD 指令后的 JMP 指令处设置断点"></a>15.4.1 在 POPAD 指令后的 JMP 指令处设置断点</h2><p><strong>UPX 压缩器的特征之一是，其 EP 代码被包含在 PUSHAD/POPAD 指令之间。并且，跳转到 OEP 代码的 JMP 指令紧接着出现在 POPAD 指令之后。只要在 JMP 指令处设置好断点，运行后就能直接找到 OEP。</strong><br>提示——————————————————————————————————————</p>
+<ul>
+<li>PUSHAD 指令将 8 个通用寄存器（EAX~EDI）的值保存到栈。</li>
+<li>POPAD 指令把 PUSHAD 命令存储在栈的值再次恢复到各个寄存器。</li>
+</ul>
+<hr>
+<h2 id="15-4-2-在栈中设置硬件断点"><a href="#15-4-2-在栈中设置硬件断点" class="headerlink" title="15.4.2 在栈中设置硬件断点"></a>15.4.2 在栈中设置硬件断点</h2><p>该方法也利用 UPX 的 PUSHAD/POPAD 指令的特点。在图 15-3 中执行 01015330 地址处的 PUSHAD 命令后，查看栈，如图 15-10 所示。<br><img src="https://cdn.nlark.com/yuque/0/2020/png/574026/1581308942094-8b5fed3c-cd69-48f7-b8dc-001f35e2a6cf.png#align=left&display=inline&height=180&name=QQ%E6%88%AA%E5%9B%BE20200210122844.png&originHeight=180&originWidth=483&size=15946&status=done&style=none&width=483" alt="QQ截图20200210122844.png"><img src="https://cdn.nlark.com/yuque/0/2020/png/574026/1581308942823-7f804d27-1ea9-4860-8270-b9b196b0caaf.png#align=left&display=inline&height=299&name=QQ%E6%88%AA%E5%9B%BE20200210122850.png&originHeight=299&originWidth=1113&size=32290&status=done&style=none&width=1113" alt="QQ截图20200210122850.png"><br>EAX 到 EDI 寄存器的值依次被存储到栈。从 OllyDbg 的 Dump 窗口进入栈地址（<del>006FFA4  ~~000DFF54)。将鼠标光标准确定位到</del>6FFA4<del>DFF54 地址，使用鼠标右键菜单设置硬件断点，如图 15-11 所示。<br><img src="https://cdn.nlark.com/yuque/0/2020/png/574026/1581309124027-c242e1c0-35ba-4aa7-98a2-dbab37978924.png#align=left&display=inline&height=607&name=QQ%E6%88%AA%E5%9B%BE20200210123154.png&originHeight=607&originWidth=782&size=107669&status=done&style=none&width=782" alt="QQ截图20200210123154.png"><br>硬件断点是 CPU 支持的断点，最多可以设置 4 个。与普通断点不同的是，设置断点的指令执行完成后才暂停调试。在这种状态下运行，程序就会边解压缩边执行代码，在执行 POPAD 的瞬间访问设置有硬件断点的（</del>006FFA4  ~~000DFF54)地址，然后暂停调试。其下方即是跳转到 OEP 的 JMP 指令（熟悉该方法的操作原理才能在以后调试各种文件时得心应手）。</p>
+<h1 id="15-5-小结"><a href="#15-5-小结" class="headerlink" title="15.5 小结"></a>15.5 小结</h1><p>前面学习了有关调试 UPX 运行时压缩文件的内容。建议各位参照书中讲解亲自操作，通过逐一跳出各循环的方法查找 OEP。经过这样一系列的实际操作后，相信各位的调试水平都会得到很大提高。</p>
+<h1 id="Q-amp-A"><a href="#Q-amp-A" class="headerlink" title="Q&amp;A"></a>Q&amp;A</h1><p>Q.解压缩（Unpacking)过程中打开 Dump 窗口，若不重新设置 IAT 就会出现初始化错误。这到底是怎么一回事？<br>A.比如，运行 UPX 文件后转储时，IAT 中存在（对应于当前系统的）准确的 API 地址。但是 INT 却处于损坏状态。PE 装载器使用 INT 中的 API 名称字符串（LoadLibrary()/GetProcAddress())来获取实际 API 地址，并将它们记录到 IAT。由于 INT 已经损坏，该过程中自然会发生错误。</p>
+<p>Q.很多汇编指令都不懂，请介绍可以查找汇编指令的网站吧，谢谢！<br>A.此时，我通常会去查 Intel 的官方文档：<a target="_blank" rel="noopener" href="http://www.intel.com/products/processor/manuals/%E3%80%82">http://www.intel.com/products/processor/manuals/。</a></p>
+<p>Q.如何知道 ESI、EDI 所指的地址对应于哪个节区的地址呢？我想知道该如何才能识别出恢复 IAT 的代码以及解码循环。<br>A.内存复制命令中，ESI 指 Source，EDI 指 Destination。所以使用 PEView(或者 OllyDbg 的内存映射窗口）查看 ESI/EDI 所指的地址，即可知道它们对应的节区。从反复调用 GetProcAddress()函数可知，这是在恢复文件的 IAT。此外，如果拥有丰富的解压缩经验，就更容易预测，这是刚刚接触的人无法企及的。</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">Author: </span><span class="post-copyright-info"><a href="mailto:undefined">John Doe</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">Link: </span><span class="post-copyright-info"><a href="http://example.com/2020/02/10/%E7%AC%AC15%E7%AB%A0%20%E8%B0%83%E8%AF%95UPX%E5%8E%8B%E7%BC%A9%E7%9A%84notepad%E7%A8%8B%E5%BA%8F/">http://example.com/2020/02/10/%E7%AC%AC15%E7%AB%A0%20%E8%B0%83%E8%AF%95UPX%E5%8E%8B%E7%BC%A9%E7%9A%84notepad%E7%A8%8B%E5%BA%8F/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">Copyright Notice: </span><span class="post-copyright-info">All articles in this blog are licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> unless stating additionally.</span></div></div><div class="tag_share"><div class="post-meta__tag-list"></div><div class="post_share"><div class="social-share" data-image="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2020/02/10/%E7%AC%AC16%E7%AB%A0%20%E5%9F%BA%E5%9D%80%E9%87%8D%E5%AE%9A%E4%BD%8D%E8%A1%A8/"><img class="prev-cover" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">Previous Post</div><div class="prev_info">第16章 基址重定位表</div></div></a></div><div class="next-post pull-right"><a href="/2020/02/10/%E7%AC%AC14%E7%AB%A0%E8%BF%90%E8%A1%8C%E6%97%B6%E5%8E%8B%E7%BC%A9/"><img class="next-cover" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">Next Post</div><div class="next_info">第14章运行时压缩</div></div></a></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://i.loli.net/2021/02/24/5O1day2nriDzjSu.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">John Doe</div><div class="author-info__description"></div></div><div class="card-info-data"><div class="card-info-data-item is-center"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">317</div></a></div></div><a class="button--animated" id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/xxxxxx"><i class="fab fa-github"></i><span>Follow Me</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn card-announcement-animation"></i><span>Announcement</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>Catalog</span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#15-1-notepad-exe-%E7%9A%84-EP-%E4%BB%A3%E7%A0%81"><span class="toc-number">1.</span> <span class="toc-text">15.1 notepad.exe 的 EP 代码</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#15-2-notepad-upx-exe-%E7%9A%84-EP-%E4%BB%A3%E7%A0%81"><span class="toc-number">2.</span> <span class="toc-text">15.2 notepad_upx.exe 的 EP 代码</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#15-3-%E8%B7%9F%E8%B8%AA-UPX-%E6%96%87%E4%BB%B6"><span class="toc-number">3.</span> <span class="toc-text">15.3 跟踪 UPX 文件</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#15-3-1OllyDbg-%E7%9A%84%E8%B7%9F%E8%B8%AA%E5%91%BD%E4%BB%A4"><span class="toc-number">3.1.</span> <span class="toc-text">15.3.1OllyDbg 的跟踪命令</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#15-3-2-%E5%BE%AA%E7%8E%AF-1"><span class="toc-number">3.2.</span> <span class="toc-text">15.3.2 循环#1</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#15-3-3-%E5%BE%AA%E7%8E%AF-2"><span class="toc-number">3.3.</span> <span class="toc-text">15.3.3 循环#2</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#15-3-4-%E5%BE%AA%E7%8E%AF-3"><span class="toc-number">3.4.</span> <span class="toc-text">15.3.4 循环#3</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#15-3-5-%E5%BE%AA%E7%8E%AF-4"><span class="toc-number">3.5.</span> <span class="toc-text">15.3.5 循环#4</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#15-4-%E5%BF%AB%E9%80%9F%E6%9F%A5%E6%89%BE-UPX-OEP-%E7%9A%84%E6%96%B9%E6%B3%95"><span class="toc-number">4.</span> <span class="toc-text">15.4 快速查找 UPX OEP 的方法</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#15-4-1-%E5%9C%A8-POPAD-%E6%8C%87%E4%BB%A4%E5%90%8E%E7%9A%84-JMP-%E6%8C%87%E4%BB%A4%E5%A4%84%E8%AE%BE%E7%BD%AE%E6%96%AD%E7%82%B9"><span class="toc-number">4.1.</span> <span class="toc-text">15.4.1 在 POPAD 指令后的 JMP 指令处设置断点</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#15-4-2-%E5%9C%A8%E6%A0%88%E4%B8%AD%E8%AE%BE%E7%BD%AE%E7%A1%AC%E4%BB%B6%E6%96%AD%E7%82%B9"><span class="toc-number">4.2.</span> <span class="toc-text">15.4.2 在栈中设置硬件断点</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#15-5-%E5%B0%8F%E7%BB%93"><span class="toc-number">5.</span> <span class="toc-text">15.5 小结</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Q-amp-A"><span class="toc-number">6.</span> <span class="toc-text">Q&amp;A</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>Recent Post</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2021/06/10/%E5%88%A9%E7%94%A8mprotect%E4%BF%AE%E6%94%B9%E7%A8%8B%E5%BA%8F%E6%AE%B5%E6%9D%83%E9%99%90%E4%B8%BA%E5%8F%AF%E6%89%A7%E8%A1%8C/" title="利用mprotect修改程序段权限为可执行"><img src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="利用mprotect修改程序段权限为可执行"/></a><div class="content"><a class="title" href="/2021/06/10/%E5%88%A9%E7%94%A8mprotect%E4%BF%AE%E6%94%B9%E7%A8%8B%E5%BA%8F%E6%AE%B5%E6%9D%83%E9%99%90%E4%B8%BA%E5%8F%AF%E6%89%A7%E8%A1%8C/" title="利用mprotect修改程序段权限为可执行">利用mprotect修改程序段权限为可执行</a><time datetime="2021-06-10T07:59:46.000Z" title="Created 2021-06-10 15:59:46">2021-06-10</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/05/31/SROP%EF%BC%881%EF%BC%89--%E4%BB%8E%E4%B8%A4%E9%81%93%E9%A2%98%E9%87%8D%E6%96%B0%E8%AE%A4%E8%AF%86SROP%20attack/" title="SROP（1）--从两道题重新认识SROP attack"><img src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="SROP（1）--从两道题重新认识SROP attack"/></a><div class="content"><a class="title" href="/2021/05/31/SROP%EF%BC%881%EF%BC%89--%E4%BB%8E%E4%B8%A4%E9%81%93%E9%A2%98%E9%87%8D%E6%96%B0%E8%AE%A4%E8%AF%86SROP%20attack/" title="SROP（1）--从两道题重新认识SROP attack">SROP（1）--从两道题重新认识SROP attack</a><time datetime="2021-05-31T02:14:53.000Z" title="Created 2021-05-31 10:14:53">2021-05-31</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/05/18/how2heap(14)-unsortedbin%20attack/" title="how2heap(14)-unsortedbin attack"><img src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="how2heap(14)-unsortedbin attack"/></a><div class="content"><a class="title" href="/2021/05/18/how2heap(14)-unsortedbin%20attack/" title="how2heap(14)-unsortedbin attack">how2heap(14)-unsortedbin attack</a><time datetime="2021-05-18T07:48:53.000Z" title="Created 2021-05-18 15:48:53">2021-05-18</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/05/17/how2heap(13)-tcache_stashing_unlink_attack/" title="how2heap(13)-tcache_stashing_unlink_attack"><img src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="how2heap(13)-tcache_stashing_unlink_attack"/></a><div class="content"><a class="title" href="/2021/05/17/how2heap(13)-tcache_stashing_unlink_attack/" title="how2heap(13)-tcache_stashing_unlink_attack">how2heap(13)-tcache_stashing_unlink_attack</a><time datetime="2021-05-17T02:16:40.000Z" title="Created 2021-05-17 10:16:40">2021-05-17</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/05/14/how2heap(12)-house%20of%20lore/" title="how2heap(12)-house of lore"><img src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="how2heap(12)-house of lore"/></a><div class="content"><a class="title" href="/2021/05/14/how2heap(12)-house%20of%20lore/" title="how2heap(12)-house of lore">how2heap(12)-house of lore</a><time datetime="2021-05-14T08:02:54.000Z" title="Created 2021-05-14 16:02:54">2021-05-14</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2021 By John Doe</div><div class="framework-info"><span>Framework </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>Theme </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="Read Mode"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="Switch Between Light And Dark Mode"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="Toggle between single-column and double-column"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="Setting"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="Table Of Contents"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="Back To Top"><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><div class="js-pjax"></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>

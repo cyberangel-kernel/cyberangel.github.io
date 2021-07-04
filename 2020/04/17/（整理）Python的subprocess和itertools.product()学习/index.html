@@ -1,0 +1,293 @@
+<!DOCTYPE html><html lang="en" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>（整理）Python的subprocess和itertools.product()学习 | Hexo</title><meta name="author" content="John Doe"><meta name="copyright" content="John Doe"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="referrer" content="no-referrer"><meta name="description" content="零、前言其实有一个模块也支持执行系统命令，那个模块就是 sys.system，但他执行系统命令会直接通过主进程去执行命令，那假如，该命令的执行需要耗费一个小时，那么主进程会卡一个小时，而不会去干别的事，这样就会导致程序的运行效率低下。如果由 subprocess 去执行系统命令的时候并不会让主进程去执行，而是主进程会开辟出一个子进程去执行，并不会影响到主进程的运行，主进程该干嘛就干嘛，那么又有个问">
+<meta property="og:type" content="article">
+<meta property="og:title" content="（整理）Python的subprocess和itertools.product()学习">
+<meta property="og:url" content="http://example.com/2020/04/17/%EF%BC%88%E6%95%B4%E7%90%86%EF%BC%89Python%E7%9A%84subprocess%E5%92%8Citertools.product()%E5%AD%A6%E4%B9%A0/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="零、前言其实有一个模块也支持执行系统命令，那个模块就是 sys.system，但他执行系统命令会直接通过主进程去执行命令，那假如，该命令的执行需要耗费一个小时，那么主进程会卡一个小时，而不会去干别的事，这样就会导致程序的运行效率低下。如果由 subprocess 去执行系统命令的时候并不会让主进程去执行，而是主进程会开辟出一个子进程去执行，并不会影响到主进程的运行，主进程该干嘛就干嘛，那么又有个问">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg">
+<meta property="article:published_time" content="2020-04-17T08:26:11.000Z">
+<meta property="article:modified_time" content="2021-07-04T09:57:21.076Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://example.com/2020/04/17/%EF%BC%88%E6%95%B4%E7%90%86%EF%BC%89Python%E7%9A%84subprocess%E5%92%8Citertools.product()%E5%AD%A6%E4%B9%A0/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: 'Copy successfully',
+    error: 'Copy error',
+    noSupport: 'The browser does not support'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: 'Just',
+    min: 'minutes ago',
+    hour: 'hours ago',
+    day: 'days ago',
+    month: 'months ago'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    jQuery: 'https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js',
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+    },
+    fancybox: {
+      js: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isanchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '（整理）Python的subprocess和itertools.product()学习',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2021-07-04 17:57:21'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if (GLOBAL_CONFIG_SITE.isHome && /iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><meta name="generator" content="Hexo 5.4.0"><link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+</head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://i.loli.net/2021/02/24/5O1day2nriDzjSu.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data"><div class="data-item is-center"><div class="data-item-link"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">317</div></a></div></div></div><hr/></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">Hexo</a></span><div id="menus"><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">（整理）Python的subprocess和itertools.product()学习</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">Created</span><time class="post-meta-date-created" datetime="2020-04-17T08:26:11.000Z" title="Created 2020-04-17 16:26:11">2020-04-17</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">Updated</span><time class="post-meta-date-updated" datetime="2021-07-04T09:57:21.076Z" title="Updated 2021-07-04 17:57:21">2021-07-04</time></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="（整理）Python的subprocess和itertools.product()学习"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">Post View:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="零、前言"><a href="#零、前言" class="headerlink" title="零、前言"></a>零、前言</h1><p>其实有一个模块也支持执行系统命令，那个模块就是 sys.system，但他执行系统命令会直接通过主进程去执行命令，那假如，该命令的执行需要耗费一个小时，那么主进程会卡一个小时，而不会去干别的事，这样就会导致程序的运行效率低下。<br>如果由 subprocess 去执行系统命令的时候并不会让主进程去执行，而是主进程会开辟出一个子进程去执行，并不会影响到主进程的运行，主进程该干嘛就干嘛，那么又有个问题，大家都知道进程之间的内存空间是独立的，也就是说进程之间是不能相互访问的，那么在 subprocess 中，有个<strong>管道</strong>的概念，既然固定死了进程之间不能相互访问，那么可以将执行命令的结果输出到管道里，该管道其实就是一块共享的内存空间，可以让主进程去获取到该共享内存空间存放的数据</p>
+<h1 id="一、介绍"><a href="#一、介绍" class="headerlink" title="一、介绍"></a>一、介绍</h1><p>subprocess 模块可以生成新的进程，连接到它们的 input/output/error 管道，同时获取它们的返回码。<br>其工作原理如下图所示：<br><img src="https://cdn.nlark.com/yuque/0/2020/png/574026/1587112344060-caca299b-5f27-41e5-901a-2c5d0d57b712.png#align=left&display=inline&height=277&margin=%5Bobject%20Object%5D&originHeight=922&originWidth=1396&size=0&status=done&style=none&width=419"></p>
+<h1 id="二、基本操作方法"><a href="#二、基本操作方法" class="headerlink" title="二、基本操作方法"></a>二、基本操作方法</h1><h2 id="1-subprocess-的-run、call、check-call、check-output-函数"><a href="#1-subprocess-的-run、call、check-call、check-output-函数" class="headerlink" title="1. subprocess 的 run、call、check_call、check_output 函数"></a>1. subprocess 的 run、call、check_call、check_output 函数</h2><ul>
+<li>subprocess.run(args, stdout, stderr, shell …)：执行 args 命令，返回值为 CompletedProcess 类；</li>
+</ul>
+<p>若未指定 stdout，则命令执行后的结果输出到屏幕上，函数返回值 CompletedProcess 中包含有 args 和 returncode；</p>
+<p>若指定有 stdout，则命令执行后的结果输出到 stdout 中，函数返回值 CompletedProcess 中包含有 args、returncode 和 stdout；</p>
+<p>若执行成功，则 returncode 为 0；若执行失败，则 returncode 为 1；</p>
+<p>若想获取 args 命令执行后的输出结果，命令为 output=subprocess.run(args,stdout=subprocess.PIPE).stdout</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; import subprocess</span><br><span class="line"># python 解析则传入命令的每个参数的列表</span><br><span class="line">&gt;&gt;&gt; subprocess.run([&quot;df&quot;,&quot;-h&quot;])</span><br><span class="line">Filesystem      Size Used Avail Use% Mounted on</span><br><span class="line">/dev/mapper/VolGroup-LogVol00</span><br><span class="line">           289G  70G 204G 26% /</span><br><span class="line">tmpfs         64G   0  64G  0% /dev/shm</span><br><span class="line">/dev/sda1       283M  27M 241M 11% /boot</span><br><span class="line">CompletedProcess(args=[&#x27;df&#x27;, &#x27;-h&#x27;], returncode=0)</span><br><span class="line"># 需要交给Linux shell自己解析，则:传入命令字符串，shell=True</span><br><span class="line">&gt;&gt;&gt; subprocess.run(&quot;df -h|grep /dev/sda1&quot;,shell=True)</span><br><span class="line">/dev/sda1       283M  27M 241M 11% /boot</span><br><span class="line">CompletedProcess(args=&#x27;df -h|grep /dev/sda1&#x27;, returncode=0)</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>subprocess.call(args[, stdout, …])：执行 args 命令，返回值为命令执行状态码；</li>
+</ul>
+<p>若未指定 stdout，则命令执行后的结果输出到屏幕；</p>
+<p>若指定 stdout，则命令执行后的结果输出到 stdout；</p>
+<p>若执行成功，则函数返回值为 0；若执行失败，则函数返回值为 1；</p>
+<p>（类似 os.system）</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; res = subprocess.call([&quot;ls&quot;,&quot;-l&quot;])</span><br><span class="line">总用量 28</span><br><span class="line">-rw-r--r-- 1 root root   0 6月 16 10:28 1</span><br><span class="line">drwxr-xr-x 2 root root 4096 6月 22 17:48 _1748</span><br><span class="line">-rw-------. 1 root root 1264 4月 28 20:51 anaconda-ks.cfg</span><br><span class="line">drwxr-xr-x 2 root root 4096 5月 25 14:45 monitor</span><br><span class="line">-rw-r--r-- 1 root root 13160 5月  9 13:36 npm-debug.log</span><br><span class="line"># 命令执行状态</span><br><span class="line">&gt;&gt;&gt; res</span><br><span class="line">0</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>subprocess.check_call(args[, stdout, …])：执行 args 命令，返回值为命令执行状态码；</li>
+</ul>
+<p>若未指定 stdout，则命令执行后的结果输出到屏幕；</p>
+<p>若指定 stdout，则命令执行后的结果输出到 stdout；</p>
+<p>若执行成功，则函数返回值为 0；若执行失败，抛出异常；</p>
+<p>（类似 subprocess.run(args, check=True)）</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; subprocess.check_call([&quot;ls&quot;,&quot;-l&quot;])</span><br><span class="line">总用量 28</span><br><span class="line">-rw-r--r-- 1 root root   0 6月 16 10:28 1</span><br><span class="line">drwxr-xr-x 2 root root 4096 6月 22 17:48 _1748</span><br><span class="line">-rw-------. 1 root root 1264 4月 28 20:51 anaconda-ks.cfg</span><br><span class="line">drwxr-xr-x 2 root root 4096 5月 25 14:45 monitor</span><br><span class="line">-rw-r--r-- 1 root root 13160 5月  9 13:36 npm-debug.log</span><br><span class="line">0</span><br><span class="line">&gt;&gt;&gt; subprocess.check_call([&quot;lm&quot;,&quot;-l&quot;])</span><br><span class="line">Traceback (most recent call last):</span><br><span class="line"> File &quot;&lt;stdin&gt;&quot;, line 1, in &lt;module&gt;</span><br><span class="line"> File &quot;/usr/lib64/python2.7/subprocess.py&quot;, line 537, in check_call</span><br><span class="line">  retcode = call(*popenargs, **kwargs)</span><br><span class="line"> File &quot;/usr/lib64/python2.7/subprocess.py&quot;, line 524, in call</span><br><span class="line">  return Popen(*popenargs, **kwargs).wait()</span><br><span class="line"> File &quot;/usr/lib64/python2.7/subprocess.py&quot;, line 711, in __init__</span><br><span class="line">  errread, errwrite)</span><br><span class="line"> File &quot;/usr/lib64/python2.7/subprocess.py&quot;, line 1327, in _execute_child</span><br><span class="line">  raise child_exception</span><br><span class="line">OSError: [Errno 2] No such file or directory</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>subprocess.check_output(args[, stderr, …])：执行 args 命令，返回值为命令执行的输出结果；</li>
+</ul>
+<p>若执行成功，则函数返回值为命令输出结果；若执行失败，则抛出异常；</p>
+<p>（类似 subprocess.run(args, check=True, stdout=subprocess.PIPE).stdout）</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">#执行正确</span><br><span class="line">&gt;&gt;&gt; subprocess.getstatusoutput(&#x27;pwd&#x27;)</span><br><span class="line">(0, &#x27;/root&#x27;)</span><br><span class="line">#执行错误</span><br><span class="line">&gt;&gt;&gt; subprocess.getstatusoutput(&#x27;pd&#x27;)</span><br><span class="line">(127, &#x27;/bin/sh: pd: command not found&#x27;)</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>（1） args：启动进程的参数，默认为字符串序列（列表或元组），也可为字符串（设为字符串时一般需将 shell 参数赋值为 True）；<br>（2） shell：shell 为 True，表示 args 命令通过 shell 执行，则可访问 shell 的特性；<br>（3） check：check 为 True 时，表示执行命令的进程以非 0 状态码退出时会抛出；subprocess.CalledProcessError 异常；check 为 False 时，状态码为非 0 退出时不会抛出异常；<br>（4） stdout、stdin、stderr：分别表示程序标准标输出、输入、错误信息；<br>run 函数返回值为 CompletedProcess 类，若需获取执行结果，可通过获取返回值的 stdout 和 stderr 来捕获；<br>check_output 函数若需捕获错误信息，可通过 stderr=subprocess.STDOUT 来获取；</p>
+</blockquote>
+<h2 id="2-subprocess-的-getoutput、getstatusoutput-函数"><a href="#2-subprocess-的-getoutput、getstatusoutput-函数" class="headerlink" title="2. subprocess 的 getoutput、getstatusoutput 函数"></a>2. subprocess 的 getoutput、getstatusoutput 函数</h2><ul>
+<li>subprocess.getoutput(cmd)：执行 cmd 命令，返回值为命令执行的输出结果（字符串类型）；</li>
+</ul>
+<p>注：执行失败，不会抛出异常（类似 os.popen(cmd).read()）；</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">#执行正确</span><br><span class="line">&gt;&gt;&gt; subprocess.getstatusoutput(&#x27;pwd&#x27;)</span><br><span class="line">(0, &#x27;/root&#x27;)</span><br><span class="line">#执行错误</span><br><span class="line">&gt;&gt;&gt; subprocess.getstatusoutput(&#x27;pd&#x27;)</span><br><span class="line">(127, &#x27;/bin/sh: pd: command not found&#x27;)</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>subprocess.getstatusoutput(cmd)：执行 cmd 命令，返回值为元组类型(命令执行状态, 命令执行的输出结果)；</li>
+</ul>
+<p>元组中命令执行状态为 0，表示执行成功；命令执行状态为 1，表示执行失败；</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; res = subprocess.check_output(&quot;pwd&quot;)</span><br><span class="line">&gt;&gt;&gt; res</span><br><span class="line">b&#x27;/root\n&#x27; # 结果以字节形式返回</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>cmd：参数，字符串类型；</p>
+</blockquote>
+<h1 id="三、-subprocess-Popen-类"><a href="#三、-subprocess-Popen-类" class="headerlink" title="三、 subprocess.Popen 类"></a>三、 subprocess.Popen 类</h1><h2 id="1-介绍"><a href="#1-介绍" class="headerlink" title="1. 介绍"></a>1. 介绍</h2><p>subprocess.Popen 类用于在一个新进程中执行一个子程序，上述 subprocess 函数均是基于 subprocess.Popen 类；</p>
+<h2 id="2-操作"><a href="#2-操作" class="headerlink" title="2.操作"></a>2.操作</h2><ul>
+<li>subprocess.Popen(args, bufsize, stdin, stdout, stderr, …)：Popen 类的构造函数，返回结果为 subprocess.Popen 对象；<blockquote>
+<ul>
+<li>args：需要执行的系统命令，可为字符串序列（列表或元组，shell 为默认值 False 即可，建议为序列），也可为字符串（使用字符串时，需将 shell 赋值为 True）；</li>
+<li>shell：默认为 False，若 args 为序列时，shell=False；若 args 为字符串时，shell=True，表示通过 shell 执行命令；</li>
+<li>stdout、stdin、stderr：分别表示子程序标准输出、标准输入、标准错误，可为 subprocess.PIPE、一个有效的文件描述符、文件对象或 None。</li>
+</ul>
+</blockquote>
+</li>
+</ul>
+<p>若为 subprocess.PIPE：代表打开通向标准流的管道，创建一个新的管道；</p>
+<p>若为 None：表示没有任何重定向，子进程会继承父进程；</p>
+<p>stderr 也可为 subprocess.STDOUT：表示将子程序的标准错误输出重定向到了标准输出</p>
+<blockquote>
+<ul>
+<li>bufsize：指定缓冲策略，0 表示不缓冲，1 表示行缓冲，其它整数表示缓冲区大小，负数表示使用系统默认值 0；</li>
+<li>cwd：默认值为 None；若非 None，则表示将会在执行这个子进程之前改变当前工作目录；</li>
+<li>env：用于指定子进程的环境变量。若 env 为 None，那么子进程的环境变量将从父进程中继承；若 env 非 None，则表示子程序的环境变量由 env 值来设置，它的值必须是一个映射对象。</li>
+<li>universal_newlines： 不同系统的换行符不同。若 True，则该文件对象的 stdin，stdout 和 stderr 将会以文本流方式打开；否则以二进制流方式打开。</li>
+</ul>
+</blockquote>
+<h3 id="（1）subprocess-Popen-对象常用方法（如-PopenObject-为-subprocess-Popen-对象）"><a href="#（1）subprocess-Popen-对象常用方法（如-PopenObject-为-subprocess-Popen-对象）" class="headerlink" title="（1）subprocess.Popen 对象常用方法（如 PopenObject 为 subprocess.Popen 对象）"></a>（1）subprocess.Popen 对象常用方法（如 PopenObject 为 subprocess.Popen 对象）</h3><ul>
+<li>PopenObject.poll() ：用于检查命令是否已经执行结束，若结束返回状态码；若未结束返回 None；</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; res = subprocess.Popen(&quot;sleep 10;echo &#x27;hello&#x27;&quot;,shell=True,stdout=subprocess.PIPE,stderr=subprocess.PIPE)</span><br><span class="line">&gt;&gt;&gt; print(res.poll())</span><br><span class="line">None</span><br><span class="line">&gt;&gt;&gt; print(res.poll())</span><br><span class="line">None</span><br><span class="line">&gt;&gt;&gt; print(res.poll())</span><br><span class="line">0</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>PopenObject.wait([timeout, endtime])：等待子进程结束，并返回状态码；若超过 timeout(s)进程仍未结束，则抛出异常；</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; obj = subprocess.Popen(&quot;sleep 10;echo &#x27;hello&#x27;&quot;,shell=True,stdout=subprocess.PIPE,stderr=subprocess.PIPE)</span><br><span class="line">&gt;&gt;&gt; obj.wait()</span><br><span class="line"># 中间会一直等待</span><br><span class="line">0</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>PopenObject.send_signal(signal)：发送信号 signal 给子进程；</li>
+<li>PopenObject.terminate()：停止子进程；</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">import subprocess</span><br><span class="line">&gt;&gt;&gt; res = subprocess.Popen(&quot;sleep 20;echo &#x27;hello&#x27;&quot;,shell=True,stdout=subprocess.PIPE,stderr=subprocess.PIPE)</span><br><span class="line">&gt;&gt;&gt; res.terminate() # 结束进程</span><br><span class="line">&gt;&gt;&gt; res.stdout.read()</span><br><span class="line">b&#x27;&#x27;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>PopenObject.kill()：杀死子进程；</li>
+<li>PopenObject.communicate([input, timeout])：与进程进行交互（如发送数据到 stdin、读取 stdout 和 stderr 数据），它会阻塞父进程，直到子进程完成；</li>
+</ul>
+<p>input：表示将发送到子进程的字符串数据，默认为 None；</p>
+<p>timeout：超时判断，若超过 timeout 秒后仍未结束则抛出 TimeoutExpired 异常；</p>
+<p>communicate 返回值：一个元组(stdout_data, stderr_data)</p>
+<ul>
+<li>PopenObject.pid():获取当前执行子 shell 的程序的进程号</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">import subprocess</span><br><span class="line">&gt;&gt;&gt; res = subprocess.Popen(&quot;sleep 5;echo &#x27;hello&#x27;&quot;,shell=True,stdout=subprocess.PIPE,stderr=subprocess.PIPE)</span><br><span class="line">&gt;&gt;&gt; res.pid # 获取这个linux shell 的 进程号</span><br><span class="line">2778</span><br></pre></td></tr></table></figure>
+
+<h3 id="（2）subprocess-Popen-对象的文本或字节流控制"><a href="#（2）subprocess-Popen-对象的文本或字节流控制" class="headerlink" title="（2）subprocess.Popen 对象的文本或字节流控制"></a>（2）subprocess.Popen 对象的文本或字节流控制</h3><ul>
+<li>PopenObject.stdin：</li>
+</ul>
+<p>若 PopenObject 中 stdin 为 PIPE，则返回一个可写流对象；若 encoding 或 errors 参数被指定或 universal_newlines 参数为 True，则此流是一个文件流，否则为字节流。</p>
+<p>若 PopenObject 中 stdin 不是 PIPE，则属性为 None。</p>
+<p><strong>stdin 输入流非 None，可执行写操作即 PopenObject.stdin.write(s)</strong></p>
+<p>**</p>
+<ul>
+<li>PopenObject.stdout：</li>
+</ul>
+<p>若 PopenObject 中 stdout 为 PIPE，则返回一个可读流对象；若 encoding 或 errors 参数被指定或 universal_newlines 参数为 True，则此流是一个文件流，否则为字节流。</p>
+<p>若 PopenObject 中 stdout 不是 PIPE，则属性为 None。</p>
+<p><strong>stdout 输出流非 None，可执行读操作即 PopenObject.stdout.read()或.readlines()</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; res = subprocess.Popen(&quot;ls /tmp/yum.log&quot;, shell=True, stdout=subprocess.PIPE) # 使用管道</span><br><span class="line">&gt;&gt;&gt; res.stdout.read()  # 标准输出</span><br><span class="line">b&#x27;/tmp/yum.log\n&#x27;</span><br><span class="line">res.stdout.close()  # 关闭</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>PopenObject.stderr：</li>
+</ul>
+<p>若 PopenObject 中 stderr 为 PIPE，则返回一个可读流对象；若 encoding 或 errors 参数被指定或 universal_newlines 参数为 True，则此流是一个文件流，否则为字节流。</p>
+<p>若 PopenObject 中 stderr 不是 PIPE，则属性为 None。</p>
+<p><strong>stderr 错误流非 None，可执行读操作即 PopenObject.stderr.read()或.readlines()</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; import subprocess</span><br><span class="line">&gt;&gt;&gt; res = subprocess.Popen(&quot;lm -l&quot;,shell=True,stdout=subprocess.PIPE,stderr=subprocess.PIPE)</span><br><span class="line"># 标准输出为空</span><br><span class="line">&gt;&gt;&gt; res.stdout.read()</span><br><span class="line">b&#x27;&#x27;</span><br><span class="line">#标准错误中有错误信息</span><br><span class="line">&gt;&gt;&gt; res.stderr.read()</span><br><span class="line">b&#x27;/bin/sh: lm: command not found\n&#x27;</span><br></pre></td></tr></table></figure>
+
+<p>注意：上面的提到的标准输出都为啥都需要等于 subprocess.PIPE,这个又是啥呢？原来这个是一个管道，这个需要画一个图来解释一下：<br><img src="https://cdn.nlark.com/yuque/0/2020/png/574026/1587113112310-d151484a-13c0-4d86-a607-c7e738ae6358.png#align=left&display=inline&height=266&margin=%5Bobject%20Object%5D&originHeight=266&originWidth=521&size=0&status=done&style=none&width=521"></p>
+<blockquote>
+<ol>
+<li>subprocess.Popen(‘df -lh’,shell=True)这样就执行了。但不能通过这个.read()来获取结果。为什么呢？<br>因为上面的命令，就相当于你在 python 中调用 subprocess 模块下的 Popen 方法，这个方法得到’df -lh’和 shell=True 两个参数，接下来它就开启了一个 linux 子进程， 我们知道进程 和子进程是不能访问共享数据的。所以你不能直接通过.read()获取结果。<br>那么怎么获得呢？我们在 shell 环境中经常使用管道符号“|”获取一个命令的结果传给下一个命令。这里：subprocess.Popen(‘df -lh’,shell=True,stdout=subprocess.PIPE) 中的 stdout=subprocess.PIPE 就是管道。<em>这里是 stdout,还有 stderr 但是不常用。</em><br>_<br>2._print(command_exec_result.decode())这里为什么 command_exec_result.decode()，因为在 python3 中用 subprocess 执行的结果是 bytes,用 decode()方法获取 string.<br>这里扩展一个小知识：<br>python2.x 中 bytes 和 string 没有啥区别。<br>python3.x 中 bytes 和 string 就区分了。并且 python3.x 默认用的字符编码是 utf-8，所以默认支持中文。<br>字符串.encode()是将 string 转换成 bytes<br>b’ss’.decoude()是将 bytes 转换成了 utf-8 编码形式的字符串。</li>
+</ol>
+</blockquote>
+<h2 id="3-例子"><a href="#3-例子" class="headerlink" title="3.例子:"></a>3.例子:</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> subprocess</span><br><span class="line"><span class="keyword">from</span> itertools <span class="keyword">import</span> *</span><br><span class="line"></span><br><span class="line"><span class="built_in">list</span> = <span class="string">&#x27;01234&#x27;</span></span><br><span class="line">j = <span class="number">0</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> product(<span class="built_in">list</span>, repeat=<span class="number">10</span>):</span><br><span class="line">    <span class="built_in">input</span> = <span class="string">&quot;&quot;</span>.join(i)</span><br><span class="line">    <span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">    Python join() 方法用于将序列中的元素以指定的字符连接生成一个新的字符串。</span></span><br><span class="line"><span class="string">    eg：str = &quot;-&quot;;</span></span><br><span class="line"><span class="string">        seq = (&quot;a&quot;, &quot;b&quot;, &quot;c&quot;); # 字符串序列</span></span><br><span class="line"><span class="string">        print str.join( seq );</span></span><br><span class="line"><span class="string">    key：a-b-c</span></span><br><span class="line"><span class="string">    &#x27;&#x27;&#x27;</span></span><br><span class="line"></span><br><span class="line">    obj = subprocess.Popen([<span class="string">&quot;./number_game&quot;</span>], stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE)</span><br><span class="line">	obj.stdin.write(<span class="built_in">input</span>)</span><br><span class="line">    obj.stdin.close()</span><br><span class="line">    cmd_out = obj.stdout.read()</span><br><span class="line">    obj.stdout.close()</span><br><span class="line">    <span class="built_in">print</span> (<span class="built_in">input</span>)</span><br><span class="line">    <span class="built_in">print</span> (cmd_out)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> <span class="string">&#x27;cxk&#x27;</span> <span class="keyword">not</span> <span class="keyword">in</span> cmd_out :</span><br><span class="line">        <span class="built_in">print</span> (<span class="string">&quot;bingo!!!!!! : &quot;</span>,<span class="built_in">input</span>)</span><br><span class="line">        exit()</span><br></pre></td></tr></table></figure>
+
+<h2 id="附：Python-中的-itertools-product-结构及用法"><a href="#附：Python-中的-itertools-product-结构及用法" class="headerlink" title="附：Python 中的 itertools.product()结构及用法"></a>附：Python 中的 itertools.product()结构及用法</h2><p>itertools.product()<a target="_blank" rel="noopener" href="https://docs.python.org/2/library/itertools.html#itertools.product">官方文档</a></p>
+<blockquote>
+<p>itertools.product(*iterables[, repeat]) # 对应有序的重复抽样过程</p>
+</blockquote>
+<p>以元组的形式，根据输入的可遍历对象生成笛卡尔积，与嵌套的 for 循环类似。<strong>repeat</strong>是一个关键字参数，指定重复生成序列的次数。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> itertools</span><br><span class="line">a = (<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>)</span><br><span class="line">c = itertools.product(a,repeat=<span class="number">3</span>)</span><br><span class="line"><span class="keyword">for</span> elem <span class="keyword">in</span> c:</span><br><span class="line">   <span class="built_in">print</span> (elem)</span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">输出：</span></span><br><span class="line"><span class="string">(1, 1, 1)</span></span><br><span class="line"><span class="string">(1, 1, 2)</span></span><br><span class="line"><span class="string">(1, 1, 3)</span></span><br><span class="line"><span class="string">(1, 2, 1)</span></span><br><span class="line"><span class="string">(1, 2, 2)</span></span><br><span class="line"><span class="string">(1, 2, 3)</span></span><br><span class="line"><span class="string">(1, 3, 1)</span></span><br><span class="line"><span class="string">(1, 3, 2)</span></span><br><span class="line"><span class="string">(1, 3, 3)</span></span><br><span class="line"><span class="string">(2, 1, 1)</span></span><br><span class="line"><span class="string">(2, 1, 2)</span></span><br><span class="line"><span class="string">(2, 1, 3)</span></span><br><span class="line"><span class="string">(2, 2, 1)</span></span><br><span class="line"><span class="string">(2, 2, 2)</span></span><br><span class="line"><span class="string">(2, 2, 3)</span></span><br><span class="line"><span class="string">(2, 3, 1)</span></span><br><span class="line"><span class="string">(2, 3, 2)</span></span><br><span class="line"><span class="string">(2, 3, 3)</span></span><br><span class="line"><span class="string">(3, 1, 1)</span></span><br><span class="line"><span class="string">(3, 1, 2)</span></span><br><span class="line"><span class="string">(3, 1, 3)</span></span><br><span class="line"><span class="string">(3, 2, 1)</span></span><br><span class="line"><span class="string">(3, 2, 2)</span></span><br><span class="line"><span class="string">(3, 2, 3)</span></span><br><span class="line"><span class="string">(3, 3, 1)</span></span><br><span class="line"><span class="string">(3, 3, 2)</span></span><br><span class="line"><span class="string">(3, 3, 3)</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> itertools</span><br><span class="line">a = (<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>)</span><br><span class="line">b = (<span class="string">&#x27;A&#x27;</span>, <span class="string">&#x27;B&#x27;</span>, <span class="string">&#x27;C&#x27;</span>)</span><br><span class="line">c = itertools.product(a,b)</span><br><span class="line"><span class="keyword">for</span> elem <span class="keyword">in</span> c:</span><br><span class="line">   <span class="built_in">print</span> elem</span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">输出：</span></span><br><span class="line"><span class="string">(1, &#x27;A&#x27;)</span></span><br><span class="line"><span class="string">(1, &#x27;B&#x27;)</span></span><br><span class="line"><span class="string">(1, &#x27;C&#x27;)</span></span><br><span class="line"><span class="string">(2, &#x27;A&#x27;)</span></span><br><span class="line"><span class="string">(2, &#x27;B&#x27;)</span></span><br><span class="line"><span class="string">(2, &#x27;C&#x27;)</span></span><br><span class="line"><span class="string">(3, &#x27;A&#x27;)</span></span><br><span class="line"><span class="string">(3, &#x27;B&#x27;)</span></span><br><span class="line"><span class="string">(3, &#x27;C&#x27;)</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br></pre></td></tr></table></figure>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">Author: </span><span class="post-copyright-info"><a href="mailto:undefined">John Doe</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">Link: </span><span class="post-copyright-info"><a href="http://example.com/2020/04/17/%EF%BC%88%E6%95%B4%E7%90%86%EF%BC%89Python%E7%9A%84subprocess%E5%92%8Citertools.product()%E5%AD%A6%E4%B9%A0/">http://example.com/2020/04/17/%EF%BC%88%E6%95%B4%E7%90%86%EF%BC%89Python%E7%9A%84subprocess%E5%92%8Citertools.product()%E5%AD%A6%E4%B9%A0/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">Copyright Notice: </span><span class="post-copyright-info">All articles in this blog are licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> unless stating additionally.</span></div></div><div class="tag_share"><div class="post-meta__tag-list"></div><div class="post_share"><div class="social-share" data-image="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2020/04/20/%EF%BC%88%E6%95%B4%E7%90%86%EF%BC%89Python%E5%AD%97%E8%8A%82%E7%A0%81%E8%AF%A6%E8%A7%A3/"><img class="prev-cover" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">Previous Post</div><div class="prev_info">（整理）Python字节码详解</div></div></a></div><div class="next-post pull-right"><a href="/2020/04/16/Z3%E7%BA%A6%E6%9D%9F%E5%99%A8%E8%AF%A6%E8%A7%A3/"><img class="next-cover" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">Next Post</div><div class="next_info">Z3约束器详解</div></div></a></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://i.loli.net/2021/02/24/5O1day2nriDzjSu.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">John Doe</div><div class="author-info__description"></div></div><div class="card-info-data"><div class="card-info-data-item is-center"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">317</div></a></div></div><a class="button--animated" id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/xxxxxx"><i class="fab fa-github"></i><span>Follow Me</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn card-announcement-animation"></i><span>Announcement</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>Catalog</span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E9%9B%B6%E3%80%81%E5%89%8D%E8%A8%80"><span class="toc-number">1.</span> <span class="toc-text">零、前言</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%B8%80%E3%80%81%E4%BB%8B%E7%BB%8D"><span class="toc-number">2.</span> <span class="toc-text">一、介绍</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BA%8C%E3%80%81%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C%E6%96%B9%E6%B3%95"><span class="toc-number">3.</span> <span class="toc-text">二、基本操作方法</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-subprocess-%E7%9A%84-run%E3%80%81call%E3%80%81check-call%E3%80%81check-output-%E5%87%BD%E6%95%B0"><span class="toc-number">3.1.</span> <span class="toc-text">1. subprocess 的 run、call、check_call、check_output 函数</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-subprocess-%E7%9A%84-getoutput%E3%80%81getstatusoutput-%E5%87%BD%E6%95%B0"><span class="toc-number">3.2.</span> <span class="toc-text">2. subprocess 的 getoutput、getstatusoutput 函数</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%B8%89%E3%80%81-subprocess-Popen-%E7%B1%BB"><span class="toc-number">4.</span> <span class="toc-text">三、 subprocess.Popen 类</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E4%BB%8B%E7%BB%8D"><span class="toc-number">4.1.</span> <span class="toc-text">1. 介绍</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E6%93%8D%E4%BD%9C"><span class="toc-number">4.2.</span> <span class="toc-text">2.操作</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%EF%BC%881%EF%BC%89subprocess-Popen-%E5%AF%B9%E8%B1%A1%E5%B8%B8%E7%94%A8%E6%96%B9%E6%B3%95%EF%BC%88%E5%A6%82-PopenObject-%E4%B8%BA-subprocess-Popen-%E5%AF%B9%E8%B1%A1%EF%BC%89"><span class="toc-number">4.2.1.</span> <span class="toc-text">（1）subprocess.Popen 对象常用方法（如 PopenObject 为 subprocess.Popen 对象）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%EF%BC%882%EF%BC%89subprocess-Popen-%E5%AF%B9%E8%B1%A1%E7%9A%84%E6%96%87%E6%9C%AC%E6%88%96%E5%AD%97%E8%8A%82%E6%B5%81%E6%8E%A7%E5%88%B6"><span class="toc-number">4.2.2.</span> <span class="toc-text">（2）subprocess.Popen 对象的文本或字节流控制</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E4%BE%8B%E5%AD%90"><span class="toc-number">4.3.</span> <span class="toc-text">3.例子:</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%99%84%EF%BC%9APython-%E4%B8%AD%E7%9A%84-itertools-product-%E7%BB%93%E6%9E%84%E5%8F%8A%E7%94%A8%E6%B3%95"><span class="toc-number">4.4.</span> <span class="toc-text">附：Python 中的 itertools.product()结构及用法</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>Recent Post</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2021/06/10/%E5%88%A9%E7%94%A8mprotect%E4%BF%AE%E6%94%B9%E7%A8%8B%E5%BA%8F%E6%AE%B5%E6%9D%83%E9%99%90%E4%B8%BA%E5%8F%AF%E6%89%A7%E8%A1%8C/" title="利用mprotect修改程序段权限为可执行"><img src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="利用mprotect修改程序段权限为可执行"/></a><div class="content"><a class="title" href="/2021/06/10/%E5%88%A9%E7%94%A8mprotect%E4%BF%AE%E6%94%B9%E7%A8%8B%E5%BA%8F%E6%AE%B5%E6%9D%83%E9%99%90%E4%B8%BA%E5%8F%AF%E6%89%A7%E8%A1%8C/" title="利用mprotect修改程序段权限为可执行">利用mprotect修改程序段权限为可执行</a><time datetime="2021-06-10T07:59:46.000Z" title="Created 2021-06-10 15:59:46">2021-06-10</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/05/31/SROP%EF%BC%881%EF%BC%89--%E4%BB%8E%E4%B8%A4%E9%81%93%E9%A2%98%E9%87%8D%E6%96%B0%E8%AE%A4%E8%AF%86SROP%20attack/" title="SROP（1）--从两道题重新认识SROP attack"><img src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="SROP（1）--从两道题重新认识SROP attack"/></a><div class="content"><a class="title" href="/2021/05/31/SROP%EF%BC%881%EF%BC%89--%E4%BB%8E%E4%B8%A4%E9%81%93%E9%A2%98%E9%87%8D%E6%96%B0%E8%AE%A4%E8%AF%86SROP%20attack/" title="SROP（1）--从两道题重新认识SROP attack">SROP（1）--从两道题重新认识SROP attack</a><time datetime="2021-05-31T02:14:53.000Z" title="Created 2021-05-31 10:14:53">2021-05-31</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/05/18/how2heap(14)-unsortedbin%20attack/" title="how2heap(14)-unsortedbin attack"><img src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="how2heap(14)-unsortedbin attack"/></a><div class="content"><a class="title" href="/2021/05/18/how2heap(14)-unsortedbin%20attack/" title="how2heap(14)-unsortedbin attack">how2heap(14)-unsortedbin attack</a><time datetime="2021-05-18T07:48:53.000Z" title="Created 2021-05-18 15:48:53">2021-05-18</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/05/17/how2heap(13)-tcache_stashing_unlink_attack/" title="how2heap(13)-tcache_stashing_unlink_attack"><img src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="how2heap(13)-tcache_stashing_unlink_attack"/></a><div class="content"><a class="title" href="/2021/05/17/how2heap(13)-tcache_stashing_unlink_attack/" title="how2heap(13)-tcache_stashing_unlink_attack">how2heap(13)-tcache_stashing_unlink_attack</a><time datetime="2021-05-17T02:16:40.000Z" title="Created 2021-05-17 10:16:40">2021-05-17</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/05/14/how2heap(12)-house%20of%20lore/" title="how2heap(12)-house of lore"><img src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="how2heap(12)-house of lore"/></a><div class="content"><a class="title" href="/2021/05/14/how2heap(12)-house%20of%20lore/" title="how2heap(12)-house of lore">how2heap(12)-house of lore</a><time datetime="2021-05-14T08:02:54.000Z" title="Created 2021-05-14 16:02:54">2021-05-14</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2021 By John Doe</div><div class="framework-info"><span>Framework </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>Theme </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="Read Mode"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="Switch Between Light And Dark Mode"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="Toggle between single-column and double-column"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="Setting"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="Table Of Contents"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="Back To Top"><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><div class="js-pjax"></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>

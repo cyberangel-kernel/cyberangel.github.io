@@ -1,0 +1,174 @@
+<!DOCTYPE html><html lang="en" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>PWN入门（1-2）-缓冲区溢出之栈溢出（strcpy） | Hexo</title><meta name="author" content="John Doe"><meta name="copyright" content="John Doe"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="referrer" content="no-referrer"><meta name="description" content="文章思路来自：https:&#x2F;&#x2F;blog.csdn.net&#x2F;yan_star&#x2F;article&#x2F;details&#x2F;88937283示例附件下载：链接：https:&#x2F;&#x2F;pan.baidu.com&#x2F;s&#x2F;1zNtWgbL8Wo-bRCyaGCOtkQ   提取码：pevi  缓冲区溢出的简单介绍：缓冲区溢出：简单的说，缓冲区溢出就是超长的数据向小缓冲区复制，导致数据超出了小缓冲区，导致缓冲区其他的数据遭到破">
+<meta property="og:type" content="article">
+<meta property="og:title" content="PWN入门（1-2）-缓冲区溢出之栈溢出（strcpy）">
+<meta property="og:url" content="http://example.com/2020/07/30/PWN%E5%85%A5%E9%97%A8%EF%BC%881-2%EF%BC%89-%E7%BC%93%E5%86%B2%E5%8C%BA%E6%BA%A2%E5%87%BA%E4%B9%8B%E6%A0%88%E6%BA%A2%E5%87%BA%EF%BC%88strcpy%EF%BC%89/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="文章思路来自：https:&#x2F;&#x2F;blog.csdn.net&#x2F;yan_star&#x2F;article&#x2F;details&#x2F;88937283示例附件下载：链接：https:&#x2F;&#x2F;pan.baidu.com&#x2F;s&#x2F;1zNtWgbL8Wo-bRCyaGCOtkQ   提取码：pevi  缓冲区溢出的简单介绍：缓冲区溢出：简单的说，缓冲区溢出就是超长的数据向小缓冲区复制，导致数据超出了小缓冲区，导致缓冲区其他的数据遭到破">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg">
+<meta property="article:published_time" content="2020-07-30T08:37:32.000Z">
+<meta property="article:modified_time" content="2021-07-04T09:57:18.597Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://example.com/2020/07/30/PWN%E5%85%A5%E9%97%A8%EF%BC%881-2%EF%BC%89-%E7%BC%93%E5%86%B2%E5%8C%BA%E6%BA%A2%E5%87%BA%E4%B9%8B%E6%A0%88%E6%BA%A2%E5%87%BA%EF%BC%88strcpy%EF%BC%89/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: 'Copy successfully',
+    error: 'Copy error',
+    noSupport: 'The browser does not support'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: 'Just',
+    min: 'minutes ago',
+    hour: 'hours ago',
+    day: 'days ago',
+    month: 'months ago'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    jQuery: 'https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js',
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+    },
+    fancybox: {
+      js: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isanchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'PWN入门（1-2）-缓冲区溢出之栈溢出（strcpy）',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: false,
+  postUpdate: '2021-07-04 17:57:18'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if (GLOBAL_CONFIG_SITE.isHome && /iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><meta name="generator" content="Hexo 5.4.0"><link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+</head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://i.loli.net/2021/02/24/5O1day2nriDzjSu.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data"><div class="data-item is-center"><div class="data-item-link"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">317</div></a></div></div></div><hr/></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">Hexo</a></span><div id="menus"><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">PWN入门（1-2）-缓冲区溢出之栈溢出（strcpy）</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">Created</span><time class="post-meta-date-created" datetime="2020-07-30T08:37:32.000Z" title="Created 2020-07-30 16:37:32">2020-07-30</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">Updated</span><time class="post-meta-date-updated" datetime="2021-07-04T09:57:18.597Z" title="Updated 2021-07-04 17:57:18">2021-07-04</time></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="PWN入门（1-2）-缓冲区溢出之栈溢出（strcpy）"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">Post View:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><blockquote>
+<p>文章思路来自：<a target="_blank" rel="noopener" href="https://blog.csdn.net/yan_star/article/details/88937283">https://blog.csdn.net/yan_star/article/details/88937283</a><br>示例附件下载：链接：<a target="_blank" rel="noopener" href="https://pan.baidu.com/s/1zNtWgbL8Wo-bRCyaGCOtkQ">https://pan.baidu.com/s/1zNtWgbL8Wo-bRCyaGCOtkQ</a></p>
+</blockquote>
+<blockquote>
+<p>提取码：pevi</p>
+</blockquote>
+<p>缓冲区溢出的简单介绍：<br>缓冲区溢出：简单的说，缓冲区溢出就是超长的数据向小缓冲区复制，导致数据超出了小缓冲区，导致缓冲区其他的数据遭到破坏，这就是缓冲区溢出。而<strong>栈溢出是缓冲区溢出的一种</strong>，也是最常见的。只不过栈溢出发生在栈，堆溢出发生在堆，其实都是一样的。<br>栈的简单介绍：<br>栈：栈是一种计算机系统中的数据结构，它按照先进后出的原则存储数据，先进入的数据被压入栈底，最后的数据在栈顶，需要读数据的时候从栈顶开始弹出数据（最后一个数据被第一个读出来），是一种特殊的线性表。栈的操作常用的有进栈（PUSH），出栈（POP），还有常用的标识栈顶和栈底。<br>可以把栈想象成一摞扑克牌一样，一张一张叠加起来。（如下图的 a1，a2，……，an）。<br>进栈（PUSH）：将一个数据放入栈里叫进栈（PUSH），相当于在扑克牌的在最上面放了一张新的扑克牌。<br>出栈（POP）：将一个数据从栈里取出叫出栈（POP），相当于在扑克牌的在最上面拿走了一张扑克牌。<br>栈顶：常用寄存器 ESP，ESP 是栈指针寄存器，其内存放着一个指针，该指针永远指向系统栈最上面一个栈帧的栈顶。<br>栈底：常用寄存器 EBP，EBP 是基址指针寄存器，其内存放着一个指针，该指针永远指向系统栈最上面一个栈帧的底部。<br><img src="https://cdn.nlark.com/yuque/0/2020/png/574026/1596098418455-59b5b1eb-02c0-4296-b8ef-c53eb1600e40.png#align=left&display=inline&height=269&margin=%5Bobject%20Object%5D&originHeight=269&originWidth=351&size=0&status=done&style=none&width=351"><br>接下来编写一个简单的程序来介绍一下栈溢出：</p>
+<blockquote>
+<p>程序使用 VS code 进行编译</p>
+</blockquote>
+<p>源代码如下：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;string.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> PASSWORD <span class="meta-string">&quot;12345&quot;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">test</span><span class="params">(<span class="keyword">char</span> *password)</span></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> ret_num;</span><br><span class="line">    <span class="keyword">char</span> buffer[<span class="number">8</span>];</span><br><span class="line">    ret_num=<span class="built_in">strcmp</span>(password,PASSWORD);<span class="comment">//相同返回0</span></span><br><span class="line">    <span class="built_in">strcpy</span>(buffer,password);</span><br><span class="line">    <span class="keyword">return</span> ret_num;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> flag=<span class="number">0</span>;</span><br><span class="line">    <span class="keyword">char</span> password[<span class="number">88</span>];</span><br><span class="line">    <span class="keyword">while</span> (<span class="number">1</span>)&#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;plz input your password:\n&quot;</span>);</span><br><span class="line">        <span class="built_in">scanf</span>(<span class="string">&quot;%s&quot;</span>,password);</span><br><span class="line">        flag=<span class="built_in">test</span>(password);</span><br><span class="line">        <span class="keyword">if</span>(flag)&#123;</span><br><span class="line">            <span class="built_in">printf</span>(<span class="string">&quot;incorrect password!\n\n&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span>&#123;</span><br><span class="line">             <span class="built_in">printf</span>(<span class="string">&quot;Success!You are right!\n&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>程序的逻辑很简单，首先在代码开始定义了一个全局变量（#define PASSWORD “12345”），如果用户输入的密码和“12345”相等，则打印出“Success!You are right!”，否则输出“incorrect password!”<br>值得注意的是，程序缓冲区的溢出点在“strcpy(buffer,password);”，在 test 函数中，开辟了 8 个字节的数组空间，然后再将用户输入的数据复制到这个数组空间中，这就为栈溢出创造了条件，看下结果：<br><img src="https://cdn.nlark.com/yuque/0/2020/png/574026/1596098893021-d9b79209-518c-47df-b96f-33036f6e1255.png#align=left&display=inline&height=539&margin=%5Bobject%20Object%5D&name=TIM%E6%88%AA%E5%9B%BE20200730164804.png&originHeight=539&originWidth=773&size=17088&status=done&style=none&width=773" alt="TIM截图20200730164804.png"><br>发现了一个有趣的结果，密码 12345 是正确的密码，这是我们自己定义的，但是当我输入“qqqqqqqq”时，显示的也是正确的结果，下面用 xdbg64 和 IDA 进行进一步的分析。<br>先来看看 xdbg64：<br>在程序中搜索字符串“plz input your password:”：<br><img src="https://cdn.nlark.com/yuque/0/2020/png/574026/1596099051194-a0e51b8d-ff47-49c0-a42e-26da74207f3d.png#align=left&display=inline&height=784&margin=%5Bobject%20Object%5D&name=TIM%E6%88%AA%E5%9B%BE20200730165038.png&originHeight=784&originWidth=1062&size=145983&status=done&style=none&width=1062" alt="TIM截图20200730165038.png"><br>双击进入“plz input your password:”，如下图所示：<br><img src="https://cdn.nlark.com/yuque/0/2020/png/574026/1596099088559-9c0dc691-edd5-4b3b-b9b9-ad7fa2acbc79.png#align=left&display=inline&height=1030&margin=%5Bobject%20Object%5D&name=TIM%E6%88%AA%E5%9B%BE20200730165103.png&originHeight=1030&originWidth=1920&size=221114&status=done&style=none&width=1920" alt="TIM截图20200730165103.png"><br>在 scanf 函数后下 F2 断点<br><img src="https://cdn.nlark.com/yuque/0/2020/png/574026/1596099128421-9812da1d-e749-42b0-997c-dc4bcdafbdd9.png#align=left&display=inline&height=160&margin=%5Bobject%20Object%5D&name=TIM%E6%88%AA%E5%9B%BE20200730165201.png&originHeight=160&originWidth=1178&size=41890&status=done&style=none&width=1178" alt="TIM截图20200730165201.png"><br>下面的 call 1.401550 应该是我们要调用的 test 函数，为了验证这个想法，看看 IDA 中的汇编<br><img src="https://cdn.nlark.com/yuque/0/2020/png/574026/1596099261878-2b0c3930-9d04-42a7-a2cf-964e6b1aab72.png#align=left&display=inline&height=347&margin=%5Bobject%20Object%5D&name=TIM%E6%88%AA%E5%9B%BE20200730165413.png&originHeight=347&originWidth=908&size=47335&status=done&style=none&width=908" alt="TIM截图20200730165413.png"><br>call 1.401550 的确调用的是 test 函数，看一下 IDA 中 main 函数的伪代码<br><img src="https://cdn.nlark.com/yuque/0/2020/png/574026/1596099438226-e0e086f6-9246-47d0-bc25-168a406796f7.png#align=left&display=inline&height=387&margin=%5Bobject%20Object%5D&name=TIM%E6%88%AA%E5%9B%BE20200730165654.png&originHeight=387&originWidth=695&size=27591&status=done&style=none&width=695" alt="TIM截图20200730165654.png"><br>其中 v4 就是源代码中的变量 flag（用来接收 test 函数的返回值），双击进入 test 函数：<br><img src="https://cdn.nlark.com/yuque/0/2020/png/574026/1596099531051-7b0dc6b4-253c-434f-a0f0-eed47dac8124.png#align=left&display=inline&height=222&margin=%5Bobject%20Object%5D&name=TIM%E6%88%AA%E5%9B%BE20200730165844.png&originHeight=222&originWidth=392&size=11877&status=done&style=none&width=392" alt="TIM截图20200730165844.png"><br>由于在前面知道输入“qqqqqqqq”（其实“12345678”也可以）会导致栈溢出，回过头来看一下 test 函数的源代码：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">test</span><span class="params">(<span class="keyword">char</span> *password)</span></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> ret_num;</span><br><span class="line">    <span class="keyword">char</span> buffer[<span class="number">8</span>];</span><br><span class="line">    ret_num=<span class="built_in">strcmp</span>(password,PASSWORD);<span class="comment">//相同返回0</span></span><br><span class="line">    <span class="built_in">strcpy</span>(buffer,password);</span><br><span class="line">    <span class="keyword">return</span> ret_num;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>可以看到 v3 就是原变量 ret_num，Dest 就是原来的 buffer，双击任意一个变量，来到 IDA 的栈界面：</p>
+<blockquote>
+<p>v3 就是 var_4</p>
+</blockquote>
+<p><img src="https://cdn.nlark.com/yuque/0/2020/png/574026/1596101142490-e5f7821a-3fb8-474e-a6d8-1e3618aa143e.png#align=left&display=inline&height=284&margin=%5Bobject%20Object%5D&name=TIM%E6%88%AA%E5%9B%BE20200730172531.png&originHeight=284&originWidth=614&size=19488&status=done&style=none&width=614" alt="TIM截图20200730172531.png"><br>可以看到 Dest（buffer）的空间为 0C-04=8 个字节，当 strcpy 为 8 个字节时，程序会导致栈溢出覆盖掉返回值 ret_num。具体点来说就是我们输入的“qqqqqqqq”为 8 个字节，但是都知道在 C 语言中字符串后面还有“字符串截断符 0x00”，这个截断符 00 将 var_4 由原来的 01 覆盖为 00，这样就输出了最终的“Success!You are right!”<br>回过头来看 xdbg64：<br><img src="https://cdn.nlark.com/yuque/0/2020/png/574026/1596101896389-87e4f7ec-c362-4279-beb1-50b6818de8bd.png#align=left&display=inline&height=329&margin=%5Bobject%20Object%5D&name=TIM%E6%88%AA%E5%9B%BE20200730173809.png&originHeight=329&originWidth=1058&size=68751&status=done&style=none&width=1058" alt="TIM截图20200730173809.png"><br>单步步入 401550 函数（即 test 函数）<br><img src="https://cdn.nlark.com/yuque/0/2020/png/574026/1596102172265-8cd3752e-648b-4a03-ad15-d9e3b5503a16.png#align=left&display=inline&height=179&margin=%5Bobject%20Object%5D&name=TIM%E6%88%AA%E5%9B%BE20200730174242.png&originHeight=179&originWidth=1073&size=42119&status=done&style=none&width=1073" alt="TIM截图20200730174242.png"><br>从上面的图可以知道 strcmp 的返回值是由 eax 寄存器进行接收的，单步步过 strcpy 函数,eax 的值为 1，如下图所示：<br><img src="https://cdn.nlark.com/yuque/0/2020/png/574026/1596102342351-56bada63-8280-4ecc-9952-3a30fa78e7c3.png#align=left&display=inline&height=90&margin=%5Bobject%20Object%5D&name=TIM%E6%88%AA%E5%9B%BE20200730174529.png&originHeight=90&originWidth=357&size=5113&status=done&style=none&width=357" alt="TIM截图20200730174529.png"><br>接下来的 mov dword ptr ss:[rbp-4],eax，是将返回值赋值到 ss:[rbp-4]中，右键在数据窗口中进行跟随以方便观察其变化：<br>单步步过 mov dword ptr ss:[rbp-4],eax 前<br><img src="https://cdn.nlark.com/yuque/0/2020/png/574026/1596102622739-3d258fbf-0d39-437e-8837-cbc9d18f3b1e.png#align=left&display=inline&height=55&margin=%5Bobject%20Object%5D&name=TIM%E6%88%AA%E5%9B%BE20200730174926.png&originHeight=55&originWidth=666&size=8306&status=done&style=none&width=666" alt="TIM截图20200730174926.png"><br>单步步过 mov dword ptr ss:[rbp-4],eax 后<br><img src="https://cdn.nlark.com/yuque/0/2020/png/574026/1596102651297-78773603-3824-460a-92fd-c4c0b3736822.png#align=left&display=inline&height=60&margin=%5Bobject%20Object%5D&name=TIM%E6%88%AA%E5%9B%BE20200730174938.png&originHeight=60&originWidth=660&size=8741&status=done&style=none&width=660" alt="TIM截图20200730174938.png"><br>RIP 来到：<br><img src="https://cdn.nlark.com/yuque/0/2020/png/574026/1596102829186-73cdfd52-b059-4d3f-9337-785d4c2ba9cb.png#align=left&display=inline&height=55&margin=%5Bobject%20Object%5D&name=TIM%E6%88%AA%E5%9B%BE20200730175339.png&originHeight=55&originWidth=641&size=10326&status=done&style=none&width=641" alt="TIM截图20200730175339.png"><br>看一下此时的栈窗口和数据窗口<br><img src="https://cdn.nlark.com/yuque/0/2020/png/574026/1596102909134-c7546e00-e59e-4ef2-9a8d-b33fe24bbb71.png#align=left&display=inline&height=159&margin=%5Bobject%20Object%5D&name=TIM%E6%88%AA%E5%9B%BE20200730175433.png&originHeight=159&originWidth=657&size=19826&status=done&style=none&width=657" alt="TIM截图20200730175433.png"><img src="https://cdn.nlark.com/yuque/0/2020/png/574026/1596102910485-2528bee0-b7b1-49bd-bf85-5298df629833.png#align=left&display=inline&height=187&margin=%5Bobject%20Object%5D&name=TIM%E6%88%AA%E5%9B%BE20200730175447.png&originHeight=187&originWidth=756&size=21970&status=done&style=none&width=756" alt="TIM截图20200730175447.png"><br>单步步过：<br>先来看数据窗口：<br><img src="https://cdn.nlark.com/yuque/0/2020/png/574026/1596102964503-1d9c9812-8e8c-46e8-90c1-20c9531aed99.png#align=left&display=inline&height=161&margin=%5Bobject%20Object%5D&name=TIM%E6%88%AA%E5%9B%BE20200730175552.png&originHeight=161&originWidth=657&size=21028&status=done&style=none&width=657" alt="TIM截图20200730175552.png"><br>返回值已经变为 00<br>再来看栈窗口<br><img src="https://cdn.nlark.com/yuque/0/2020/png/574026/1596103158335-0f5dd3a2-30c9-4ae0-8a87-4e46c48cacbb.png#align=left&display=inline&height=188&margin=%5Bobject%20Object%5D&name=TIM%E6%88%AA%E5%9B%BE20200730175849.png&originHeight=188&originWidth=755&size=21393&status=done&style=none&width=755" alt="TIM截图20200730175849.png"><br>已发生栈溢出，这样就输出了 success</p>
+<blockquote>
+<p>注意，如果密码当初是定义为 1234567，当我们输入 01234567 的时候是不行的，虽说 0123457 也是 8 位数，但是 01234567 小于 1234567，返回值是-1，在内存里将按照补码存负数，那么字符串截断后符 0x00 淹没后，变成 0x00FFFFFF，还是非 0，这样密码则错误！</p>
+</blockquote>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">Author: </span><span class="post-copyright-info"><a href="mailto:undefined">John Doe</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">Link: </span><span class="post-copyright-info"><a href="http://example.com/2020/07/30/PWN%E5%85%A5%E9%97%A8%EF%BC%881-2%EF%BC%89-%E7%BC%93%E5%86%B2%E5%8C%BA%E6%BA%A2%E5%87%BA%E4%B9%8B%E6%A0%88%E6%BA%A2%E5%87%BA%EF%BC%88strcpy%EF%BC%89/">http://example.com/2020/07/30/PWN%E5%85%A5%E9%97%A8%EF%BC%881-2%EF%BC%89-%E7%BC%93%E5%86%B2%E5%8C%BA%E6%BA%A2%E5%87%BA%E4%B9%8B%E6%A0%88%E6%BA%A2%E5%87%BA%EF%BC%88strcpy%EF%BC%89/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">Copyright Notice: </span><span class="post-copyright-info">All articles in this blog are licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> unless stating additionally.</span></div></div><div class="tag_share"><div class="post-meta__tag-list"></div><div class="post_share"><div class="social-share" data-image="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2020/08/01/PWN%E5%85%A5%E9%97%A8%EF%BC%881-1-1%EF%BC%89-C%E5%87%BD%E6%95%B0%E8%B0%83%E7%94%A8%E8%BF%87%E7%A8%8B%E5%8E%9F%E7%90%86%E5%8F%8A%E5%87%BD%E6%95%B0%E6%A0%88%E5%B8%A7%E5%88%86%E6%9E%90/"><img class="prev-cover" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">Previous Post</div><div class="prev_info">PWN入门（1-1-1）-C函数调用过程原理及函数栈帧分析</div></div></a></div><div class="next-post pull-right"><a href="/2020/07/22/Windows%20MS17-010%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0%EF%BC%88%E6%B0%B8%E6%81%92%E4%B9%8B%E8%93%9D%EF%BC%89%E7%AE%80%E5%8D%95%E5%A4%8D%E7%8E%B0/"><img class="next-cover" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">Next Post</div><div class="next_info">Windows MS17-010漏洞复现（永恒之蓝）简单复现</div></div></a></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://i.loli.net/2021/02/24/5O1day2nriDzjSu.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">John Doe</div><div class="author-info__description"></div></div><div class="card-info-data"><div class="card-info-data-item is-center"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">317</div></a></div></div><a class="button--animated" id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/xxxxxx"><i class="fab fa-github"></i><span>Follow Me</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn card-announcement-animation"></i><span>Announcement</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>Recent Post</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2021/06/10/%E5%88%A9%E7%94%A8mprotect%E4%BF%AE%E6%94%B9%E7%A8%8B%E5%BA%8F%E6%AE%B5%E6%9D%83%E9%99%90%E4%B8%BA%E5%8F%AF%E6%89%A7%E8%A1%8C/" title="利用mprotect修改程序段权限为可执行"><img src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="利用mprotect修改程序段权限为可执行"/></a><div class="content"><a class="title" href="/2021/06/10/%E5%88%A9%E7%94%A8mprotect%E4%BF%AE%E6%94%B9%E7%A8%8B%E5%BA%8F%E6%AE%B5%E6%9D%83%E9%99%90%E4%B8%BA%E5%8F%AF%E6%89%A7%E8%A1%8C/" title="利用mprotect修改程序段权限为可执行">利用mprotect修改程序段权限为可执行</a><time datetime="2021-06-10T07:59:46.000Z" title="Created 2021-06-10 15:59:46">2021-06-10</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/05/31/SROP%EF%BC%881%EF%BC%89--%E4%BB%8E%E4%B8%A4%E9%81%93%E9%A2%98%E9%87%8D%E6%96%B0%E8%AE%A4%E8%AF%86SROP%20attack/" title="SROP（1）--从两道题重新认识SROP attack"><img src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="SROP（1）--从两道题重新认识SROP attack"/></a><div class="content"><a class="title" href="/2021/05/31/SROP%EF%BC%881%EF%BC%89--%E4%BB%8E%E4%B8%A4%E9%81%93%E9%A2%98%E9%87%8D%E6%96%B0%E8%AE%A4%E8%AF%86SROP%20attack/" title="SROP（1）--从两道题重新认识SROP attack">SROP（1）--从两道题重新认识SROP attack</a><time datetime="2021-05-31T02:14:53.000Z" title="Created 2021-05-31 10:14:53">2021-05-31</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/05/18/how2heap(14)-unsortedbin%20attack/" title="how2heap(14)-unsortedbin attack"><img src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="how2heap(14)-unsortedbin attack"/></a><div class="content"><a class="title" href="/2021/05/18/how2heap(14)-unsortedbin%20attack/" title="how2heap(14)-unsortedbin attack">how2heap(14)-unsortedbin attack</a><time datetime="2021-05-18T07:48:53.000Z" title="Created 2021-05-18 15:48:53">2021-05-18</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/05/17/how2heap(13)-tcache_stashing_unlink_attack/" title="how2heap(13)-tcache_stashing_unlink_attack"><img src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="how2heap(13)-tcache_stashing_unlink_attack"/></a><div class="content"><a class="title" href="/2021/05/17/how2heap(13)-tcache_stashing_unlink_attack/" title="how2heap(13)-tcache_stashing_unlink_attack">how2heap(13)-tcache_stashing_unlink_attack</a><time datetime="2021-05-17T02:16:40.000Z" title="Created 2021-05-17 10:16:40">2021-05-17</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/05/14/how2heap(12)-house%20of%20lore/" title="how2heap(12)-house of lore"><img src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="how2heap(12)-house of lore"/></a><div class="content"><a class="title" href="/2021/05/14/how2heap(12)-house%20of%20lore/" title="how2heap(12)-house of lore">how2heap(12)-house of lore</a><time datetime="2021-05-14T08:02:54.000Z" title="Created 2021-05-14 16:02:54">2021-05-14</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2021 By John Doe</div><div class="framework-info"><span>Framework </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>Theme </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="Read Mode"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="Switch Between Light And Dark Mode"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="Toggle between single-column and double-column"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="Setting"><i class="fas fa-cog fa-spin"></i></button><button id="go-up" type="button" title="Back To Top"><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><div class="js-pjax"></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
